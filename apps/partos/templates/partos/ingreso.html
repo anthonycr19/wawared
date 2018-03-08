@@ -1,0 +1,37 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load form_filter %}
+{% block title %}Registro de partos{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}"/>
+{% endblock %}
+{% block container %}
+  <div class="row">
+    <div class="col-md-12">
+      <div id="data">
+        <form class="form-horizontal" role="form" method="post">
+          {% csrf_token %}
+          <div class="panel panel-default">
+            <div id="data-head" class="panel-heading">
+              <h3 class="panel-title">Ingreso a partos</h3>
+            </div>
+            {% include 'partos/partials/paciente_resume_header.html' with paciente=paciente %}
+            {% include 'partos/ingreso_form.html' %}
+            <div class="panel-footer">
+              <div class="pull-left">
+                <a class="btn btn-default" href="{% url 'partos:home' %}">Cancelar</a>
+              </div>
+              <div class="text-right">
+                <button type="submit" class="btn btn-green" style="margin-left: 0 !important;">Guardar</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block bottom_scripts %}
+{% include 'partos/ingreso_form_js.html' %}
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Editar cita{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" method="post">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Cita para {{ cita.paciente.nombre_completo }} en {{ cita.establecimiento.nombre }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% include 'dashboard/partials/form_group_input_addon.html' with field=form.cita_fecha addon='<span class="glyphicon glyphicon-calendar"></span>' %}
+                        {% include 'dashboard/partials/form_group_input_addon.html' with field=form.cita_hora addon='<span class="glyphicon glyphicon-time"></span>' %}
+                        <div class="form-group">
+                            <label for="{{ form.comentario.auto_id }}" class="col-sm-5 control-label">Comentario</label>
+                            <div class="col-sm-7">
+                                <textarea name="{{ form.comentario.name }}" class="form-control" id="{{ form.comentario.auto_id }}" rows="3"></textarea>
+                                {% for error in form.comentario.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                            <a class="btn btn-default" href="{% url 'dashboard_home' %}">Cancelar</a>
+                            <a id="btn-delete-cita" class="btn btn-danger" href="{% url 'cita:delete' cita.id %}">Eliminar</a>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-green">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){ 
+            var today = new Date();
+            var now = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+            $('#id_cita_fecha').on('keydown', function () {
+                return false;
+            }).datepicker({
+                onRender: function (date) {
+                    return date.valueOf() < now.valueOf() ? 'disabled' : '';
+                }
+            });
+            $('#id_cita_hora').timepicker({
+                showSeconds: false,
+                template: false,
+                showMeridian: false
+            });
+            $('#btn-delete-cita').on('click', function (event) {
+                var answer = confirm('¿Seguro que desea eliminar la cita?')
+                if (!answer) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+{% endblock %}

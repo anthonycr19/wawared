@@ -1,0 +1,21 @@
+{% load static %}
+<script src="{% static 'js/jquery.js' %}"></script>
+{% include 'session_security/all.html' %}
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>CIE Código</th>
+        <th>CIE Nombre</th>
+        <th>Observación</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for antecedente_medico in paciente.antecedentes_medicos.all %}
+    <tr>
+        <td>{{ antecedente_medico.cie.codigo }}</td>
+        <td>{{ antecedente_medico.cie.nombre_display|title }}</td>
+        <td>{{ antecedente_medico.observacion }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

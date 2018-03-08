@@ -1,0 +1,154 @@
+{% load form_filter %}
+<div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Ingreso
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Fecha</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                {{ form.fecha|add_class:'form-control input-sm datepicker' }}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            {% for error in form.fecha.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.hora.auto_id }}" class="col-sm-5 control-label">Hora</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                {{ form.horas }} {{ form.minutos }} {{ form.meridiano }}
+                                <input id="{{ form.hora.auto_id }}" class="bootstrap-timepicker form-control input-sm" type="text" name="{{ form.hora.name }}"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                            {% for error in form.hora.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.tipo %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.inicio %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.cama %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.lugar_de_derivacion %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.lugar_de_derivacion_otros %}
+                    </br>Ruptura de membranas:
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.tiempo_ruptura_membranas_horas addon='Horas'%}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.tiempo_ruptura_membranas_minutos addon='minutos'%}
+                </div>
+                <div class="col-md-4">
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.peso addon='kg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.imc addon=form.instance.imc_clasificacion|capfirst %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.temperatura addon='C' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_sistolica addon='mmHg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_diastolica addon='mmHg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.pulso addon='min' %}
+                </div>
+                <div class="col-md-4">
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.frecuencia_respiratoria addon='resp / min' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.altura_uterina addon='cm' %}
+
+                    {{ fcfs.management_form }}
+                    {% for error in fcfs.non_form_errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                    <div id="fcfs-form-container">
+                        {% for fcf_form in fcfs %}
+                        <div class="row" style="margin-left:0; margin-right:0;">
+                            {{ fcf_form.id }}
+                            {% include 'dashboard/partials/form_group_input_addon.html' with field=fcf_form.fcf addon='lat / min' %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button id="btn-add-feto" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+
+                    <div class="row hidden" id="empty-form" style="margin-left:0; margin-right:0;" >
+                        {{ fcfs.empty_form.id }}
+                        {% include 'dashboard/partials/form_group_input_addon.html' with field=fcfs.empty_form.fcf addon='lat / min' %}
+                    </div>
+
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.situacion %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.presentacion %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.posicion %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.movimientos_fetales %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.dinamica_uterina %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.edemas %}
+                </div>
+                <div class="col-md-4" style="display:none;">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            Nivel de Atención
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/checkbox.html' with field=form.atencion_fonp %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/checkbox.html' with field=form.atencion_fonb %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/checkbox.html' with field=form.atencion_foni %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/checkbox.html' with field=form.atencion_fone_1 %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/checkbox.html' with field=form.atencion_fone_2 %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel panel-default" id="data-buscar-body">
+                        <table class="table table-stripped table-bordered">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="fum {% if form.instance.eg_elegida == 'fum' %}success{% endif %}">Fecha última menstruación</th>
+                                <th class="ecografia {% if form.instance.eg_elegida == 'ecografia' %}success{% endif %}">Ecografía</th>
+                                <th class="altura-uterina {% if form.instance.eg_elegida == 'altura uterina' %}success{% endif %}">Altura uterina</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Edad gestacional actual</td>
+                                <td class="fum {% if form.instance.eg_elegida == 'fum' %}success{% endif %}">{{ form.eg_fum|add_class:'form-control input-sm' }}</td>
+                                <td class="ecografia {% if form.instance.eg_elegida == 'ecografia' %}success{% endif %}">{{ form.eg_ecografia|add_class:'form-control input-sm' }}</td>
+                                <td class="altura-uterina {% if form.instance.eg_elegida == 'altura uterina' %}success{% endif %}">{{ form.eg_altura_uterina|add_class:'form-control input-sm' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha probable de parto</td>
+                                <td class="fum {% if form.instance.eg_elegida == 'fum' %}success{% endif %}">{{ form.fecha_probable_parto_fum|add_class:'form-control input-sm' }}</td>
+                                <td class="ecografia {% if form.instance.eg_elegida == 'ecografia' %}success{% endif %}">{{ form.fecha_probable_parto_ecografia|add_class:'form-control input-sm' }}</td>
+                                <td class="altura-uterina {% if form.instance.eg_elegida == 'altura uterina' %}success{% endif %}">{{ form.fecha_probable_parto_altura_uterina|add_class:'form-control input-sm' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Edad gestacional elegida</td>
+                                <td colspan="3">
+                                    {% include 'dashboard/partials/form_group_input.html' with field=form.eg_elegida %}
+                                    <div class="btn-group">
+                                        <button id="js-btn-eg-fum" class="btn btn-default" type="button" {% if not embarazo.fum %}disabled{% endif %}>FUM</button>
+                                        <button id="js-btn-eg-eco" class="btn btn-default" type="button" {% if not embarazo.primera_ecografia %}disabled{% endif %}>Ecografía</button>
+                                        <button id="js-btn-eg-au" class="btn btn-default" type="button">Altura Uterina</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

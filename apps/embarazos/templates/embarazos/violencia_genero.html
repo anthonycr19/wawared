@@ -1,0 +1,150 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Editar Violencia/Género{% endblock %}
+{% block extra_style %}
+    <link href="{% static 'css/datepicker.css' %}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" id="form-embarazo" name="form-embarazo"  method="post">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Violencia/Género</h3>
+                </div>
+                {% include 'embarazos/partials/paciente_resume_header.html' with paciente=paciente %}
+                
+                <div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Violencia / Género
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        Lea al paciente: Debido a que la Violencia Familiar es dañina para la salud de las personas, en todos los programas de salud estamos preguntando a los pacientes si actualmente están en esta situación para participar con ellas en la solución de su problema, por favor; conteste a estas preguntas.
+                    </p>
+                </div>
+            </div>
+            {% include 'embarazos/partials/ficha_violencia_familiar.html' with form=ficha_form %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.usa_drogas.auto_id }}" class="col-sm-6 control-label">{{ form.usa_drogas.label }}</label>
+                        <div class="col-sm-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.usa_drogas.name }}" {% ifequal form.instance.usa_drogas True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.usa_drogas.name }}" {% ifequal form.instance.usa_drogas False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.usa_drogas.name }}" {% ifequal form.instance.usa_drogas None %}checked{% endifequal %} value="None"/>
+                                        N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.usa_drogas.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.numero_cigarros_diarios addon='Cigarros/dia' %}
+                </div>
+            </div>
+
+
+
+
+
+            <!--
+            <div class="row">
+                <br/>
+                <div class="col-md-6">
+                    <h3>Tamizaje de depresión</h3>
+                    <div class="alert alert-info">
+                        {% include 'dashboard/partials/form_group_date.html' with field=form.fecha_tamizaje %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="data-buscar-body">
+                        <table class="table table-bordered table-striped" id="depresion-table">
+                            <thead>
+                                <tr>
+                                    <td colspan="5">PHQ2</td>
+                                </tr>
+                                <tr>
+                                    <th>Durante las <b>últimas 2 semanas</b> ¿con qué frecuencia ha sentido molestia debido a cualquiera de las siguientes condiciones?</th>
+                                    <th>Para nada</th>
+                                    <th>Varios días (por ejemplo entre 1 y 6 dias)</th>
+                                    <th>Más de la imtad de los días (por ejemplo, entre 7 y 12 días)</th>
+                                    <th>Casi todos los días (por ejemplo, 12 días o más)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% include 'controles/partials/field_choices_as_tds.html' with field=form.perdida_interes_placer %}
+                                </tr>
+                                <tr>
+                                    {% include 'controles/partials/field_choices_as_tds.html' with field=form.triste_deprimida_sin_esperanza %}
+                                </tr>
+                                <tr>
+                                    <td>Puntaje total</td>
+                                    <td colspan="4" class="text-center" id="depresion-table-puntaje">{{ form.depresion_puntaje.value|default_if_none:'' }}</td>
+                                    {{ form.depresion_puntaje }}
+                                </tr>
+                                <tr class="phq2-alerts">
+                                    <td colspan="5" style="color: red !important; font-size: 16px">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id="ficha-problema-form" style="{% if not form.instance.perdida_interes_placer and not form.instance.triste_deprimida_sin_esperanza %}display: none{% endif %}">
+                            {% include 'embarazos/partials/ficha_problema.html' with form=ficha_problema_form %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+
+
+
+
+        </div>
+    </div>
+</div>
+                <div class="panel-footer">
+                    <div class="pull-left">
+                        <a class="btn btn-default" href="{% url 'controles:list' paciente.id %}">Cancelar</a>
+                    </div>
+                    <div class="text-right">
+                        <input class="btn btn-green" type="submit" value="Guardar"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/vendor/select2.min.js' %}"></script>
+    {% include 'embarazos/partials/embarazo_form_js.html' %}
+{% endblock %}

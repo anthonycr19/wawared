@@ -1,0 +1,45 @@
+{% if terminacion_embarazo.id %}
+<div class="panel-body">
+    <div class="col-sm-10 col-sm-offset-2">
+        <div class="btn-group">
+            <a href="{% url 'puerperio:monitoreo' terminacion_embarazo.id %}"
+            {% if 'monitoreo' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default" type="button" >Monitoreo</a>
+            <a href="{% url 'puerperio:egreso_gestante' terminacion_embarazo.id %}"
+            {% if 'egreso' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default" type="button" >Egreso de la paciente</a>
+            <a href="{% url 'puerperio:resume' terminacion_embarazo.id %}"
+            {% if 'resumen' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default" type="button" >Egreso de recién nacidos</a>
+            <a href="{% url 'puerperio:cierre_puerpera' terminacion_embarazo.id %}"
+            {% if 'cierre' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default" type="button" >Cierre puerpera</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="modal fade" id="reports-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Reportes puerperio</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                {% if terminacion_embarazo.egreso_gestante %}
+                    <a class="list-group-item" href="{% url 'puerperio:reports:epicrisis' terminacion_embarazo.egreso_gestante.id %}">Epicrisis</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

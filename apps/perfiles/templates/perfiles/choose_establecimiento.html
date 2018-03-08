@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Wawared</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='utf-8'>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <!-- Bootstrap -->
+    <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="{{STATIC_URL}}css/wawared.css" rel="stylesheet" media="screen">
+    <script src="{{STATIC_URL}}js/jquery.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap.js"></script>
+</head>
+<body>
+<div class="green">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="{{STATIC_URL}}img/logo-login.png" alt="wawared" width="228px" height="88px" id="img_wawa">
+      </div>
+      <div class="col-sm-3">
+      </div>
+      <div class="col-sm-5">
+        <img src="{{STATIC_URL}}img/logo_minsa.png" alt="ministerio" width="285px" height="88px" id="img_minsa">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="yellow"></div>
+<div id="login">
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div id="login-head" class="panel-heading text-center">
+                    <h4>Seleccionar establecimiento</h4>
+                </div>
+                <div id="login-body" class="panel-body">
+                    <div class="form-signin">
+                        <div class="form-group">
+                            <select class="form-control" id="id_establecimiento" name="establecimiento">
+                                <option value="" selected="selected">---------</option>
+                                {% for estab in form.establecimiento.field.queryset %}
+                                    <option value="{{estab.id}}">{{estab.codigo}} - {{estab.nombre}}</option>
+                                {% endfor %}
+                            </select>
+
+                            {% for estab in form.establecimiento.field.queryset %}
+                                    <input type="hidden" id="var_mp_{{estab.id}}" value="{{estab.modulo_parto}}" />
+                            {% endfor %}
+
+                            {% for error in form.establecimiento.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% for message in messages %}
+                    <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {{ form.accion_field }}
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                        <a href="{% url 'logout' %}" title="Cerrar sesión" class="btn btn-default" style="width:100%;">Cerrar Sesión</a>
+                        <a href="#" id="btn_controles" data-accion="3" class="btn btn-green" style="width:100%;">Puerperio</a>
+                        <a href="#" id="btn_partos" data-accion="1" class="btn btn-green" style="width:100%;">Partos</a>
+                        <a href="#" id="btn_controles" data-accion="2" class="btn btn-green" style="width:100%;">Atención</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+{% block bottom_scripts %}
+<script>
+$(document).ready(function(){
+    $("a.btn").each(function (index, elem){
+        $(elem).on("click",function(){
+            $("#id_accion_field").val($(this).data("accion"));
+            $("form").submit();
+        });
+    });
+
+    $("#id_establecimiento").change(function() {
+
+        var id_seleccionado = $("#id_establecimiento").val();
+
+        if(id_seleccionado)
+        {
+            var habilitar_parto = $("#var_mp_"+id_seleccionado).val();
+
+            if(habilitar_parto=="False")
+            {
+                $('#btn_partos').attr('disabled', true);
+            }else
+            {
+                $('#btn_partos').attr('disabled', false);
+            }
+
+        }
+    });
+});
+</script>
+{% endblock %}

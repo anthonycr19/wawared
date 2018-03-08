@@ -1,0 +1,20 @@
+import multiprocessing
+import os
+import dotenv
+
+#following function reads .env file, assumming it is located on "../.env", 
+#if it isn't, modify function or relocate accordingly
+dotenv.read_dotenv(os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/.env')
+
+###Gunicorn configuration parameters
+
+bind = "127.0.0.1:8000"
+#workers = multiprocessing.cpu_count() * 2 + 1
+timeout = 300
+
+#loglevel = "debug"
+loglevel = "info"
+#following parameters configure log to output to STDOUT and STDERR, required for supervisor to log properly.
+accesslog = "-"
+errorlog = "-"
+

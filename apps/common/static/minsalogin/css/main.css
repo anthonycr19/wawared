@@ -1,0 +1,1095 @@
+.newBottom {
+  bottom: 5% !important;
+}
+
+.newList2 {
+  height: 18rem !important;
+}
+
+.scrollbar {
+  background: #F5F5F5;
+  float: left;
+  height: auto;
+  margin-left: 30px;
+  overflow-y: scroll;
+  width: 65px;
+}
+
+.style-2::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.style-2::-webkit-scrollbar {
+  background-color: #F5F5F5;
+  width: 12px;
+}
+
+.style-2::-webkit-scrollbar-thumb {
+  background-color: #0a3442;
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+.newList {
+  height: 25rem !important;
+}
+
+.heightList {
+  height: 34rem;
+}
+
+html {
+  font-size: 16px;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.textAlign {
+  text-align: center;
+}
+
+.bottom {
+  margin-bottom: 8%;
+}
+
+#sidebar-wrapper a {
+  color: white !important;
+  text-decoration: none;
+}
+
+h1, .pagination {
+  color: white !important;
+}
+
+li:link {
+  text-decoration: none;
+}
+
+li:visited {
+  text-decoration: none;
+}
+
+li:hover {
+  text-decoration: underline;
+}
+
+li:active {
+  text-decoration: underline;
+}
+
+.bodyLogin {
+  background-color: #2A3F54;
+}
+
+.contentLogin {
+  background-color: #fff;
+  box-sizing: border-box;
+  left: 50%;
+  opacity: 0.95;
+  padding: 5%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  width: 50%;
+}
+
+.contentLogoLogin {
+  border-right: 1px solid #c5c5c5;
+  box-sizing: border-box;
+  height: 177px;
+  margin-bottom: 5%;
+  padding: 55px 25px 0 0;
+}
+
+#botonEnviarLogin {
+  background-color: #172D44;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  padding: 2%;
+  width: 100%;
+}
+
+.forgetPassword {
+  text-align: right;
+}
+
+.forgetPassword, #remenberCheckbox {
+  font-size: 13px;
+}
+
+/* - - - - - - - - Menu - - - - - - - - */
+/*buscador rapido*/
+.buscadorDiv {
+  background-color: #f3d4ab;
+  color: black;
+  display: none;
+  height: auto;
+  margin-top: 4%;
+  padding: 4%;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  z-index: 10;
+}
+
+tr img {
+  width: 5rem;
+}
+
+.buscadorDiv-wrapper {
+  padding: 5% 0% 2% 19%
+}
+
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group, .panel-primary .panel-heading {
+  background-color: #0a3442;
+  color: white;
+}
+
+/*fin buscador rapido*/
+.hidden-xs {
+  position: relative;
+}
+
+.navbar-nav {
+  margin-right: 0.1rem !important;
+}
+
+#navbarMinsa {
+  background-color: #EDEDED;
+  border-bottom: 1px solid #D9DEE4;
+  border-radius: 0;
+}
+
+.contenedorMenu {
+  background-color: #FAFAFA;
+  box-sizing: border-box;
+  height: 4.6rem;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 100;
+}
+
+#contenedorFluidMenu {
+  padding-left: 0;
+}
+
+.contenedorMenuIcon {
+  background-color: red;
+  position: absolute;
+  width: 80%;
+}
+
+.contentLogo {
+  background-color: #333333;
+  border-bottom: 1px solid #425668;
+  height: 4.6rem;
+  padding: 18px 0 0 0px;
+}
+
+#contentIconLupa {
+  display: inline-block;
+  padding-top: 14px;
+  position: relative;
+  /* margin-left: -9px;*/
+}
+
+#iconLupa {
+  color: #5A738E;
+  font-size: 23px;
+  margin-right: 10px;
+}
+
+#iconLupa.open {
+  background-position: 0 -12px;
+}
+
+nav .open > a, .nav .open > a:hover, .nav .open > a:focus, .nav > li > a:hover, .nav > li > a:focus, .nav > li > a {
+  background-color: #FAFAFA !important;
+  margin-top: 2%;
+}
+
+#iconUsuario {
+  color: #5A738E;
+  font-size: 25px;
+  margin-right: 10px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+}
+
+#iconLetters {
+  color: #5A738E;
+  font-size: 25px;
+  padding-bottom: 13px;
+  padding-top: 24px;
+}
+
+.botonBuscar {
+  background-color: #324664;
+  color: #fff;
+  margin: 10px 0;
+  width: 200px;
+}
+
+#caret {
+  color: #5A738E;
+  margin-left: 10px;
+}
+
+.nameUser {
+  color: #5A738E;
+  font-weight: bold;
+}
+
+#iconMenu:hover {
+  background-color: #D9DEE4;
+  color: #23527c;
+  padding-bottom: 15px;
+  padding-top: 16px;
+}
+
+#iconLetters:hover {
+  background-color: #D9DEE4;
+  color: #23527c;
+  padding-bottom: 22px;
+  padding-top: 23px;
+}
+
+#menu-toggle-2 {
+  border: none;
+  color: #5A738E;
+  font-size: 23px;
+  padding: 12px 0 0 35px;
+}
+
+#menu-toggle-2:hover, #menu-toggle-2:focus {
+  background-color: transparent;
+}
+
+#menu-toggle-2:hover, #iconLupa:hover, #iconUsuario:hover {
+  color: #23527c;
+}
+
+/*dashboard*/
+.contenedorDashboard {
+  margin: 0 auto;
+  margin-top: 3%;
+  width: 80%;
+}
+
+#MargenDashboard {
+  padding-left: 3% !important;
+  padding-right: 3% !important;
+}
+
+.reportes-Calendario {
+  margin-top: 3.5%;
+}
+
+.border {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.btn-group > .botonVerMasDashboard {
+  background-color: #2a3f54;
+  border-color: transparent;
+  color: #fff;
+}
+
+/*reporte*/
+.reporte {
+  background-color: #032a38 /*#B3E2D8*/;
+  padding-bottom: 1%;
+  padding-top: 1%;
+}
+
+/*cartas*/
+.opacity {
+  opacity: 0.4;
+}
+
+.post-module {
+  position: relative;
+  z-index: 1;
+}
+
+.thumbnail:hover {
+  background-color: #333 !important;
+}
+
+.thumbnail {
+  height: 23rem;
+  overflow: hidden;
+}
+
+.citaContent {
+  background: #032a38;
+  border-radius: 100%;
+  -moz-border-radius: 100%;
+  -webkit-border-radius: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  color: #FFFFFF;
+  font-weight: 700;
+  height: 13%;
+  padding: 12.5px 0;
+  position: absolute;
+  right: 2%;
+  text-align: center;
+  top: 2%;
+  width: 13%;
+  z-index: 1;
+  -webkti-box-sizing: border-box;
+}
+
+.contador {
+  font-size: 15px;
+}
+
+.post-content {
+  background: #ededed;
+  bottom: 0;
+  padding: 7%;
+  position: absolute;
+  width: 100%;
+}
+
+.category {
+  background: #2a3f54;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  left: 0;
+  padding: 10px 15px;
+  position: absolute;
+  text-transform: uppercase;
+  top: -41px;
+}
+
+.description {
+  color: #666666;
+  display: none;
+  font-size: 14px;
+  line-height: 1.8em;
+}
+
+.contentCards {
+  margin-top: 3%;
+}
+
+/*sidebar*/
+.flotar {
+  float: left;
+  width: 50%;
+}
+
+/*.menu-list{
+  width: 95%
+}*/
+.menu-bottom {
+  max-height: 26rem;
+  min-height: 6rem;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+.newBottom2 {
+  bottom: 5rem;
+  max-height: 26rem;
+  min-height: 6rem;
+  position: absolute;
+  text-align: center;
+}
+
+.menu-bottom .row {
+  width: 100% !important;
+}
+
+.grisOscuro {
+  background-color: #dadada;
+}
+
+.content-wrappeer {
+  margin-left: 290px
+}
+
+.logoMinsa {
+  margin-bottom: 5%;
+  width: 100%;
+}
+
+.modulo-icon {
+  width: 3rem;
+}
+
+.modulo-icon2 {
+  width: 42%;
+}
+
+#nameHospitalSidebar {
+  padding-left: 10px;
+}
+
+.modulo {
+  margin-left: 14%;
+  margin-top: 8%;
+}
+
+.nav-side-menu {
+  background-color: #14253c;
+  color: #e1ffff;
+  font-family: verdana;
+  font-size: 12px;
+  font-weight: 200;
+  height: 100%;
+  height: 22rem;
+  overflow: auto;
+  position: fixed;
+  top: 4.6rem;
+  width: 300px;
+}
+
+.nav-side-menu .brand {
+  background-color: #23282e;
+  display: block;
+  font-size: 14px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.nav-side-menu .toggle-btn {
+  display: none;
+}
+
+.nav-side-menu ul,
+.nav-side-menu li {
+  cursor: pointer;
+  line-height: 35px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.nav-side-menu ul :not(collapsed) .arrow:before,
+.nav-side-menu li :not(collapsed) .arrow:before {
+  content: "\f078";
+  display: inline-block;
+  float: right;
+  font-family: FontAwesome;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: middle;
+}
+
+.nav-side-menu ul .active,
+.nav-side-menu li .active {
+  background-color: #0a3442;
+  border-right: 5px solid #c5946a;
+}
+
+.nav-side-menu ul .sub-menu li.active,
+.nav-side-menu li .sub-menu li.active {
+  color: #c5946a;
+}
+
+.nav-side-menu ul .sub-menu li.active a,
+.nav-side-menu li .sub-menu li.active a {
+  color: #d19b3d;
+}
+
+.nav-side-menu ul .sub-menu li,
+.nav-side-menu li .sub-menu li {
+  background-color: #032a38;
+  border: none;
+  line-height: 28px;
+  margin-left: 0px;
+}
+
+.nav-side-menu ul .sub-menu li:hover,
+.nav-side-menu li .sub-menu li:hover {
+  border-bottom: 1px solid #c5946a;
+  border-right: 4px solid #ab4d49;
+}
+
+.nav-side-menu ul .sub-menu li:before,
+.nav-side-menu li .sub-menu li:before {
+  content: "\f105";
+  display: inline-block;
+  font-family: FontAwesome;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: middle;
+}
+
+.nav-side-menu li {
+  height: 5rem;
+  padding: 15px 0 10px 0;
+}
+
+.nav-side-menu li a {
+  color: #e1ffff;
+  text-decoration: none;
+}
+
+.nav-side-menu li a i {
+  padding-left: 10px;
+  padding-right: 20px;
+  width: 20px;
+}
+
+.nav-side-menu li:hover {
+  border-bottom: 1px solid #c5946a;
+  border-right: 4px solid #ab4d49;
+  transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+}
+
+#moduloSelected li {
+  height: 3rem;
+}
+
+#iconNameHospital {
+  color: #fff;
+  font-size: 40px;
+  margin-left: 10px;
+}
+
+.nav-side-menu .toggle-btn {
+  background-color: #ffffff;
+  color: #000;
+  cursor: pointer;
+  display: block;
+  padding: 3px;
+  position: absolute;
+  right: 10px;
+  text-align: center;
+  top: 10px;
+  width: 40px;
+  z-index: 10 !important;
+}
+
+.brand {
+  font-size: 22px;
+  line-height: 50px !important;
+  padding-left: 20px;
+  text-align: left !important;
+}
+
+.sub-menu li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/*wrappers*/
+#wrapper.toggled-2 #sidebar-wrapper {
+  width: 8%;
+}
+
+#wrapper {
+  overflow: hidden;
+  padding-left: 0;
+  position: relative;
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  overflow: scroll;
+  padding-left: 25%;
+}
+
+#sidebar-wrapper {
+  background: #0A3442;
+  height: 92%;
+  left: 15%;
+  margin-left: -15%;
+  overflow-y: auto;
+  position: fixed;
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  width: 14.92%;
+  z-index: 1000;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 18%;
+}
+
+#page-content-wrapper {
+  /* position: absolute;*/
+  overflow-x: hidden;
+  padding: 5% 15px 80px;
+  width: 100%;
+}
+
+.mi-slider {
+  margin-left: 14%;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  /*position: relative;*/
+  margin-right: 0px;
+}
+
+.fixed-brand {
+  width: auto;
+}
+
+.sidebar-nav {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 18%;
+}
+
+.sidebar-nav li {
+  line-height: 40px;
+  text-indent: 15px;
+}
+
+.sidebar-nav li a {
+  color: #999999;
+  display: block;
+  text-decoration: none;
+}
+
+.sidebar-nav li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-left: red 2px solid;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+  font-size: 18px;
+  height: 65px;
+  line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+  color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+  background: none;
+  color: #fff;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+/*Toggle Class*/
+.ocultar {
+  display: none;
+}
+
+/*.block{
+  display: block!important;
+}*/
+.collapsing {
+  transition: none;
+  -webkit-transition: none;
+}
+
+.nombreHospitalmostrar {
+  display: none;
+}
+
+.panel-footer {
+  background-color: white !important;
+}
+
+.none {
+  display: none;
+}
+
+.user2 .panel-table {
+  animation-duration: 2s;
+}
+
+.user2 .panel-table .panel-body .table {
+  margin: 0px;
+}
+
+.user2 .panel-table .panel-body {
+  padding: 0px;
+}
+
+.user2 .panel-table .panel-body .table-bordered > thead > tr > th {
+  text-align: center;
+}
+
+.user2 .panel-table .panel-footer {
+  height: auto;
+  padding: 0px;
+}
+
+/* tablas */
+.user2 .tablasCitas {
+  border-color: #b6b4b4;
+}
+
+.citasTotal .buttonAddNew {
+  background-color: #2a482a;
+  border: none;
+}
+
+.panel-danger .buttonAddNew {
+  background-color: #7a1f1d;
+  border: none;
+}
+
+.panel-success .buttonAddNew:hover, .panel-success .buttonAddNew:focus, .panel-success .buttonAddNew:active:focus {
+  background-color: #2a482a;
+  border: none;
+}
+
+.panel-danger .buttonAddNew:hover, .panel-danger .buttonAddNew:focus, .panel-danger .buttonAddNew:active:focus {
+  background-color: #7a1f1d;
+  border: none;
+}
+
+.btn-addnew {
+  background-color: #2A3F54;
+  color: #fff;
+}
+
+.panel-body .btn-addnew:hover {
+  background-color: #172D44;
+  color: #fff;
+}
+
+.iconAddNew {
+  margin-left: 10px;
+}
+
+.iconTablaCita {
+  margin-right: 10px;
+}
+
+.contentTitleCite {
+  border: none !important;
+}
+
+.tituloTabla {
+  margin-top: 5px !important;
+}
+
+.panel-success .panel-heading {
+  background-color: #2a5d2b !important;
+  color: #fff;
+}
+
+.panel-danger .panel-heading {
+  background-color: #ab2b28 !important;
+  color: #fff;
+}
+
+#buscadorBoton {
+  background-color: #0a3442;
+  color: white;
+}
+
+.pagination > .active > a.numberPaginas {
+  background-color: #2a3f54;
+  border: none;
+  color: #fff;
+}
+
+.pagination > .active > a.numberPaginas:hover {
+  background-color: #2a3f54;
+}
+
+.pagination > .active > a.numberPaginas:focus {
+  background-color: #2a3f54;
+}
+
+.pagination > li > a.numberPaginas {
+  color: #2a3f54;
+}
+
+#wrapper.toggled-2 #modulo-icon2 {
+  width: 5.3rem;
+}
+
+#wrapper.toggled-2 #page-content-wrapper {
+  margin-left: -100px;
+  margin-right: 0;
+  position: relative;
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  width: auto;
+}
+
+#page-content-wrapper {
+  padding: 5%;
+  position: relative;
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+}
+
+/*- - - - - - - - - - - - - - - MEDIA QUERIS - - - - - - - - - - - - - - */
+@media only screen and (max-width: 991px) {
+  body {
+    font-size: 14px;
+  }
+
+  .contentLogin {
+    padding: 3% 1%;
+  }
+
+  .contentLogoLogin {
+    border-right: none;
+    height: 50px;;
+    margin-bottom: 15%;
+    padding: 10px 10px 0 10px;
+  }
+
+  .forgetPassword, #remenberCheckbox {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .navbar-nav .dropdown {
+    width: 70%;
+  }
+}
+
+@media (min-width: 767px) {
+
+  .nav-side-menu {
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+  }
+
+  .nav-side-menu .menu-list .menu-content {
+    display: block;
+  }
+
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper .flotar {
+    margin-bottom: 24%;
+    text-align: center;
+    width: 95% !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .pageWidth {
+    width: 100%;
+  }
+
+  #wrapper {
+    margin-top: -21px;
+    padding-left: 14%;
+  }
+
+  .fixed-brand {
+    width: 290px;
+  }
+
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: 15.26%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 14%;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper {
+    width: 8%;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper .flotar {
+    margin-bottom: 24%;
+    text-align: center;
+    width: 85% !important;
+  }
+
+  #page-content-wrapper {
+    padding: 5%;
+    position: relative;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    margin-right: 0;
+    padding-left: 14%;
+    position: relative;
+  }
+
+  #wrapper.toggled-2 #page-content-wrapper {
+    margin-left: -100px;
+    margin-right: 0;
+    position: relative;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    width: auto;
+  }
+
+  .citaContent {
+    height: 13%;
+    width: 13%;
+  }
+
+  .mi-slider {
+    margin-left: 5%;
+  }
+
+  .navbar-nav {
+    margin-right: 0.1rem !important;
+  }
+}
+
+@media (max-width: 415px) {
+  #sidebar-wrapper {
+    width: 0%;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper {
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 100%;
+  }
+
+  .aparece {
+    display: block !important;
+  }
+
+  /*buscador div*/
+  .formBuscador {
+    padding-top: 11%;
+  }
+}
+
+@media (max-width: 550px) {
+  .contentLogin {
+    width: 79%;
+  }
+
+  #page-content-wrapper {
+    padding-top: 15%;
+  }
+
+  .divHospitalName {
+    display: block;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper {
+    width: 100%;
+  }
+
+  .navbar-nav .dropdown {
+    width: 70%;
+  }
+}
+
+@media (max-width: 1440px)and (min-width: 768px) {
+
+  .navbar-nav {
+    margin-right: 0.1rem !important;
+  }
+
+  #sidebar-wrapper {
+    width: 14.75%;
+  }
+
+  .citaContent {
+    height: 12%;
+    width: 15%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 14%;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper {
+    width: 8%;
+  }
+
+  .mi-slider {
+    margin-left: 14%;
+  }
+
+  #wrapper.toggled-2 #sidebar-wrapper .flotar {
+    margin-bottom: 24%;
+    text-align: center;
+    width: 85% !important;
+  }
+
+  #wrapper.toggled-2 #page-content-wrapper {
+    margin-left: -100px;
+    margin-right: 0;
+    position: relative;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    width: auto;
+  }
+
+  #page-content-wrapper {
+    padding: 5%;
+    position: relative;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+  }
+}
+
+@media (max-width: 1203px)and (min-width: 994px) {
+  .navbar-nav .dropdown {
+    width: 70%;
+  }
+}
+

@@ -1,0 +1,68 @@
+{% load thumbnail %}
+{% load static %}
+{% load paciente_tags %}
+{% url 'paciente:update' paciente.id as paciente_upd_url %}
+{% url 'embarazos:create' paciente.id as create_emb_url %}
+<div class="panel-body">
+  <div class="row">
+    <div class="col-md-2">
+      {% if paciente.foto %}
+        <img src="{% thumbnail paciente.foto 112x122 %}" width="112" height="112" alt="{{ paciente.nombre_completo }}" />
+      {% else %}
+        <img src="{% static 'img/avatar2.png' %}" width="112" height="112" alt="Imagen por defecto cuando no se muestra la foto real del paciente" />
+      {% endif %}
+    </div>
+    <div class="col-md-10">
+      <h2>
+        <a style="color: gray" href="{% url 'paciente:update' paciente.id %}">{{ paciente.nombre_completo.upper }}</a>
+      </h2>
+      <div class="row">
+        <div class="col-sm-2">
+          <p>N° HC: {{ paciente|hc:request }}</p>
+          {% ifequal paciente.tipo_documento paciente.DOCUMENTO_DNI_RESPONSABLE %}
+            <p>DNI Responsable: {{ paciente.numero_documento }}</p>
+          {% else %}
+            <p>{{ paciente.nombre_documento }}: {{ paciente.numero_documento }}</p>
+          {% endifequal %}
+        </div>
+        <div class="col-sm-2">
+          <p>Edad: {{ paciente.edad }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel-body">
+  <div class="col-sm-7 col-sm-offset-3">
+    <div class="btn-group">
+      <a class="btn btn-default"
+          {% if paciente_upd_url == request.path %}
+            style="background-color: green;color: white;"
+          {% endif %}
+          href="{% url 'partos:paciente_control_update' paciente.id %}">Afiliación</a>
+      {% if 'pacientes.change_antecedenteginecologico' in user.get_all_permissions %}
+        <a class="btn btn-default"
+            {% if 'antecedente' in request.path %}
+              style="background-color: green;color: white;"
+            {% endif %}
+            href="{% url 'paciente:control_antecedentes_edit' paciente.id %}">Antecedentes</a>
+      {% else %}
+        <a class="btn btn-default"
+            {% if 'antecedente' in request.path %}
+              style="background-color: green;color: white;"
+            {% endif %}
+            href="{% url 'paciente:control_antecedentes' paciente.id %}">Antecedentes</a>
+      {% endif %}
+      <a class="btn btn-default"
+          {% if 'registrar-control' in request.path %}
+            style="background-color: green;color: white;"
+          {% endif %}
+          href="{% url 'embarazos:create-control-embarazo' paciente.id %}">Agregar embarazo actual</a>
+      <a class="btn btn-default"
+          {% if 'crear-control' or 'agregar-ecografia' in request.path %}
+            style="background-color: green;color: white;"
+          {% endif %}
+          href="{% url 'controles:list' paciente.id %}">Atenciones</a>
+    </div>
+  </div>
+</div>

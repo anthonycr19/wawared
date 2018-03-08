@@ -1,0 +1,26 @@
+{% load static %}
+<script src="{% static 'js/jquery.js' %}"></script>
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>CIE Código</th>
+        <th>CIE Nombre</th>
+        <th>Relaciones de parentesco</th>
+        <th>Observación</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for antecedente_familiar in paciente.antecedentes_familiares.all %}
+    <tr>
+        <td>{{ antecedente_familiar.cie.codigo }}</td>
+        <td>{{ antecedente_familiar.cie.nombre_display|title }}</td>
+        <td>
+            {% for relacion in antecedente_familiar.relaciones.all %}
+                {{ relacion.nombre }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </td>
+        <td>{{ antecedente_familiar.observacion }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

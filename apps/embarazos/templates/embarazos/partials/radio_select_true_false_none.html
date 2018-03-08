@@ -1,0 +1,31 @@
+{% load static %}
+
+{% include 'session_security/all.html' %}
+<div class="form-group">
+    <label for="{{ field.auto_id }}" class="col-sm-6 control-label">{{ field.label }}</label>
+    <div class="col-sm-6">
+        <ul class="list-inline">
+            <li>
+                <label>
+                    <input type="radio" name="{{ field.name }}" {% ifequal field_instance True %}checked{% endifequal %} value="True"/>
+                    Si
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="radio" name="{{ field.name }}" {% ifequal field_instance False %}checked{% endifequal %} value="False"/>
+                    No
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="radio" name="{{ field.name }}" {% ifequal field_instance None %}checked{% endifequal %} value="None"/>
+                    N/A
+                </label>
+            </li>
+        </ul>
+        {% for error in field.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div>

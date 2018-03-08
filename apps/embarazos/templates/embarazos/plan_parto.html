@@ -1,0 +1,366 @@
+{% extends 'dashboard/popup_base.html' %}
+{% load static %}
+
+{% load form_filter %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" id="form-planparto"  name="form-planparto" role="form" method="post">
+            {% csrf_token %}
+            <div class="panel panel-default" id="data-buscar-body">
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Plan de parto
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                            <label for="" class="col-sm-7 control-label">Primera entrevista</label>
+                                <div class="panel-body">
+                                    <div class="row">
+
+                                            <div class="col-sm-7">
+                                            {% include 'dashboard/partials/form_group_date.html' with field=form.e1_fecha %}
+                                            </div>
+
+
+                                            <div class="col-sm-5">
+                                           {% include 'dashboard/partials/form_group_input.html' with field=form.telefono %}
+                                            </div>
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ form.e1_distancia_tiempo_llegada.auto_id }}" class="col-sm-12 control-label">¿A que distancia y/o tiempo se encuentra el establecimiento de salud de su domicilio?</label>
+                                        <div class="col-sm-12">
+                                            {{ form.e1_distancia_tiempo_llegada|add_class:'form-control input-sm' }}
+                                            {% for error in form.e1_distancia_tiempo_llegada.errors %}
+                                            <div class="alert alert-danger">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-1">
+                                            {{ form.e1_se_quedara_todo_el_embarazo_en_domicilio_actual|add_class:'input-sm' }}
+                                        </div>
+                                        <label for="{{ form.e1_se_quedara_todo_el_embarazo_en_domicilio_actual.auto_id }}" class="col-sm-11 control-label">¿Se va a quedar todo el tiempo que dure su embarazo en el lugar de su domicilio actual?</label>
+                                    </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=form.e1_lugar_atencion %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=form.e1_lugar_atencion_otros %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=form.e1_lugar_atencion_razon_eleccion %}
+                                </div>
+                            </div>
+                        <table class="table table-bordered table striped">
+                            <thead>
+                            <tr>
+                                <th colspan="2"></th>
+                                <th>SEGUNDA ENTREVISTA (2do. T.)</th>
+                                <th>TERCERA ENTREVISTA (3ro. T.)</th>
+                                <th>Observaciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2">Fecha</td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_fecha %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_fecha %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_fecha_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">¿Donde se atenderá su parto?</td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_lugar_atencion %}
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_lugar_atencion_otros %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_lugar_atencion %}
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_lugar_atencion_otros %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_lugar_atencion_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">¿En que posición prefiere dar a luz?</td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_posicion_parto %}
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_posicion_parto_otros %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_posicion_parto %}
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_posicion_parto_otros %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_posicion_parto_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">¿Qué medio de transporte se va a utilizar?</td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_transporte %}
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_transporte_otros %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_transporte %}
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_transporte_otros %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_transporte_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">¿Qué tiempo tarda en llegar de el establecimiento de salud a donde va ha atender su parto?</td>
+                                <td>
+                                    1era opción
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_tiempo_llegada_1 addon='min' %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_tiempo_llegada_1 addon='min' %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_tiempo_llegada_1_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    2da opción
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_tiempo_llegada_2 addon='min' %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_tiempo_llegada_2 addon='min' %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_tiempo_llegada_2_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">¿Quién le acompañara en el momento del parto o emergencia?</td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_persona_que_acompania_en_el_parto %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_persona_que_acompania_en_el_parto %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_persona_que_acompania_en_el_parto_observacion %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">¿Quién cuidará de sus hijos en casa?</td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_persona_cuidara_hijos_en_casa %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e3_persona_cuidara_hijos_en_casa %}
+                                </td>
+                                <td>
+                                    {% include 'embarazos/partials/input_inside_table.html' with field=form.e2_persona_cuidara_hijos_en_casa_observacion %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                                <div class="col-sm-12">
+                                    <h5>En caso de necesitar una transfusión sanguinea ¿quienes seran los posibles donantes de sangre?</h5>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombres y apellidos</th>
+                                            <th>Tipo de sangre</th>
+                                            <th>Domicilio o referencia</th>
+                                            <th>Edad</th>
+                                            <th>Parentesco</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                {{ form.donador_1_nombre|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_1_nombre.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_1_tipo_sangre|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_1_tipo_sangre.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_1_domicilio|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_1_domicilio.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_1_edad|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_1_edad.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_1_parentesco|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_1_parentesco.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form.donador_2_nombre|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_2_nombre.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_2_tipo_sangre|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_2_tipo_sangre.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_2_domicilio|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_2_domicilio.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_2_edad|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_2_edad.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ form.donador_2_parentesco|add_class:'form-control input-sm' }}
+                                                {% for error in form.donador_2_parentesco.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <h5>Señales de peligro en el embarazo</h5>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.vomito_exagerado  %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.salida_vagina  %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.fiebre_escalofrios  %}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.hinchazon  %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.dolor_cabeza_abdominal  %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="text-right">
+                                <input class="btn btn-green" type="submit" value="Guardar"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.validate.js' %}"></script>
+    <script src="{% static 'js/vendor/additional-methods.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+
+            var arrowKeys = [37, 38, 39, 40];
+            $('#id_donador_1_edad').addClass("donador_1_edad");
+            $('#id_donador_2_edad').addClass("donador_2_edad");
+
+            var validator = $('#form-planparto').validate({
+                errorClass: "alert alert-danger",
+                errorElement: "div"
+            });
+
+            /*
+            $.validator.addMethod('mayoredad', function (value) {
+                return (/^\d*$/.test(value))?((Number(value)>=18)?true:false):false;
+            }, 'Por favor ingrese valores mayor e igual a 18');
+
+
+            $.validator.addClassRules({
+                donador_1_edad:{
+                    mayoredad: true,
+                },
+                donador_2_edad:{
+                    mayoredad: true,
+                }
+            });
+
+            $('#id_donador_1_edad').on('keyup',function(event){
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    validator.element('#id_donador_1_edad');
+                }
+            });
+
+            $('#id_donador_2_edad').on('keyup',function(event){
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    validator.element('#id_donador_2_edad');
+                }
+            });
+            */
+
+            $('#id_e1_fecha, #id_e2_fecha, #id_e3_fecha').datepicker().on('keydown', function () {
+                return false;
+            });
+
+            function setBehaviour (select, input) {
+                var $select = $(select), $input = $(input);
+                if ($select.find('option:selected').val() === 'otros') {
+                    $input.show();
+                } else {
+                    $input.hide();
+                }
+                $select.on('change', function () {
+                    if (this.value === 'otros') {
+                        $input.show();
+                    } else {
+                        $input.hide();
+                    }
+                });
+            }
+
+            setBehaviour('#id_e2_lugar_atencion', '#id_e2_lugar_atencion_otros');
+            setBehaviour('#id_e2_posicion_parto', '#id_e2_posicion_parto_otros');
+            setBehaviour('#id_e2_transporte', '#id_e2_transporte_otros');
+            setBehaviour('#id_e3_lugar_atencion', '#id_e3_lugar_atencion_otros');
+            setBehaviour('#id_e3_posicion_parto', '#id_e3_posicion_parto_otros');
+            setBehaviour('#id_e3_transporte', '#id_e3_transporte_otros');
+            $('#id_e1_lugar_atencion').on('change', function () {
+                if (this.value === 'otros') {
+                    $('#id_e1_lugar_atencion_otros').parents('.form-group').show();
+                } else {
+                    $('#id_e1_lugar_atencion_otros').parents('.form-group').hide();
+                }
+            }).trigger('change');
+        });
+        {% if 'embarazos.change_planparto' not in user.get_all_permissions %}
+            $(document).on('ready', function () {
+                $('input, select, textarea').prop('disabled', true);
+            });
+        {% endif %}
+    </script>
+{% endblock %}

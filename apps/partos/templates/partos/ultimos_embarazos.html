@@ -1,0 +1,39 @@
+{% extends 'dashboard/base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}Embarazos previos{% endblock %}
+{% block extra_style %}
+
+<link rel="stylesheet" href="{% static 'css/sweetalert.css' %}"/>
+<script src="{% static 'js/vendor/sweetalert.min.js' %}"></script>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Embarazos previos</h3>
+                </div>
+                {% include 'partos/partials/ultimos_embarazos_table.html' with embarazos=embarazos %}
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <div class="btn-group">
+                            {% if 'pacientes.change_antecedenteginecologico' in user.get_all_permissions %}
+                            <a class="btn btn-green" style="color: white;" href="{% url 'partos:paciente_antecedentes_edit' paciente.id %}">Ir a los antecedentes</a>
+                            {% else %}
+                            <a class="btn btn-green" style="color: white;" href="{% url 'partos:paciente_antecedentes' paciente.id %}">Ir a los antecedentes</a>
+                            {% endif %}
+                            {% if 'pacientes.change_paciente' in user.get_all_permissions %}
+                            <a class="btn btn-green" style="color: white;" href="{% url 'partos:paciente_update' paciente.id %}">Ir a detalle del paciente</a>
+                            {% else %}
+                            <a class="btn btn-green" style="color: white;" href="{% url 'partos:paciente_detail' paciente.id %}">Ir a detalle del paciente</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

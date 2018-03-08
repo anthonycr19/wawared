@@ -1,0 +1,55 @@
+<div class="panel-body">
+    <div class="col-sm-9 col-sm-offset-2">
+        <div class="btn-group">
+            {% if 'controles.change_control' in user.get_all_permissions %}
+                <button class="btn btn-default btn-save-before"
+                {% if 'sintomas' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                data-next-url="sintomas">Sintomas</button>
+                <button class="btn btn-default btn-save-before"
+                {% if 'fisico' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                data-next-url="examen_fisico">Examen Físico</button>
+                <button class="btn btn-default btn-save-before"
+                {% if 'laboratorio' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                data-next-url="laboratorio">Laboratorio</button>
+                <button class="btn btn-default btn-save-before"
+                {% if 'diagnostico' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                data-next-url="diagnostico">Diagnóstico</button>
+                {% if 'embarazos.add_ecografia' in user.get_all_permissions %}
+                <button class="btn btn-default btn-save-before" data-next-url="agregar_ecografia">Agregar ecografía</button>
+                {% endif %}
+            {% else %}
+                <a class="btn btn-default"
+                {% if 'sintomas' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                href="{% url 'controles:sintomas_detail' control.id %}">Sintomas</a>
+                <a class="btn btn-default"
+                {% if 'fisico' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                href="{% url 'controles:examen_fisico_detail' control.id %}">Examen Físico</a>
+                <a class="btn btn-default"
+                {% if 'laboratorio' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                href="{% url 'controles:laboratorio_detail' control.id %}">Laboratorio</a>
+                <a class="btn btn-default"
+                {% if 'diagnostico' in request.path %}
+                    style="background-color: green;color: white;"
+                {% endif %}
+                href="{% url 'controles:diagnostico_detail' control.id %}">Diagnóstico</a>
+                {% if 'embarazos.add_ecografia' in user.get_all_permissions %}
+                <a class="btn btn-default" href="{% url 'embarazos:ecografia_create' control.id %}">Agregar ecografía</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>

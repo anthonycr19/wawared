@@ -1,0 +1,45 @@
+{% load static %}
+<header>
+  <nav class="contenedorMenu">
+    <div class="container-fluid" id="contenedorFluidMenu">
+      <div class="row">
+        <div class="col-xs-7 col-sm-4 col-md-2 col-lg-2">
+          <div class="contentLogo">
+            <a href="/"><img src="{% static 'minsalogin/img/logo_minsa.jpg' %}" alt="MINSA" class="center-block"></a>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-6 col-lg-6 text-left">
+          <div class="row">
+            <div class="col-xs-6 col-md-2">
+              <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"><span
+                  class="fa fa-indent" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3 col-sm-5 col-md-4 col-lg-4 text-right">
+          <div class="hidden-xs ">
+            <ul class="nav navbar-nav navbar-right">
+              <li><i class="fa fa-user-md" id="iconUsuario" style="padding: 21px 20px;"></i></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false"><span class="nameUser">{{ user.get_full_name }}</span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  {% if user.is_authenticated %}
+                    <li><a href="#">Ver Perfil</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                    <li><a href="#">Configuración</a></li>
+                    <li><a href="{% url "change_password" %}">Cambiar contraseña</a></li>
+                  {% endif %}
+                  <li role="separator" class="divider"></li>
+                  <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

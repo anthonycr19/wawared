@@ -1,0 +1,80 @@
+{% extends 'dashboard/template_login/base.html' %}
+{% block container %}
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">Iniciar sesión</h2>
+        </div>
+        <div class="panel-body">
+          <div class="row text-center">
+            <h4>Bienvenid@ {{ user.full_name }}</h4>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <form method="post" class="form-horizontal" id="form_establishment" action=".">
+                {% csrf_token %}
+                <label for="id_establishment">Elija el establecimiento donde inicia sesión:</label>
+                <select name="establecimiento" id="id_establecimiento" class="form-control" required>
+                  <option value="" selected="selected">---------</option>
+                  {% for estab in form.establecimiento.field.queryset %}
+                    <option value="{{estab.id}}">{{estab.codigo}} - {{estab.nombre}}</option>
+                  {% endfor %}
+                </select>
+
+                {% for estab in form.establecimiento.field.queryset %}
+                  <input type="hidden" id="var_mp_{{estab.id}}" value="{{estab.modulo_parto}}" />
+                {% endfor %}
+
+                {% for error in form.establecimiento.errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+                {{ form.accion_field }}
+                <div class="row text-center panel-footer">
+                  <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                      <a href="#" id="btn_controles" data-accion="3" class="btn btn-green" style="width:100%;">Puerperio</a>
+                      <a href="#" id="btn_partos" data-accion="2" class="btn btn-green" style="width:100%;">Partos</a>
+                      <a href="#" id="btn_controles" data-accion="1" class="btn btn-green" style="width:100%;">Control Pre-Natal</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block bottom_scripts %}
+<script>
+$(document).ready(function(){
+    $("a.btn").each(function (index, elem){
+        $(elem).click(function(){
+            if(!$(this).attr('disabled'))
+            {
+              $("#id_accion_field").val($(this).data("accion"));
+              $("form").submit();
+            }
+        });
+    });
+
+    $("#id_establecimiento").change(function() {
+
+        var id_seleccionado = $("#id_establecimiento").val();
+
+        if(id_seleccionado)
+        {
+            var habilitar_parto = $("#var_mp_"+id_seleccionado).val();
+
+            if(habilitar_parto=="False")
+            {
+                $('#btn_partos').attr('disabled', true);
+            }else
+            {
+                $('#btn_partos').attr('disabled', false);
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

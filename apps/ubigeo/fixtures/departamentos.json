@@ -1,0 +1,227 @@
+[
+{
+    "pk": 1, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Amazonas", 
+        "codigo": "010000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Ancash", 
+        "codigo": "020000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Apurimac", 
+        "codigo": "030000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Arequipa", 
+        "codigo": "040000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Ayacucho", 
+        "codigo": "050000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 6, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Cajamarca", 
+        "codigo": "060000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 7, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Callao", 
+        "codigo": "070000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 8, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Cusco", 
+        "codigo": "080000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 9, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Huancavelica", 
+        "codigo": "090000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 10, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Huanuco", 
+        "codigo": "100000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 11, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Ica", 
+        "codigo": "110000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 12, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Junin", 
+        "codigo": "120000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 13, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "La Libertad", 
+        "codigo": "130000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 14, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Lambayeque", 
+        "codigo": "140000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 15, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Lima", 
+        "codigo": "150000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 16, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Loreto", 
+        "codigo": "160000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 17, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Madre De Dios", 
+        "codigo": "170000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 18, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Moquegua", 
+        "codigo": "180000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 19, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Pasco", 
+        "codigo": "190000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 20, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Piura", 
+        "codigo": "200000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 21, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Puno", 
+        "codigo": "210000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 22, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "San Martin", 
+        "codigo": "220000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 23, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Tacna", 
+        "codigo": "230000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 24, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Tumbes", 
+        "codigo": "240000", 
+        "pais": 1
+    }
+},
+{
+    "pk": 25, 
+    "model": "ubigeo.departamento", 
+    "fields": {
+        "nombre": "Ucayali", 
+        "codigo": "250000", 
+        "pais": 1
+    }
+}
+]

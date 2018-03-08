@@ -1,0 +1,22 @@
+{% extends "gestantes/base.html" %}
+{% block content %}
+{% if form.errors %}
+<p>Su usuario y contraseña no son correctos. Por favor intente nuevamente</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <p>Bienvenida, {{ user.username }}  <a href="{% url 'gestantes:hce_logout' %}">[Salir]</a></p>
+{% else %}
+    <p>Bienvenida, <a href="{% url 'gestantes:login' %}">[Ingresar]</a></p>
+{% endif %}
+
+
+<form method="POST">
+{% csrf_token %}
+<table>
+{{ form }}
+</table>
+<input type="submit" value="Ingresar" />
+{# <input type="hidden" name="next" value="{% url 'gestantes:reportes' %}" /> #}
+</form>
+{% endblock %}

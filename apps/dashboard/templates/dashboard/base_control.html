@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Wawared - {% block title %}Dashboard{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset='utf-8' />
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen" />
+    <link href="{% static 'css/wawared.css' %}" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}" />
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'js/vendor/ladda/dist/ladda.min.css' %}"> {% block extra_style %}{% endblock %}
+</head>
+
+<body>
+    {# include 'session_security/all.html' #}
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle='collapse' data-target='.navbar-ex1-collapse'>
+                        <span class='sr-only'>Menu</span>
+                        <span class='icon-bar'></span>
+                        <span class='icon-bar'></span>
+                        <span class='icon-bar'></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <div class="col-md-4">
+                            <img src="{% static 'img/logo-dash.png' %}" alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <img src="{{STATIC_URL}}img/logo_minsa.png" alt="ministerio" width="auto" height="10%"> {% if capacitacion %}CAPACITACIÓN{% endif %}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <p id="titulo-modulo"><br>Módulo de Control Pre-Natal</p>
+            </div>
+            <div class="col-md-6 pull-right">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{% static 'img/wawared-logo.png' %}" width="30px" alt="" /> {{ user.get_full_name }} - {{ establecimiento_actual }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% ifnotequal user.username 'capacitacion' %}
+                                <li>
+                                    <a href="{% url 'change_password' %}">Cambiar contraseña</a>
+                                </li>
+                                <li class="divider"></li>
+                                {% endifnotequal %}
+                                <li>
+                                    <a href="{% url 'logout' %}">Salir</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /header-->
+
+    <div class="row" style="padding-top:10vh;">
+        <div class="col-md-2">
+            <div id="sidebar-menu" class="text-center" style="position:fixed;">
+                <ul class="nav nav-pills nav-stacked">
+                    <li{% if menu != 'buscar' and menu != 'referida' %} class="active" {% endif %}>
+                        <a href="{% url 'dashboard_home' %}">
+                            <i class="i-home"></i>Inicio</a>
+                    </li>
+                    <li{% ifequal menu 'buscar' %} class="active" {% endifequal %}>
+                        <a href="{% url 'paciente:search' %}">
+                            <i class="i-buscar"></i>Buscar Gestante</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            {% if messages %}
+            <div class="row">
+                <br/>
+                <div class="col-md-12">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %} {% block container %}{% endblock %}
+        </div>
+    </div>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script>
+        $(document).on('ready', function () {
+            //Ladda.bind('button[type=submit]');
+            $.ajaxSetup({
+                cache: false
+            });
+        });
+
+    </script>
+    <script src="{% static 'js/vendor/ladda/dist/spin.min.js' %}"></script>
+    <script src="{% static 'js/vendor/ladda/dist/ladda.min.js' %}"></script>
+    {% block bottom_scripts %}{% endblock %}
+</body>
+
+</html>

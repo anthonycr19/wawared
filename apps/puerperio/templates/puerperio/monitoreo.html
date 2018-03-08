@@ -1,0 +1,339 @@
+{% extends 'dashboard/base_puerperio.html' %}
+{% load static %}
+{% block title %}Monitoreo puerperio{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Monitoreo puerperio</h3>
+                </div>
+                    {% include 'partos/paciente_header.html' with paciente=monitoreo.paciente %}
+                    {% include 'puerperio/tabs.html' with terminacion_embarazo=terminacion_embarazo %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Monitoreo</h3>
+                    <div class="pull-right">
+                        {% if not update_medicion %}
+                        <button class="btn btn-green" type="button" id="btn-new-measurement">Registrar monitoreo</button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div role="tabpanel" class="tab-pane active" id="monitoring">
+                        {% if not update_medicion %}
+                        <div class="panel-body" id="panel-measurement" {% if not form.errors %}style="display: none"{% endif %}>
+                        {% else %}
+                            <div class="panel-body">
+                        {% endif %}
+                                <form class="form-horizontal" method="post">
+                                    <div class="row">
+                                        {% csrf_token %}
+                                        <div class="col-md-4">
+                                            {% include 'dashboard/partials/form_group_date.html' with field=form.fecha %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.hora %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Mamas
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.mamas_pezon %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.mamas_caracteristicas %}
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Loquios
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.loquios_caracteristicas %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.loquios_cantidad %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.loquios_olor %}
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.alojamiento_conjunto %}
+                                                    {% include 'dashboard/partials/form_group_textarea.html' with field=form.alojamiento_conjunto_observacion %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.contacto_piel %}
+                                                    {% include 'dashboard/partials/form_group_textarea.html' with field=form.contacto_piel_observacion %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Funciones vitales
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_sistolica addon='mmHg' %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_diastolica addon='mmHg' %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.pulso addon='min' %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.frecuencia_respiratoria %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.temperatura addon='C' %}
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Vía Periférica
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.via_periferica %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.vp_tipo_de_solucion %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.vp_oxitocina %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.vp_cantidad addon='mL' %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Utero
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.utero_caracteristicas %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.utero_ubicacion %}
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Episeotomia
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.episeotomia_tipo %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.episeotomia_caracteristicas %}
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    Laboratorio
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.lab_hemoglobina_post_parto addon='g/dl' %}
+                                                    {% include 'dashboard/partials/form_group_date.html' with field=form.lab_fecha_hemoglobina %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.lab_elisa %}
+                                                    {% include 'dashboard/partials/form_group_date.html' with field=form.lab_elisa_fecha %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.lab_rpr %}
+                                                    {% include 'dashboard/partials/form_group_date.html' with field=form.lab_rpr_fecha %}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {% if not update_medicion %}
+                                            <input id="btn-close-add-panel" class="btn btn-default" type="button" value="Cerrar"/>
+                                            {% endif %}
+                                            <input class="btn btn-green" style="float: right" type="submit" value="Guardar"/>
+                                        </div>
+                                    </div>
+                                </form>
+                             </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="data-buscar-body" class="panel panel-default">
+                                <table class="table table-striped table-bordered">
+                                    <thead class="panel-heading">
+                                    <tr>
+                                        <th rowspan="3" >Hora</th>
+                                        <th colspan="9" style="text-align: center">Examen Clinico</th>
+                                        <th rowspan="3" >Editar</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center">Mamas</th>
+                                        <th colspan="2" style="text-align: center">Uteros</th>
+                                        <th colspan="3" style="text-align: center">Loquios</th>
+                                        <th colspan="2" style="text-align: center">Episeotomia</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Pezon</th>
+                                        <th>Caract.</th>
+                                        <th>Ubicacion</th>
+                                        <th>Caract.</th>
+                                        <th>Cantidad</th>
+                                        <th>Caract.</th>
+                                        <th>Olor</th>
+                                        <th>Tipo</th>
+                                        <th>Caract.</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for medicion in monitoreo.mediciones.all %}
+                                        <tr>
+                                            <td> {{ medicion.fecha|date:'d/m/Y'}} {{ medicion.hora|date:'H:i' }}</td>
+                                            <td> {{ medicion.mamas_pezon }}</td>
+                                            <td> {{ medicion.mamas_caracteristicas }}</td>
+                                            <td> {{ medicion.utero_caracteristicas }}</td>
+                                            <td> {{ medicion.utero_ubicacion }}</td>
+                                            <td> {{ medicion.loquios_caracteristicas }}</td>
+                                            <td> {{ medicion.loquios_cantidad }}</td>
+                                            <td> {{ medicion.loquios_olor }}</td>
+                                            <td> {{ medicion.episeotomia_tipo }}</td>
+                                            <td> {{ medicion.episeotomia_caracteristicas }}</td>
+                                            <td>
+                                               <a class="btn btn-default" href="{% url 'puerperio:monitoreo_medicion' terminacion_embarazo.id medicion.id %}">
+                                                    <span class="glyphicon glyphicon-edit"></span>
+                                               </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block bottom_scripts %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+<script>
+    $(document).on('ready', function () {
+         var $panelNewMeasurement = $('#panel-measurement'),
+                 $btnNewMeasurement = $('#btn-new-measurement'),
+                 $fecha = $('#id_fecha'),
+                 $hora = $('#id_hora'),
+                 $presionSistolica = $('#id_presion_sistolica'),
+                 $presionDiastolica = $('#id_presion_diastolica'),
+                 $frecuenciaRespiratoria = $('#id_frecuencia_respiratoria'),
+                 $temperatura = $('#id_temperatura'),
+                 $pulso = $('#id_pulso'),
+                 $fechaHemoglobina = $('#id_lab_fecha_hemoglobina'),
+                 $fechaElisa = $('#id_lab_elisa_fecha'),
+                 $fechaRPR = $('#id_lab_rpr_fecha'),
+                 $hemoglobina = $('#id_lab_hemoglobina_post_parto'),
+                 $periferica = $('#id_via_periferica'),
+                 $oxitocina = $('#id_vp_oxitocina');
+
+        $periferica.on('change', function () {
+            if (this.value === '2'){
+                $('#id_vp_tipo_de_solucion').prop('disabled', false);
+            }else{
+                $('#id_vp_tipo_de_solucion').prop('disabled', true);
+                $('#id_vp_tipo_de_solucion').prop('selectedIndex',0);
+            }
+        });
+
+        $oxitocina.on('change', function () {
+            if (this.value === '2'){
+                $('#id_vp_cantidad').prop('disabled', false);
+            }else{
+                $('#id_vp_cantidad').prop('disabled', true);
+                $('#id_vp_cantidad').val('');
+            }
+        });
+
+        $btnNewMeasurement.on('click', function () {
+                $panelNewMeasurement.show();
+                $btnNewMeasurement.hide();
+            });
+        $('#btn-close-add-panel').on('click', function () {
+                $panelNewMeasurement.hide();
+                $('form')[0].reset();
+                $btnNewMeasurement.show();
+        });
+
+        $fecha.datepicker();
+        $fecha.on('keydown', function () {
+            return false;
+        });
+        $fechaHemoglobina.datepicker();
+        $fechaHemoglobina.on('keydown', function () {
+            return false;
+         });
+         $fechaElisa.datepicker();
+         $fechaElisa.on('keydown', function () {
+            return false;
+         });
+         $fechaRPR.datepicker();
+         $fechaRPR.on('keydown', function () {
+            return false;
+         });
+         $hora.timepicker({
+            defaultTime: 'current',
+            showSeconds: false,
+            template: false,
+            showMeridian: false
+         });
+        var arrowKeys = [37, 38, 39, 40];
+        function validateOnlyNumber (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+                if (this.value.indexOf('.') !== -1) {
+                    this.value = this.value.substring(0, 4);
+                } else {
+                    this.value = this.value.substring(0, 3);
+                }
+            }
+        }
+
+        $presionSistolica.on('keyup', validateOnlyNumber);
+        $presionDiastolica.on('keyup', validateOnlyNumber);
+        $frecuenciaRespiratoria.on('keyup', validateOnlyNumber);
+        $temperatura.on('keyup', validateOnlyNumber);
+        $pulso.on('keyup', validateOnlyNumber);
+
+        function addMessageToInput (elem, message) {
+            var $this = $(elem);
+            var htmlMessage = '<div class="alert alert-danger">' + message + '</div>';
+            if ($this.parents('.col-sm-7').html().indexOf(message) === -1) {
+                $this.parents('.col-sm-7').append(htmlMessage);
+            }
+        }
+
+        function removeMessageFromInput (elem) {
+            $(elem).parents('.col-sm-7').find('.alert').remove();
+        }
+
+        function validateRange (begin, end, message, elem) {
+            var _value = parseFloat(elem.value);
+            if (!(_value >= begin && _value <= end)) {
+                addMessageToInput(elem, message);
+            } else {
+                removeMessageFromInput(elem);
+            }
+        }
+        $temperatura.on('keyup', function () {
+            validateRange(36, 37.5, 'Los rangos normales se encuentra entre 36°C y 37.5°C, por favor verificar la información', this);
+        });
+        $presionSistolica.on('keyup', function () {
+            validateRange(90, 120, 'Los rangos normales se encuentra entre 120 mmHg y 90 mmHg, por favor verifique la información', this);
+        });
+        $presionDiastolica.on('keyup', function () {
+            validateRange(60, 80, 'Los rangos normales se encuentra entre 80 mmHg y 60 mmHg, por favor verifique la información', this);
+        });
+        $pulso.on('keyup', function () {
+            validateRange(60, 100, 'Los rangos normales se encuentra entre 100  a 60 latidos por minuto, por favor verifique la información', this);
+        });
+        $frecuenciaRespiratoria.on('keyup', function () {
+            validateRange(12, 20, 'Los rangos normales se encuentran entre 12  a 20 respiraciones por minuto, por favor verifique la información', this);
+        });
+        $hemoglobina.on('keyup', function () {
+            var _value = parseFloat(this.value);
+            if (_value >= 0 && _value <= 5.9){
+                addMessageToInput(this, 'Anemia Grave');
+            }else{
+                removeMessageFromInput(this);
+                if (_value >= 6 && _value <= 9.9){
+                    addMessageToInput(this, 'Anemia Moderada');
+                }else{
+                    removeMessageFromInput(this);
+                    if (_value >= 10 && _value <= 10.9){
+                        addMessageToInput(this, 'Anemia Leve');
+                    }else{
+                        removeMessageFromInput(this);
+                    }
+                }
+            }
+
+
+        });
+    })
+
+</script>
+{% endblock %}

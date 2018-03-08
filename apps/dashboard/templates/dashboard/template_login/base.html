@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{% static 'minsalogin/vendor/jquery/js/jquery-3.2.1.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'minsalogin/css/loadingPage.css' %}"/>
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/nprogress/nprogress.css' %}"/>
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/animate/css/animate.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/font-awesome/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/jquery/css/jquery-ui.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/jquery/css/jquery-ui.structure.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/jquery/css/jquery-ui.theme.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/sweetalert2/sweetalert2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/css/main.css' %}"/>
+  <link rel="icon" type="image/png" href="{% static 'minsalogin/img/favicon.png' %}"/>
+  <!-- Bootstrap -->
+  <link href="{% static 'css/wawared_citas.css' %}" rel="stylesheet" media="screen"/>
+  <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+
+  {% block extra_style %}{% endblock extra_style %}
+  <title> MINSA - {% block title %}{{ auth_apps.current.name }}{% endblock %}</title>
+</head>
+{% spaceless %}
+<body id="body">
+{% block head %}
+  {% include "dashboard/template_login/basepartials/_head.html" %}
+{% endblock %}
+{% block _wrapper %}
+  <div id="wrapper">
+    {% block nav %}
+      {% include "dashboard/_nav.html" %}
+    {% endblock %}
+    <section id="page">
+      <div id="loading" class="no-print"></div>
+      <div id="page-content-wrapper">
+        <div class="mi-slider">
+          <div class="pageWidth" style="margin-top:20px;">
+            {% if messages %}
+              <div class="row">
+                <div class="content-message no-print">
+                  {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                      <span class="body-message">{{ message|safe }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            {% block container %}{% endblock %}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+{% endspaceless %}
+<script src="{% static 'minsalogin/js/loadingPage.js' %}"></script>
+<script src="{% static 'minsalogin/vendor/nprogress/nprogress.js' %}"></script>
+<script>
+  NProgress.configure({easing: 'ease', speed: 550, parent: "#page"});
+  NProgress.start();
+</script>
+
+<script src="{% static 'minsalogin/vendor/jquery/js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'minsalogin/vendor/moment/js/moment.min.js' %}"></script>
+<script src="{% static 'minsalogin/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'minsalogin/vendor/sweetalert2/sweetalert2.min.js' %}"></script>
+<script src="{% static 'minsalogin/js/common.js' %}"></script>
+<script src="{% static 'minsalogin/js/animation.js' %}"></script>
+<script src="{% static 'minsalogin/js/fancy.js' %}"></script>
+{% block bottom_scripts %}{% endblock bottom_scripts %}
+</body>
+</html>

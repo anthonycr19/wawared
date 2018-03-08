@@ -1,0 +1,1022 @@
+[
+{
+    "pk": 11, 
+    "model": "pacientes.estudio", 
+    "fields": {
+        "nombre": "Analfabeta", 
+        "activo": true, 
+        "modified": "2014-04-16T22:04:48.288Z", 
+        "created": "2014-04-16T22:04:48.288Z"
+    }
+},
+{
+    "pk": 12, 
+    "model": "pacientes.estudio", 
+    "fields": {
+        "nombre": "Primaria", 
+        "activo": true, 
+        "modified": "2014-04-16T22:04:51.892Z", 
+        "created": "2014-04-16T22:04:51.892Z"
+    }
+},
+{
+    "pk": 13, 
+    "model": "pacientes.estudio", 
+    "fields": {
+        "nombre": "Secundaria", 
+        "activo": true, 
+        "modified": "2014-04-16T22:04:57.058Z", 
+        "created": "2014-04-16T22:04:57.058Z"
+    }
+},
+{
+    "pk": 14, 
+    "model": "pacientes.estudio", 
+    "fields": {
+        "nombre": "Superior", 
+        "activo": true, 
+        "modified": "2014-04-16T22:05:03.152Z", 
+        "created": "2014-04-16T22:05:03.152Z"
+    }
+},
+{
+    "pk": 15, 
+    "model": "pacientes.estudio", 
+    "fields": {
+        "nombre": "Superior no universitaria", 
+        "activo": true, 
+        "modified": "2014-04-16T22:05:19.970Z", 
+        "created": "2014-04-16T22:05:19.970Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "AYMARA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "URO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "JAQARU, KAWI(JAQI CAUQUI)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CHANCAS", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 5, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CHOPCCAS", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 6, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "Q'EROS", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 7, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "WANCAS", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 8, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "OTROS GRUPOS QUECHUAS DEL AREA ANDINA (II)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 9, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ACHUAR, ACHUAL", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 10, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ANAHUACA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 11, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "AMAIWERI - KISAMBAERI", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 12, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "AMARAKAERI", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 13, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ANDOA - SHIMIGAE", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 14, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ANDOKE", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 15, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ARABELLA (CHIRUPINO)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 16, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ARASAIRE", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 17, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ASHANINKA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 18, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ASHENINKA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 19, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "AWAJUN (AGUARUNA, AENTS)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 20, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "BORA (MIAMUNA)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 21, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CACATAIBO (UNI)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 22, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CAUARANA (MOROCANO)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 23, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CANDOSHI - MURATO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 24, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CAPANAHUA (JUNIKUIN)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 25, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CAQUINTE (POYENISATI)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 26, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CASHINAHUA (JUNIKUIN)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 27, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CHAMICURO (CHAMEKOLO)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 28, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CHITONAHUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 29, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "COCOMA - COCAMILLA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 30, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CUJARE\u00d1O (I\u00d1APARI)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 31, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CULINA (MADIJA)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 32, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ESE'EJA (HUARAYO)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 33, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "HARAKMBUT", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 34, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "HUACHIPAIRE", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 35, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "HUAORANI (TAGAERI, TAROMENAJE)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 36, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "HITOTO (INCLUYE MURUI, MENECA, MUNAINE)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 37, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "IQUITO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 38, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ISCONAHUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 39, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "JEBERO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 40, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "JIBARO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 41, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "LAMISTO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 42, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "MACHIGUENGA (MATSIGENKA)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 43, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "MASHCO - PIRO (MASHCO)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 44, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "MASTANAHUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 45, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "MAYORUNA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 46, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "MURUNAHUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 47, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "NANTI", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 48, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "NOMATSIGUENGA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 49, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "OCAINA (IVOTSA)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 50, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "OMAGUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 51, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "OREJON (MAI HUNA, MAIJUNA)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 52, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "PISABO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 53, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "QUICHUA - QUICHUA RUNA, KICHWA (I)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 54, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "RESIGARO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 55, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "SAPITERI", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 56, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "SECOYA (AIDO PAI)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 57, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "CHAPRA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 58, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "SHARANAHUA / MARINAHUA (ONIKOIN)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 59, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "SHAWI (CHAYAHUITA, KANPUNAN, KAMPU PIYAWI)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 60, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "SHIPIBO - CONIBO - SHETEBO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 61, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "SHUAR", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 62, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "TAUSHIRO (PINCHE)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 63, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "TICUNA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 64, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "TOYOERI", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 65, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "URARINA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 66, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "WAMPIS", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 67, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "YAGUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 68, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "YAMINAHUA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 69, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "YANESHA", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 70, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "YINE - YAMI (PIRO)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 71, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "YORA (NAHUA, PARQUENAHUA)", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 72, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "OTROS GRUPOS IND\u00cdGENAS AMAZ\u00d3NICOS", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 73, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "MESTIZO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 74, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "AFRO DESCENDIENTE", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 75, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "ASIATICO DESCENDIENTE", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 76, 
+    "model": "pacientes.etnia", 
+    "fields": {
+        "nombre": "OTRO", 
+        "codigo": "", 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Profesional", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Empleada", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Comerciante", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Obrero", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 5, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Ama de casa", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 6, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Estudiante", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 7, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Sin ocupacion", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 8, 
+    "model": "pacientes.ocupacion", 
+    "fields": {
+        "nombre": "Otros", 
+        "activo": true, 
+        "modified": "2014-01-23T19:10:37.395Z", 
+        "created": "2014-01-23T19:10:37.395Z"
+    }
+},
+{
+    "pk": 8, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Padre", 
+        "solo_femenino": false, 
+        "modified": "2014-03-24T17:56:53.924Z", 
+        "created": "2014-03-24T17:56:53.924Z"
+    }
+},
+{
+    "pk": 9, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Madre", 
+        "solo_femenino": true, 
+        "modified": "2014-03-24T17:56:56.932Z", 
+        "created": "2014-03-24T17:56:56.932Z"
+    }
+},
+{
+    "pk": 10, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Primo(a)", 
+        "solo_femenino": false, 
+        "modified": "2014-03-24T17:57:01.026Z", 
+        "created": "2014-03-24T17:57:01.026Z"
+    }
+},
+{
+    "pk": 11, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Hermano(a)", 
+        "solo_femenino": false, 
+        "modified": "2014-03-24T17:57:07.964Z", 
+        "created": "2014-03-24T17:57:07.964Z"
+    }
+},
+{
+    "pk": 12, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Abuelo(a)", 
+        "solo_femenino": false, 
+        "modified": "2014-03-24T17:57:12.068Z", 
+        "created": "2014-03-24T17:57:12.068Z"
+    }
+},
+{
+    "pk": 13, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Otros", 
+        "solo_femenino": false, 
+        "modified": "2014-03-24T18:03:09.781Z", 
+        "created": "2014-03-24T18:03:09.781Z"
+    }
+},
+{
+    "pk": 14, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Hermana", 
+        "solo_femenino": true, 
+        "modified": "2014-03-31T15:17:02.720Z", 
+        "created": "2014-03-31T15:17:02.720Z"
+    }
+},
+{
+    "pk": 15, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Hijo(a)", 
+        "solo_femenino": false, 
+        "modified": "2014-03-31T15:17:51.161Z", 
+        "created": "2014-03-31T15:17:51.161Z"
+    }
+},
+{
+    "pk": 16, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Hija", 
+        "solo_femenino": true, 
+        "modified": "2014-03-31T15:17:52.994Z", 
+        "created": "2014-03-31T15:17:52.994Z"
+    }
+},
+{
+    "pk": 17, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Sobrino(a)", 
+        "solo_femenino": false, 
+        "modified": "2014-03-31T15:18:13.517Z", 
+        "created": "2014-03-31T15:18:13.517Z"
+    }
+},
+{
+    "pk": 18, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Sobrina", 
+        "solo_femenino": true, 
+        "modified": "2014-03-31T15:18:17.247Z", 
+        "created": "2014-03-31T15:18:17.246Z"
+    }
+},
+{
+    "pk": 19, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Abuela", 
+        "solo_femenino": true, 
+        "modified": "2014-03-31T15:18:33.063Z", 
+        "created": "2014-03-31T15:18:33.063Z"
+    }
+},
+{
+    "pk": 20, 
+    "model": "pacientes.relacionparentesco", 
+    "fields": {
+        "nombre": "Prima", 
+        "solo_femenino": true, 
+        "modified": "2014-03-31T15:18:37.037Z", 
+        "created": "2014-03-31T15:18:37.037Z"
+    }
+}
+]

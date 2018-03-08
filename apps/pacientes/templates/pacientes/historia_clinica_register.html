@@ -1,0 +1,71 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Registrar Historia Clinica{% endblock %}
+{% load thumbnail %}
+{% load static %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" method="post">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Registrar Historia clinica</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                {% if paciente.foto.name %}
+                                <img src="{% thumbnail paciente.foto 112x122 %}" width="112" height="112" alt="{{ paciente.nombre_completo }}"/>
+                                {% else %}
+                                <img src="{% static 'img/avatar2.png' %}" width="112" height="112" alt="default foto"/>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-10">
+                                <h2>
+                                    <a style="color: gray" href="{% url 'paciente:update' paciente.id %}">{{ paciente.nombre_completo.upper }}</a>
+                                </h2>
+                                <h3>{{ establecimiento.nombre }}</h3>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        {% ifequal paciente.tipo_documento paciente.DOCUMENTO_DNI_RESPONSABLE %}
+                                        <p>DNI Responsable {{ paciente.numero_documento }}</p>
+                                        {% else %}
+                                            <p>{{ paciente.nombre_documento }}: {{ paciente.numero_documento }}</p>
+                                        {% endifequal %}
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p>Edad: {{ paciente.edad }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="data-gestante" class="panel panel-default">
+                            <div class="panel-heading">
+                                Historia Clinica
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.numero %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                            <a class="btn btn-default" type=button onClick="javascript:history.go(-1);">Cancelar</a>
+                        </div>
+                        <div class="text-right">
+                            <input class="btn btn-green" type="submit" value="Guardar"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

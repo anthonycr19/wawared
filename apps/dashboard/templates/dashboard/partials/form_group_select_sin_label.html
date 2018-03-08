@@ -1,0 +1,9 @@
+{% load form_filter %}
+<div class="form-group">
+    <div class="col-sm-12">
+        {{ field|add_class:'form-control input-sm' }}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div>

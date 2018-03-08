@@ -1,0 +1,96 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Editar gestante{% endblock %}
+{% block extra_style %}
+  <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+{% endblock %}
+{% block container %}
+  <div class="row">
+    <div class="col-md-12">
+      <div id="data">
+        <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="panel panel-default">
+            <div id="data-head" class="panel-heading">
+              <h3 class="panel-title">Afiliar gestante</h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-sm-7 col-sm-offset-3">
+                <div class="btn-group">
+                  <a class="btn btn-default" href="{% url 'partos:paciente_update' paciente.id %}">Afiliación</a>
+                  {% if 'pacientes.change_antecedenteginecologico' in user.get_all_permissions %}
+                    <a class="btn btn-default"
+                        {% if 'antecedente' in request.path %}
+                          style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'partos:paciente_antecedentes_edit' paciente.id %}">Antecedentes</a>
+                  {% else %}
+                    <a class="btn btn-default"
+                        {% if 'antecedente' in request.path %}
+                          style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'partos:paciente_antecedentes' paciente.id %}">Antecedentes</a>
+                  {% endif %}
+
+                  {% if 'embarazos.add_embarazo' in user.get_all_permissions %}
+                    <a class="btn btn-default"
+                        {% if 'registrar-embarazo' in request.path or 'editar-embarazo' in request.path %}
+                          style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'partos:embarazo_create' paciente.id %}">Embarazo actual</a>
+
+                    <a class="btn btn-default"
+                        {% if 'registrar-ingreso' in request.path or 'ingreso_edit' in request.path %}
+
+                          style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'partos:ingreso_register' paciente.id %}">Ingreso</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            {% include 'pacientes/partials/paciente_form.html' %}
+            {% if 'pacientes.change_paciente' in user.get_all_permissions %}
+              <div class="panel-footer">
+                <div class="pull-left">
+                  <a class="btn btn-default" href="{% url 'dashboard_home' %}">Cancelar</a>
+                </div>
+
+                <div class="text-right">
+                  <button class="btn btn-green">Guardar</button>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          <input type="hidden" name="origen_phr" value="{{ paciente.origen_phr }}" />
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block bottom_scripts %}
+  {% include 'pacientes/partials/paciente_form_js.html' %}
+
+  <script>
+    $(document).ready(function () {
+
+      {% if 'pacientes.change_paciente' not in user.get_all_permissions %}
+        $('input, select, textarea').prop('disabled', true);
+      {% endif %}
+
+      {% if paciente.origen_phr  %}
+        $('#id_nombres').attr('readonly', true);
+        $('#id_apellido_paterno').attr('readonly', true);
+        $('#id_apellido_materno').attr('readonly', true);
+        $('#id_tipo_documento').prop('disabled', true);
+        $('#id_numero_documento').attr('readonly', true);
+        $('#id_dia_nacimiento').prop('disabled', true);
+        $('#id_mes_nacimiento').prop('disabled', true);
+        $('#id_anio_nacimiento').prop('disabled', true);
+      {% endif %}
+
+    });
+  </script>
+
+{% endblock %}

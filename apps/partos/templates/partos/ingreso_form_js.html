@@ -1,0 +1,288 @@
+{% load static %}
+<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+<script src="{% static 'js/vendor/moment.js' %}"></script>
+<script src="{% static 'js/vendor/select2.min.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        var today = new Date();
+        var now = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+        var $fecha = $('#id_fecha');
+        var $btnAddFeto = $('#btn-add-feto');
+        var $fechaPicker = $fecha.on('keydown', function () {
+            return false;
+        }).datepicker({
+            onRender: function (date) {
+                return date.valueOf() < now.valueOf() ? 'disabled' : '';
+            }
+        });
+        $('#id_hora').timepicker({
+            defaultTime: 'current',
+            showSeconds: false,
+            template: false,
+            showMeridian: false
+        });
+        var talla = {{ embarazo.talla|floatformat:'.2f' }};
+        var $peso = $('#id_peso');
+        var $imc = $('#id_imc');
+        var $egFUM = $('#id_eg_fum');
+        var $egEcografia = $('#id_eg_ecografia');
+        var $reflejos = $('#id_reflejos');
+        $imc.attr('readOnly', true);
+
+        var $egElegida = $('#id_eg_elegida');
+
+        function validateEGElegida (value) {
+            $('.fum, .ecografia, .altura-uterina').removeClass('success');
+            if (value === 'fum') {
+                $('.fum').addClass('success');
+            } else if (value === 'ecografia') {
+                $('.ecografia').addClass('success');
+            } else {
+                $('.altura-uterina').addClass('success');
+            }
+        }
+
+        $egElegida.on('change', function () {
+            validateEGElegida(this.value);
+        }).parents('.form-group').hide();
+
+        validateEGElegida($egElegida.val());
+
+        $('#js-btn-eg-fum').on('click', function () {
+            $egElegida.val('fum').trigger('change');
+        });
+        $('#js-btn-eg-eco').on('click', function () {
+            $egElegida.val('ecografia').trigger('change');
+        });
+        $('#js-btn-eg-au').on('click', function () {
+            $egElegida.val('altura uterina').trigger('change');
+        });
+
+        var $presionSistolica = $('#id_presion_sistolica'),
+            $presionDiastolica = $('#id_presion_diastolica'),
+            $frecuenciaRespiratoria = $('#id_frecuencia_respiratoria'),
+            $temperatura = $('#id_temperatura'),
+            $pulso = $('#id_pulso'),
+            $alturaUterina = $('#id_altura_uterina'),
+            $fcf = $('#id_fcf'),
+            $egAlturaUterina = $('#id_eg_altura_uterina'),
+            $fechaProbablePartoFum = $('#id_fecha_probable_parto_fum'),
+            $fechaProbablePartoEcografia = $('#id_fecha_probable_parto_ecografia'),
+            $fechaProbablePartoAlturaUterina = $('#id_fecha_probable_parto_altura_uterina');
+            {% if embarazo.fum %}
+            var fum = moment('{{ embarazo.fum|date:'d/m/Y' }}', 'DD/MM/YYYY'),
+            fechaPartoFum = moment('{{ embarazo.fum|date:'d/m/Y' }}', 'DD/MM/YYYY').add('days', '280');
+            {% endif %}
+            {% if embarazo.primera_ecografia %}
+            var ecografia = moment('{{ embarazo.primera_ecografia.fecha|date:'d/m/Y' }}', 'DD/MM/YYYY'),
+            fechaPartoEcografia = moment('{{ embarazo.primera_ecografia.fecha_probable_parto|date:'d/m/Y' }}', 'DD/MM/YYYY');
+            {% endif %}
+        {% if embarazo.fum %}
+        $fechaProbablePartoFum.val(fechaPartoFum.format('DD/MM/YYYY'));
+        {% endif %}
+        {% if embarazo.primera_ecografia %}
+        $fechaProbablePartoEcografia.val(fechaPartoEcografia.format('DD/MM/YYYY'));
+        {% else %}
+        $fechaProbablePartoEcografia.val('');
+        {% endif %}
+
+        var $totalForms = $('#id_examenfisicofetal_set-TOTAL_FORMS');
+        var $fcfsForms = $('#fcfs-form-container');
+
+        $btnAddFeto.on('click', function () {
+            var count = $fcfsForms.children().length;
+            var template = $('#empty-form').html();
+            var compiled = template.replace(/__prefix__/g, count);
+            $fcfsForms.append('<div class="row" style="margin-left:0; margin-right:0;">' + compiled + '</div>');
+            $totalForms.val(count + 1);
+
+        });
+
+        function calculateFechaProbableParto (value) {
+            var date = moment(value, 'DD/MM/YYYY');
+            {% if embarazo.fum %}
+            var diff = date.diff(fum, 'days');
+            $egFUM.val(Math.floor(diff / 7) + ' ' + (diff % 7) + '/7');
+            {% endif %}
+            {% if embarazo.primera_ecografia %}
+            diff = date.diff(ecografia, 'days') + {{ embarazo.primera_ecografia.eg_dias }};
+            $egEcografia.val(Math.floor(diff / 7) + ' ' + (diff % 7) + '/7');
+            {% endif %}
+            var alturaUterina = $alturaUterina.val();
+            if (alturaUterina.length) {
+                var au = 24 * 3600 * parseInt(alturaUterina) * 8 * 1000; // se multiplica por 1000 porque js maneja el timpo en milisegundos
+                var components = value.split('/');
+                var formattedDate = new Date(components[2], parseInt(components[1]) - 1, components[0]);
+                var fppAlturaUterina = new Date(formattedDate.getTime() + 345600000 + 24192000000 - au);
+                $fechaProbablePartoAlturaUterina.val(moment(fppAlturaUterina).format('DD/MM/YYYY'));
+                $egAlturaUterina.val((parseInt(alturaUterina) * 8 / 7).toFixed(0));
+            } else {
+                $egAlturaUterina.val('');
+                $fechaProbablePartoAlturaUterina.val('');
+            }
+        }
+
+        $fechaPicker.on('changeDate', function () {
+            calculateFechaProbableParto(this.value);
+        });
+
+        function calculateImc() {
+            var w = parseFloat($peso.val());
+            var h = parseFloat(talla) / 100;
+            var imc = w / (Math.pow(h, 2));
+            if (isNaN(imc)) {
+                imc = 0.0;
+            }
+            $imc.val(imc.toFixed(2));
+            var clasificacion = '';
+            if (imc < 19.8) {
+                clasificacion = 'Bajo peso';
+            } else if (imc >= 19.8 && imc <= 26) {
+                clasificacion = 'Normal';
+            } else if (imc > 26 && imc <= 29) {
+                clasificacion = 'Sobrepeso';
+            } else {
+                clasificacion = 'Obesidad';
+            }
+            $imc.parent().find('.input-group-addon').html(clasificacion);
+        }
+
+        var arrowKeys = [37, 38, 39, 40];
+        function validateOnlyNumber (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+                if (this.value.indexOf('.') !== -1) {
+                    this.value = this.value.substring(0, 4);
+                } else {
+                    this.value = this.value.substring(0, 3);
+                }
+            }
+        }
+
+        function validateDecimal (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                //this.value = this.value.replace(/[^0-9\.]/g, '');
+                _value = this.value;
+
+                if (isNaN(_value)) {
+                    return;
+                }
+
+                if(!(_value+"").match(/^\d{1,3}(\.\d{1,2})?$/g))
+                {
+                    this.value = this.value.replace(/^\d{1,3}(\.\d{1,2})?$/g, '');
+
+                    return false;
+                }
+            }
+        }
+
+        $peso.on('keyup', function (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            }
+            calculateImc();
+        });
+
+
+        $presionSistolica.on('keyup', validateOnlyNumber);
+        $presionDiastolica.on('keyup', validateOnlyNumber);
+        $frecuenciaRespiratoria.on('keyup', validateOnlyNumber);
+        //$temperatura.on('keyup', validateOnlyNumber);
+        $temperatura.on('keyup', validateDecimal);
+        $pulso.on('keyup', validateOnlyNumber);
+        $alturaUterina.on('keyup', function (event) {
+             if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+                calculateFechaProbableParto($fecha.val());
+            }
+        });
+        $fcf.on('keyup', validateOnlyNumber);
+
+        function addMessageToInput (elem, message) {
+            var $this = $(elem);
+            var htmlMessage = '<div class="alert alert-danger">' + message + '</div>';
+            if ($this.parents('.col-sm-7').html().indexOf(message) === -1) {
+                $this.parents('.col-sm-7').append(htmlMessage);
+            }
+        }
+
+        function removeMessageFromInput (elem) {
+            $(elem).parents('.col-sm-7').find('.alert').remove();
+        }
+
+        function validateRange (begin, end, message, elem) {
+            var _value = parseFloat(elem.value);
+            if (!(_value >= begin && _value <= end)) {
+                addMessageToInput(elem, message);
+            } else {
+                removeMessageFromInput(elem);
+            }
+        }
+
+        //$temperatura.on('keyup', function () {
+        $temperatura.on('change', function () {
+
+            this.value = parseFloat(this.value).toFixed(1);
+
+            validateRange(36, 37.5, 'Los rangos normales se encuentra entre 36°C y 37.5°C, por favor verificar la información', this);
+        });
+
+        $presionSistolica.on('keyup', function () {
+            validateRange(90, 120, 'Los rangos normales se encuentra entre 90 mmHg y 120 mmHg, por favor verifique la información', this);
+        });
+        $presionDiastolica.on('keyup', function () {
+            validateRange(60, 80, 'Los rangos normales se encuentra entre 60 mmHg y 80 mmHg, por favor verifique la información', this);
+        });
+        $pulso.on('keyup', function () {
+            validateRange(60, 100, 'Los rangos normales se encuentra entre 60  a 100 latidos por minuto, por favor verifique la información', this);
+        });
+        $frecuenciaRespiratoria.on('keyup', function () {
+            validateRange(12, 20, 'Los rangos normales se encuentran entre 12  a 20 respiraciones por minuto, por favor verifique la información', this);
+        });
+        $fcf.on('change', function () {
+            var value = parseInt(this.value);
+            if (isNaN(value)) {
+                return;
+            }
+            if (value < 140) {
+                addMessageToInput(this, 'El bebé puede estar con BRADICARDIA');
+            }
+            if (value > 160) {
+                addMessageToInput(this, 'El bebé puede estar con TAQUICARDIA');
+            }
+        });
+        $fcf.trigger('change');
+        $reflejos.on('change', function () {
+            if (this.value === '+++') {
+                addMessageToInput(this, 'Riesgo de PRECLAMPSIA o ECLAMPSIA');
+            }
+        });
+        $reflejos.trigger('change');
+        $alturaUterina.on('change', function () {
+            var value = parseInt(this.value);
+            if (isNaN(value)) {
+                return;
+            }
+            if (value > 36) {
+                addMessageToInput(this, 'Riesgo de MACROSOMIA FETAL o alguna patología')
+            }
+        });
+        $alturaUterina.trigger('keyup');
+        $peso.trigger('keyup');
+        var $lugarDeDerivacion = $('#id_lugar_de_derivacion'),
+                $lugarDeDerivacionOtrosWrapper = $('#id_lugar_de_derivacion_otros').parents('.form-group');
+        function validarLugarDeDerivacion(value) {
+            if (value === 'otros') {
+                $lugarDeDerivacionOtrosWrapper.show();
+            } else {
+                $lugarDeDerivacionOtrosWrapper.hide();
+            }
+        }
+        validarLugarDeDerivacion($lugarDeDerivacion.val());
+        $lugarDeDerivacion.on('change', function () {
+            validarLugarDeDerivacion($(this).val());
+        });
+    });
+</script>

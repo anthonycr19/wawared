@@ -1,0 +1,37 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Editar embarazo{% endblock %}
+{% block extra_style %}
+    <link href="{% static 'css/datepicker.css' %}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" id="form-embarazo" name="form-embarazo"  method="post">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Editar embarazo</h3>
+                </div>
+                {% include 'partos/partials/paciente_resume_header.html' with paciente=paciente %}
+                {% include 'partos/embarazo_form.html' with form=form %}
+                <div class="panel-footer">
+                    <div class="pull-left">
+                        <a class="btn btn-default" href="{% url 'partos:paciente_antecedentes' paciente.id %}">Cancelar</a>
+                    </div>
+                    <div class="text-right">
+                        <input class="btn btn-green" type="submit" value="Guardar"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/vendor/select2.min.js' %}"></script>
+    {% include 'embarazos/partials/embarazo_form_js.html' %}
+{% endblock %}

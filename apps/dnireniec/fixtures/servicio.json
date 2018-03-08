@@ -1,0 +1,13 @@
+[
+{
+    "pk": 1, 
+    "model": "dnireniec.ServicioReniec", 
+    "fields": {
+        "namespace": "http://tempuri.org/", 
+        "urlwsdlservice": "http://www.minsap.minsa.gob.pe/dwcnv/serviciomq.asmx?wsdl",
+        "appservice": "WAWARED", 
+        "userservice": "05353734",
+        "passservice": "/*_waw@r3d+$"
+    }
+}
+]

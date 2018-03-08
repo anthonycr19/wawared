@@ -1,0 +1,25 @@
+{% extends "dashboard/template_login/basepartials/_nav.html" %}
+
+{% block navmenu %}
+  
+  {% if modulo_control %}
+  	<ul gl-function="main-list">
+  		<li{% ifequal menu 'inicio' %} class="active"{% endifequal %}>
+        	<a href="{% url 'dashboard_home' %}"><i class="i-home"></i>Inicio</a>
+        </li>
+        <li{% ifequal menu 'buscar' %} class="active"{% endifequal %}>
+        	<a href="{% url 'paciente:search' %}"><i class="i-buscar"></i>Buscar Gestante</a>
+        </li>
+    </ul>
+  {% else %}
+  	<ul gl-function="main-list">
+    	<li{% ifequal menu 'inicio' %} class="active"{% endifequal %}>
+        	<a href="{% url 'partos:home' %}"><i class="i-home"></i>Inicio</a>
+        </li>
+        <li{% ifequal menu 'buscar' %} class="active"{% endifequal %}>
+        	<a href="{% url 'partos:paciente_search' %}"><i class="i-buscar"></i>Buscar Gestante</a>
+        </li>
+    </ul>
+  {% endif %}
+
+{% endblock %}

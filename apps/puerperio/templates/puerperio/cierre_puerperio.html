@@ -1,0 +1,414 @@
+{% extends 'dashboard/base_puerperio.html' %}
+{% load static %}
+{% load form_tags %}
+{% block title %}Cierre puerpera{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Registro de recien nacidos</h3>
+                </div>
+                {% include 'partos/paciente_header.html' with paciente=terminacion_embarazo.paciente %}
+                {% include 'puerperio/tabs.html' with terminacion_embarazo=terminacion_embarazo %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Cierre puerpera</h3>
+                </div>
+                <div id="data-gestante" class="panel panel-default">
+                    <div class="panel-body">
+                        <form class="form-horizontal" method="post">
+                            <div class="row">
+                                {% csrf_token%}
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            {% include 'dashboard/partials/form_group_date.html' with field=form.fecha %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.hora %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.tipo %}
+                                            <div class="form-group">
+                                                <label for="input-search" class="col-sm-5 control-label">Diagnóstico</label>
+                                                <div class="col-sm-7">
+                                                    <input id="input-search" type="text" name="q" autofocus style="width: 100%">
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                    <h4>Seleccionados</h4>
+                                                    <div class="panel panel-default" id="data-buscar-body">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Diagnostico</th>
+                                                                <th>CIE 10</th>
+                                                                <th>D</th>
+                                                                <th>P</th>
+                                                                <th>R</th>
+                                                                <th>LAB</th>
+                                                                <th>Observación</th>
+                                                                <th>Eliminar</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody id="tbody-seleccionados">
+                                                            {% for detalle in detalles %}
+                                                            <tr data-order="{{ detalle.order }}" {% ifequal detalle.cie.codigo ficha_puntaje_cie %}class="danger"{% endifequal %}>
+                                                                <td>
+                                                                    <input type="checkbox" class="checkbox-cie" data-cie="{{ detalle.cie.codigo }}" checked/>
+                                                                </td>
+                                                                <td class="col-md-4">{{ detalle.cie.nombre_display|title }}</td>
+                                                                <td>{{ detalle.cie.codigo }}</td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input type="radio" name="radio-detalle-{{ detalle.cie.codigo }}" {% ifequal detalle.tipo 'D' %}checked{% endifequal %} value="D"/>
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input type="radio" name="radio-detalle-{{ detalle.cie.codigo }}" {% ifequal detalle.tipo 'P' %}checked{% endifequal %} value="P"/>
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>
+                                                                        <input type="radio" name="radio-detalle-{{ detalle.cie.codigo }}" {% ifequal detalle.tipo 'R' %}checked{% endifequal %} value="R"/>
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control laboratorio" value="{{ detalle.laboratorio }}"/>
+                                                                </td>
+                                                                <td>
+                                                                    <textarea class="form-control observacion" rows="1">{{ detalle.observacion }}</textarea>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" class="checkbox-delete"/>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                            <h4>Sugeridos</h4>
+                                            <div class="panel panel-default" id="data-buscar-body">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Diagnostico</th>
+                                                        <th>CIE 10</th>
+                                                        <th>D</th>
+                                                        <th>P</th>
+                                                        <th>R</th>
+                                                        <th>LAB</th>
+                                                        <th>Observación</th>
+                                                        <th>Eliminar</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for cie in cies %}
+                                                    <tr {% ifequal cie.codigo ficha_puntaje_cie %}class="danger{% endifequal %}">
+                                                        <td>
+                                                            <input type="checkbox" class="checkbox-cie for-select" data-cie="{{ cie.codigo }}"/>
+                                                        </td>
+                                                        <td class="col-md-4">{{ cie.nombre_display|title }}</td>
+                                                        <td>{{ cie.codigo }}</td>
+                                                        <td>
+                                                            <label>
+                                                            <input type='radio' name='radio-detalle-{{ cie.codigo }}' value='D'/>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label>
+                                                            <input type="radio" name="radio-detalle-{{ cie.codigo }}" value="P"/>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label>
+                                                            <input type="radio" name="radio-detalle-{{ cie.codigo }}" value="R"/>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control laboratorio"/>
+                                                        </td>
+                                                        <td>
+                                                            <textarea class="form-control observacion" rows="1"></textarea>
+                                                        </td>
+                                                        <td>
+                                                            <input type="checkbox" class="checkbox-delete"/>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            Anticonceptivos
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_ligadura_tubaria %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_anticoncec_combinada %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_abstinencia_periodica %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_mela %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_solo_ori_consej %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_condon %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_inyectables %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_ninguno %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_diu %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_orales %}
+                                            {% include 'dashboard/partials/checkbox.html' with field=form.ant_otro %}
+                                            {% include 'dashboard/partials/form_group_textarea.html' with field=form.ant_observaciones %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            Cita
+                                            {% include 'dashboard/partials/form_group_date.html' with field=form.control_puerperio %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.centro_salud %}
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            Registro
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.cetficiado_nacido_vivo %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=form.certificado_nacido_vivo_numero %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input id="btn-save" class="btn btn-green" style="float: right;" type="submit" value="Guardar" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block bottom_scripts %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+<script src="{% static 'js/vendor/select2.min.js' %}"></script>
+<script src="{% static 'js/vendor/jquery-ui.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        {% establecimiento_select form.centro_salud %}
+        $('#id_fecha').datepicker();
+        $('#id_hora').timepicker({
+            defaultTime: 'current',
+            showSeconds: false,
+            template: false,
+            showMeridian: false
+        });
+        $('#id_control_puerperio').datepicker();
+
+        var sprintf = function(str) {
+            var args = arguments,
+            flag = true,
+            i = 1;
+
+            str = str.replace(/%s/g, function() {
+            var arg = args[i++];
+
+            if (typeof arg === 'undefined') {
+            flag = false;
+            return '';
+            }
+            return arg;
+            });
+            return flag ? str : '';
+        };
+        var addObserverChangeCheckbox = function(){
+            $.each($("input[type='checkbox'].checkbox-cie"),function(index,elem){
+                $(elem).on("click",function(){
+                    var tr = $(this).parent().parent();
+                    tr.find("input[type='checkbox'].checkbox-delete").remove();
+
+                    if(this.checked){
+                        $dom = $("<input type='checkbox' class='checkbox-delete'/>");
+                        $(this).parent().parent().find("td").eq(8).append($dom);
+                    }else{
+                        $dom = $("<input type='checkbox' class='checkbox-delete' checked />");
+                        $(this).parent().parent().find("td").eq(8).append($dom);
+                    }
+                });
+            });
+
+            $.each($("input[type='checkbox'].checkbox-cpt"),function(index,elem){
+                $(elem).on("click",function(){
+                    var tr = $(this).parent().parent();
+                    tr.find("input[type='checkbox'].checkbox-delete").remove();
+
+                    if(this.checked){
+                        $dom = $("<input type='checkbox' class='checkbox-delete'/>");
+                        $(this).parent().parent().find("td").eq(8).append($dom);
+                    }else{
+                        $dom = $("<input type='checkbox' class='checkbox-delete' checked />");
+                        $(this).parent().parent().find("td").eq(8).append($dom);
+                    }
+                });
+            });
+
+        }
+        addObserverChangeCheckbox();
+        $('#input-search').select2({
+            placeholder: 'Ingrese el nombre o codigo del cie',
+            minimumInputLength: 3,
+            ajax: {
+                url: '{% url 'cie:api_search' %}',
+                dataType: 'json',
+                type: 'get',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    }
+                }
+            },
+            formatSelection: function (cie) {
+                if ($tbody.html().indexOf(cie.codigo) === -1) {
+                    var html = '<tr>\
+                                    <td>\
+                                        <input type="checkbox" class="checkbox-cie" data-cie="#codigo" checked/>\
+                                    </td>\
+                                    <td class="col-md-4">#nombre</td>\
+                                    <td>#codigo</td>\
+                                    <td>\
+                                        <label>\
+                                            <input type="radio" name="radio-detalle-#rcodigo" value="D"/>\
+                                        </label>\
+                                    </td>\
+                                    <td>\
+                                        <label>\
+                                            <input type="radio" name="radio-detalle-#rcodigo" value="P"/>\
+                                        </label>\
+                                    </td>\
+                                    <td>\
+                                        <label>\
+                                            <input type="radio" name="radio-detalle-#rcodigo" value="R"/>\
+                                        </label>\
+                                    </td>\
+                                    <td>\
+                                        <input type="text" class="form-control laboratorio"/>\
+                                    </td>\
+                                    <td>\
+                                        <textarea class="form-control observacion" rows="1"></textarea>\
+                                    </td>\
+                                    <td>\
+                                        <input type="checkbox" class="checkbox-delete"/>\
+                                    </td>\
+                                </tr>';
+                    var compiled = html.replace(/#codigo/g, cie.codigo.toString()).replace(/#nombre/g, cie.nombre).replace(/#rcodigo/g, cie.codigo.toString().replace(".","-"));
+                    $tbody.append(compiled);
+                }
+                return this.placeholder;
+            },
+            formatResult: function (cie) {
+                return '<p>' + cie.nombre + '</p>';
+            },
+            formatNoMatches: function (term) {
+                return 'No se encontraron resultados';
+            }
+        }).on("change", function(e) {
+            addObserverChangeCheckbox();
+        });
+        var $checkBoxIce = $('.checkbox-cie');
+        $('.for-select').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#tbody-seleccionados').append($(this).parents('tr'));
+            }
+        });
+        var $tbody = $('#tbody-seleccionados');
+        function setOrderValues() {
+            $tbody.find('tr').each(function (i, elem) {
+                $(elem).attr('data-order', i + 1);
+            });
+        }
+        $tbody.sortable({
+            placeholder: "ui-state-highlight",
+            stop: function (event, ui) {
+                setOrderValues();
+            }
+        });
+
+        $('#btn-save').on('click', function (event) {
+            event.preventDefault();
+
+            var request_ajax = {"cie":[]};
+
+            $('.checkbox-cie:checked').each(function (checkbox) {
+                var $tr = $(this).parents('tr');
+                var codigo = "" + $(this).data('cie') + "";
+                var namecontrol = 'radio-detalle-' + codigo.replace(".","-");
+                var searchdom = sprintf('input[type=radio][name=%s]:checked',namecontrol);
+                request_ajax["cie"].push({
+                    codigo: codigo,
+                    tipo: $tr.find(searchdom).val(),
+                    laboratorio: $tr.find('.laboratorio').val(),
+                    observacion: $tr.find('.observacion').val(),
+                    order: $tr.data('order'),
+                    delete: $(this).parents('tr').find('.checkbox-delete').is(':checked')
+                });
+            });
+
+            var messages = [];
+            request_ajax["cie"].forEach(function (detalle) {
+                if (detalle.tipo === undefined) {
+                    messages.push('CIE: ' + detalle.codigo + ' debe seleccionar un tipo de diagnostico');
+                }
+            });
+
+            if (messages.length) {
+                alert(messages.join('\n'));
+            } else {
+                if (!request_ajax["cie"].length) {
+                    alert('Debe elegir al menos un diagnostico para continuar');
+                }else {
+                    console.log(request_ajax);
+                    $.ajax({
+                        method: 'post',
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                        url: '{% url 'puerperio:cierre_puerpera' terminacion_embarazo.id %}',
+                        contentType: 'application/json',
+                        data: JSON.stringify(request_ajax),
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.status === 'success') {
+                                $('form').submit();
+                            } else {
+                                alert('Ocurrio un problema intente nuevamente');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

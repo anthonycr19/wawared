@@ -1,0 +1,1711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitud_examenes_clinicos" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ad090431-d25e-4b8e-9363-c91045eb71eb">
+	<property name="ireport.zoom" value="1.4615378250000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="wawared"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="control_id" class="java.lang.String"/>
+	<parameter name="establecimiento_logo" class="java.lang.String"/>
+	<parameter name="logo_minsa" class="java.lang.String">
+		<defaultValueExpression><![CDATA["http://wawared.minsa.gob.pe/static/img/logo_minsa.png"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select upper(paciente.apellido_paterno || ' ' || paciente.apellido_materno || ', ' || paciente.nombres) as nombre_completo,paciente.numero_documento ,establecimiento.nombre as establecimiento_nombre, diagnostico.*,
+usuario.first_name || ' ' || usuario.last_name as nombre_usuario,
+historia_clinica.numero as hc, control.created as control_created
+from controles_control as control
+join pacientes_paciente as paciente on paciente.id = control.paciente_id
+join controles_diagnostico as diagnostico on control.id = diagnostico.control_id
+join establecimientos_establecimiento as establecimiento on establecimiento.id = control.establecimiento_id
+join perfiles_user as usuario on control.created_by_id = usuario.id
+left join pacientes_historiaclinica as historia_clinica on control.establecimiento_id = historia_clinica.establecimiento_id and control.paciente_id = historia_clinica.paciente_id
+where control.id = $P{control_id}::int;]]>
+	</queryString>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="numero_documento" class="java.lang.String"/>
+	<field name="establecimiento_nombre" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="plan_trabajo" class="java.lang.String"/>
+	<field name="tratamiento" class="java.lang.String"/>
+	<field name="proxima_cita" class="java.sql.Date"/>
+	<field name="examen_hemoglobina" class="java.lang.Boolean"/>
+	<field name="examen_hemograma" class="java.lang.Boolean"/>
+	<field name="examen_orina" class="java.lang.Boolean"/>
+	<field name="examen_glucosa" class="java.lang.Boolean"/>
+	<field name="examen_grupo_sanguineo" class="java.lang.Boolean"/>
+	<field name="examen_factor" class="java.lang.Boolean"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="modified" class="java.sql.Timestamp"/>
+	<field name="control_id" class="java.lang.Integer"/>
+	<field name="created_by_id" class="java.lang.Integer"/>
+	<field name="paciente_id" class="java.lang.Integer"/>
+	<field name="tratamiento_2" class="java.lang.String"/>
+	<field name="nombre_usuario" class="java.lang.String"/>
+	<field name="hc" class="java.lang.String"/>
+	<field name="control_created" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<rectangle>
+				<reportElement x="390" y="226" width="149" height="15" uuid="d39ef936-9f0b-4182-aa37-eacf9c01efbd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="375" width="149" height="15" uuid="cc7ee0c2-6a12-40e9-a447-322a9ce66afb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="226" width="137" height="15" uuid="0451694e-9761-458a-b65a-786426546e4e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="541" width="140" height="15" uuid="506b4433-42c2-4c14-b122-96e552fab922"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="226" width="140" height="15" uuid="1361d2ef-d081-45d4-a747-e05b749a7160"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="479" width="137" height="15" uuid="363f1ce4-a993-4ff2-afc1-5e2a042f8f85"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="11" y="79" width="528" height="20" uuid="61dd6984-d97c-447e-b785-96ebfd40d655"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE EXAMENES DE LA RED DE LABORATORIOS DE ANALISIS CLINICOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="17" width="100" height="15" uuid="41367c10-439c-41d2-bb27-47743d3d79f5"/>
+				<text><![CDATA[FECHA DE REGISTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="103" width="202" height="14" uuid="ff66fc2f-cc93-4ab3-80ba-76b21aae0199"/>
+				<text><![CDATA[LABORATORIO DEL CENTRO DE SALUD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="119" width="202" height="26" uuid="4b1a451f-ffcf-4d3d-90fa-611ac8aafd28"/>
+				<text><![CDATA[APELLIDOS Y NOMBRES DEL PACIENTE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="213" y="120" width="329" height="25" uuid="818a0458-6e01-45eb-a115-106042433f68"/>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="145" width="98" height="20" uuid="3fd8b6fd-94aa-4618-92ef-7fdff9e02e4e"/>
+				<text><![CDATA[ESTABLECIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="165" width="98" height="20" uuid="2b723af8-f16a-4866-9cbb-c372cc2e6320"/>
+				<text><![CDATA[SOLICITADO POR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="185" width="98" height="21" uuid="aeaa214e-7bde-468f-b970-6d35abe9709e"/>
+				<text><![CDATA[DIAGNOSTICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="145" width="98" height="20" uuid="5f0753ef-01a5-422b-88a4-cc139bf794a4"/>
+				<text><![CDATA[HISTORIA N]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="419" y="145" width="123" height="20" uuid="1d360ecd-29e4-403f-98b2-4484b23c6766"/>
+				<textFieldExpression><![CDATA[$F{numero_documento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="321" y="165" width="116" height="20" uuid="7b0d16b1-607b-4213-8490-0347a138fe4c"/>
+				<text><![CDATA[FECHA DE SOLICITUD]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="11" y="206" width="137" height="20" uuid="b659a5f9-f4f3-4d63-965b-48260db81442"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="206" width="51" height="20" uuid="920bb1da-8ea7-4bb4-8fa6-876762bcd661"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="206" width="51" height="20" uuid="44d35497-e50b-467a-9f69-1ea17c3f75ec"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="206" width="140" height="20" uuid="5d8327a9-f178-4c42-87fc-7d87fd2ca348"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="206" width="149" height="20" uuid="f4cc0724-34a7-485d-aa8d-7589ca7eb31b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="48" y="210" width="100" height="20" uuid="4bcf8e50-25a7-4af7-8c57-9f097d8d0c3f"/>
+				<text><![CDATA[BIOQUIMICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="210" width="100" height="20" uuid="dc3c9a75-da97-4367-8afa-6aee444a06b6"/>
+				<text><![CDATA[HEMATOLOGIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="206" width="100" height="20" uuid="b7a09543-2ba2-4f56-b980-4ca5ecc8eb04"/>
+				<text><![CDATA[ORINA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="209" width="38" height="20" uuid="0f6672cd-ad00-4d41-9069-365a7a53fa4a"/>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="210" width="38" height="20" uuid="8636e221-b268-4d09-a9da-c8364c5b722d"/>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="13" y="229" width="23" height="10" uuid="245657a8-fabd-4792-be92-639df0cd72c1"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="38" y="229" width="100" height="11" uuid="e3df3ea0-9fb4-4503-930b-472568c35c1a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82948-Glucosa]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="148" y="226" width="51" height="15" uuid="9d673154-f0a4-4ab0-99d8-c569a4e21f77"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="226" width="51" height="15" uuid="8c97e08e-1938-47e7-a559-69b6e5c2f911"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="241" width="137" height="15" uuid="e11f2af7-6f46-406a-a42c-b314eff292f6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="244" width="23" height="10" uuid="8d21c993-f0aa-45dc-bd8c-2f13bbc3e38c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="256" width="137" height="15" uuid="c89c5bc3-793d-4ab3-95f2-807d1e155661"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="259" width="23" height="10" uuid="d16a1873-b8c6-476b-bf0a-88ed0680fdea"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="271" width="137" height="15" uuid="4eb7d209-4b42-4d6a-8490-364100dc167c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="274" width="23" height="10" uuid="be9afb8a-71b7-41f7-824d-bce6f17c42c1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="286" width="137" height="15" uuid="d0a8ebf2-8f1c-4ebb-bbbc-b0435af7f527"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="289" width="23" height="10" uuid="0372cb6a-9cd4-4778-a194-be13c682e06f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="301" width="137" height="15" uuid="11d1fd79-0816-43c3-a713-041834239e8d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="304" width="23" height="10" uuid="ae3bc6fd-9e32-47c0-9b28-a5f5284cb0a3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="316" width="137" height="15" uuid="55ef5586-624c-4270-bdb9-0a4d1f289551"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="319" width="23" height="10" uuid="41466600-19f0-4f54-9faa-abcba2835959"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="331" width="137" height="15" uuid="f700a9f0-0219-467b-83a3-3a513b88117c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="333" width="23" height="10" uuid="78825911-6a4d-4d46-afd0-2d41911f1fbe"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="345" width="137" height="15" uuid="c4c97fb1-0cc1-46af-834e-68b74b3ba40f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="348" width="23" height="10" uuid="04c9328d-bc7d-4ede-8b1c-8bd90bbacd20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="360" width="137" height="15" uuid="a36aa116-7ce4-41c3-a5b4-1c19243c70eb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="362" width="23" height="10" uuid="a160403e-a8c1-4af4-a3c2-ab06906cb88b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="375" width="137" height="15" uuid="00681164-666f-4c1f-bb8c-6a03d255f2fa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="378" width="23" height="10" uuid="211e9c56-a48d-4d7d-8ebc-4d9f302c0a20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="390" width="137" height="15" uuid="1edb310d-3103-4932-a129-8b7c5b7bb9df"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="393" width="23" height="10" uuid="584974b6-3114-4191-82db-38abe8e281d6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="405" width="137" height="15" uuid="f94b4c3c-e001-40e9-809b-6fd266dc2cfe"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="408" width="23" height="10" uuid="043b0bcb-2feb-427c-9438-a06960123ee0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="420" width="137" height="15" uuid="593847a2-801d-4b9a-9b51-8fdc45d21af8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="422" width="23" height="10" uuid="0c76fea4-4327-4652-9da8-9c2cdb130f80"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="434" width="137" height="15" uuid="3d8de4b3-1030-4faa-b74f-5bbd33b412f3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="436" width="23" height="10" uuid="eeed45f8-f202-4411-8f38-74dca1161b8d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="449" width="137" height="15" uuid="ba7acb37-7e10-40a4-bb52-d89bc9ff0d22"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="452" width="23" height="10" uuid="988534a7-79e4-4a96-a259-6181ae4779d8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="241" width="51" height="15" uuid="9f89fd62-ab1a-4b03-aeff-852825a17325"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="271" width="51" height="15" uuid="795d994a-86d9-4e94-acfd-63f73bf2748c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="256" width="51" height="15" uuid="341bfe7b-81d2-400b-9386-9ca4b830ccff"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="286" width="51" height="15" uuid="021700a7-3936-42c1-8323-7a56a94d37d8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="301" width="51" height="15" uuid="324cd399-e70c-4b69-a69d-8e089ecb0902"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="316" width="51" height="15" uuid="976797c0-bed9-47a0-af26-2fd1c9c06242"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="331" width="51" height="15" uuid="fa743f2e-1d29-409c-8c7a-8c59b9a09e84"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="345" width="51" height="15" uuid="31151ad4-31ea-4f59-82ab-8cd2d18ee3ec"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="360" width="51" height="15" uuid="0045cf67-27f2-485b-9688-59626a7dbfc9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="375" width="51" height="15" uuid="57751509-23e4-4ec6-802e-8e7e9978c051"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="390" width="51" height="15" uuid="6d701c67-f6f0-404e-a6c9-e7d156aa0ca1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="405" width="51" height="15" uuid="adde0a3f-5fe7-415e-a0f0-94c9b69045ed"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="420" width="51" height="15" uuid="679d517a-1545-4b8a-8bc3-876fd6a40cc2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="434" width="51" height="15" uuid="970fcdda-a269-4f99-bba0-1f695eb6a923"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="449" width="51" height="15" uuid="480f6ed3-1486-46fe-928b-ee53e1abd786"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="241" width="51" height="15" uuid="de16974f-0225-4957-90f2-d370dcfe0e4e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="256" width="51" height="15" uuid="1f3daba8-b1b6-4bc2-b07b-fef8913ea590"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="271" width="51" height="15" uuid="a320f14e-7886-4e26-879b-2b193bdd2008"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="286" width="51" height="15" uuid="a9ba4774-7ab4-4602-961b-2d00311002a8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="301" width="51" height="15" uuid="50d65058-6093-4984-8c45-bc36629863b0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="316" width="51" height="15" uuid="5de57c75-703c-4b31-8072-459e864dc842"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="331" width="51" height="15" uuid="7d7613b8-8a07-4756-83e7-570999d231cc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="345" width="51" height="15" uuid="222baf1d-d018-4818-b23a-96c25c5b174f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="360" width="51" height="15" uuid="6917bf22-61fe-4f6b-aba2-10e9dc70fc4b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="375" width="51" height="15" uuid="daca8d6a-dc9d-440c-8379-13fcb70147bb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="390" width="51" height="15" uuid="a67539f4-2e5b-46e7-a380-1880cb4e7cdd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="405" width="51" height="15" uuid="b2e0f9bc-4f5f-4450-b6cb-32b499ead4dc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="420" width="51" height="15" uuid="e951690e-e303-4bc6-8e8d-d94f7315e403"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="434" width="51" height="15" uuid="fd143748-bc80-49e7-9cd8-935d5e2462f8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="449" width="51" height="15" uuid="6e536602-254d-4819-a3ad-055e19240bb0"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="38" y="244" width="100" height="12" uuid="73d05bc6-cbdb-4468-b056-640acf632557"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84520-Urea]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="259" width="100" height="12" uuid="76245ca8-d2cc-49df-8476-811663c3f24b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82565-Creatinina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="274" width="100" height="10" uuid="1e41b42b-4287-4108-98cb-fd9584d8f7c8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84550-Acido Urico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="289" width="100" height="11" uuid="92388074-7ea1-4bb5-bcc5-c6dcbcbf0bb0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[80061-Lipidos Totales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="304" width="100" height="12" uuid="fc4ac57d-b76e-4924-a930-ed705202b54d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82465-Colesterol Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="318" width="100" height="13" uuid="53ea6d51-464e-40dc-aae6-ef0190803a24"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[83718-Colesterol HDL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="333" width="100" height="13" uuid="7664dc2f-37ef-406a-af07-859a24d5589e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[83721-Colesterol LDL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="346" width="100" height="12" uuid="ede8b44e-c001-47d9-b069-41ef8c009171"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[88478-Triglicécidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="362" width="100" height="13" uuid="34fd5762-0a41-4eb2-be83-2f801c5a987f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82247-Bilirrubina Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="377" width="100" height="11" uuid="4a3a9464-e82c-4cec-bf57-48fb029b9dff"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82248-Bilirrubina Directa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="392" width="100" height="11" uuid="ae6f8502-03e0-4192-b50e-31d603e9d856"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82252-Bilirrubina Indirecta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="407" width="100" height="13" uuid="2bf4f494-e416-43f0-a570-7f59fb0f40f0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84155-Proteinas Totales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="422" width="100" height="11" uuid="d0af5d3e-33cb-4094-81c8-385c3c49ce10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82040-Albúmina Sérica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="435" width="100" height="11" uuid="e23b83e2-0cd9-4912-8074-7b89cf1806da"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Globulinas Séricas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="452" width="115" height="10" uuid="24858e92-4f01-49c6-9ad6-b7456fa8e16a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84450-Transaminasas GO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="148" y="464" width="51" height="15" uuid="e55fa412-933f-4232-a231-969d73664b05"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="464" width="137" height="15" uuid="66557df9-aec2-48f0-9189-65208ecc2f17"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="467" width="23" height="10" uuid="cf37680f-16fc-4a3a-a243-384b20827f91"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="464" width="51" height="15" uuid="9ea1dc67-378e-4377-a062-b43b52aaa38b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="38" y="466" width="115" height="11" uuid="70404643-2825-44cf-8996-680607b2e2aa"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84460-Transaminasas GP]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="199" y="479" width="51" height="15" uuid="4ef73776-6108-4b25-8e11-c943cbb3b29a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="38" y="482" width="100" height="12" uuid="6e192f34-51dc-4e48-a265-8ee30db5dc22"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84075-Fosfata Alcalina]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="148" y="479" width="51" height="15" uuid="b1f89892-4a3b-40d3-ad2e-83ac7fc0d6e4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="481" width="23" height="10" uuid="6d8e67d3-d464-42b0-a285-92fd3d501a5c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="494" width="51" height="15" uuid="d4f3a78a-aad7-413c-b73f-f7234d96f2d2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="494" width="51" height="15" uuid="9723bba9-7738-4ed3-b51c-b8cf77332e0a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="494" width="137" height="15" uuid="44a0a3c5-3879-4c4f-aecf-28dab40dabcb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="497" width="23" height="10" uuid="5c7ac1c2-b9f6-4730-ab43-0b5f56b3d15b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="38" y="496" width="100" height="11" uuid="79580ef7-ad00-447c-afdf-3b08529bc1c2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82150-Amilasa]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="11" y="509" width="137" height="17" uuid="76415d50-73a5-4f31-b641-fc1d6d8f5018"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="509" width="51" height="17" uuid="1a13e0da-935c-466d-83cb-3512fccfe56d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="509" width="51" height="17" uuid="f68fbf60-7a92-4b2f-86fe-2a049a7c7963"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="44" y="515" width="100" height="11" uuid="f050182f-85aa-4221-b1b0-0fd56c45a1cd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[INMUNOLOGIA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="254" y="229" width="23" height="10" uuid="6798e5d3-685c-459b-a535-865454250d94"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="241" width="140" height="15" uuid="90ed60b1-21a4-426c-8119-6c3b17d48a1a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="244" width="23" height="10" uuid="9f29977d-cbd8-487b-9c6b-c98c78f76472"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="256" width="140" height="15" uuid="c0e194ab-72ad-4b3e-a5b0-58cb04605405"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="259" width="23" height="10" uuid="825784b2-bf63-459f-a753-8955dba346e5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="271" width="140" height="15" uuid="508cb38e-ebbc-4ab4-b4a0-29ea6ba270ef"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="274" width="23" height="10" uuid="58f8119c-5279-463b-a653-5c1dbe6dde8a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="286" width="140" height="15" uuid="98d8f788-bfc4-4d60-9985-496f58b0c1d4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="289" width="23" height="10" uuid="bfbe7917-ed83-4fa1-ba5d-f368b8eeec54"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="301" width="140" height="15" uuid="a1a8ee74-b703-4fd5-98f2-65e68b20fd46"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="304" width="23" height="10" uuid="14e76c8f-dae1-46fb-bfce-57ba8bdaa027"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="316" width="140" height="15" uuid="0faad089-68e6-4deb-9c72-d109df1d7d4e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="319" width="23" height="10" uuid="0b744d48-6428-4372-8a35-c56819fdd72a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="331" width="140" height="15" uuid="1284cf6a-8ba9-4daa-83c9-e0f6ae496755"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="334" width="23" height="10" uuid="80c6f7a3-36e1-4d3b-b3f8-afc7d1c03070"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="345" width="140" height="15" uuid="a71d4a46-16c7-435c-98fd-fad391bca30f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="348" width="23" height="10" uuid="ecd24573-c078-4c56-9c53-2f3065245d05"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="360" width="140" height="15" uuid="7f3a9456-fde0-45ac-8691-1c8c6495c8d4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="363" width="23" height="10" uuid="0752b9c5-2cd1-4944-b694-412337d92224"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="375" width="140" height="15" uuid="55ffad7b-706a-4b9b-abba-60ac76708ba4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="378" width="23" height="10" uuid="24cc3274-5190-44f6-ad7e-96e95a5c52ce"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="390" width="140" height="15" uuid="437be57f-4160-4cc5-825f-0bd2f0488bd2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="393" width="23" height="10" uuid="135e1188-d8af-4c9d-8bc4-9178eef62be6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="405" width="140" height="15" uuid="8848c9a7-7ed0-42d5-94c4-5ebf49c690a0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="408" width="23" height="10" uuid="ede8eab6-0b6a-45f6-b43e-049622999c5d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="420" width="140" height="15" uuid="446790ae-2d70-449a-8cf0-f60fef59e931"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="422" width="23" height="10" uuid="cb5cd3bf-43fe-4cd3-ad1d-e56a7b09d02f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="434" width="140" height="15" uuid="ce9347a0-5ae5-41b7-a9c8-919e8ffd933e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="437" width="23" height="10" uuid="d8ce3a1d-eb40-466d-a1a5-acb63199b490"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="449" width="140" height="15" uuid="f656caa9-561c-47c0-8f07-142bbe7f5dab"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="452" width="23" height="10" uuid="66d924c7-a836-4b0e-88a1-888d21e867d0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="464" width="140" height="15" uuid="ee109ce5-6083-47c0-8927-4449c2976f45"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="467" width="23" height="10" uuid="26515ad0-9eac-4b19-a7b4-5c3bb2dea8fe"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="479" width="140" height="15" uuid="59f9446a-d1a8-401a-95dc-3f93c4a398e3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="482" width="23" height="10" uuid="90e8db4b-5fa2-4504-9d19-ccc84dbf01c9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="494" width="140" height="15" uuid="fd7d2914-47d0-4666-b61e-1a5a601b4e82"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="497" width="23" height="10" uuid="960e0c4b-d51f-47e1-b94f-96693e57919a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="509" width="140" height="17" uuid="138c9386-4b28-4dad-ba7d-8f3fbe578577"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="512" width="23" height="10" uuid="e60aa533-c6aa-4daa-8a8c-291681c669f6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="526" width="140" height="15" uuid="b9360c7c-14ad-4543-a590-c4eaa76dbf3c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="529" width="23" height="10" uuid="d38710e4-94a9-4794-99bb-f4356a649d6d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="544" width="23" height="10" uuid="65d1dce8-5616-48dd-afbf-1ad858755820"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="556" width="140" height="15" uuid="516d57ac-54f4-42b4-9a49-4a56ab5e7b34"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="559" width="23" height="10" uuid="c4786f5a-f5aa-41ff-8253-2b943fd00a37"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="571" width="140" height="15" uuid="7bc01d8b-ada9-4b72-a097-0ab952338a32"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="574" width="23" height="10" uuid="3014c316-fb5c-44ca-ab4e-984fc8750584"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="586" width="140" height="15" uuid="ed862867-4a20-4b1f-9fee-a391e3593c5b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="589" width="23" height="10" uuid="1b1a2d0b-704b-4c60-a41e-58c91393081f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="526" width="137" height="15" uuid="b3b118eb-4535-43d6-8022-d556eb6bff2c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="529" width="23" height="10" uuid="e56fd0ed-23af-4464-93c0-4c35d3158687"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="526" width="51" height="15" uuid="bfb691a1-8ee9-4176-bbbc-e63c8abe1b99"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="526" width="51" height="15" uuid="ed005bf5-b507-4282-b13c-b475ae705dc8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="541" width="51" height="15" uuid="58198c50-f91a-47f8-937f-8e1e6a491c00"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="541" width="51" height="15" uuid="3ac86d60-fca3-40d3-ae50-020f5d1b6661"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="556" width="51" height="15" uuid="9c8ffffc-ae1b-41ee-af14-8b2e15774654"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="556" width="51" height="15" uuid="bd7b0c53-5b14-4fe2-b491-54228377e417"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="571" width="51" height="15" uuid="e1b6858c-1d1b-4970-a267-6ecd14ddeb79"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="571" width="51" height="15" uuid="9167c828-4ca6-4ba0-a36f-db7dab70873d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="586" width="51" height="15" uuid="f0b4043b-ecc5-4d46-82a1-28004a8edb8d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="586" width="51" height="15" uuid="eaf22772-0888-424b-80f1-9234eaaff759"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="541" width="137" height="15" uuid="1a5ded17-3993-4d18-a359-b3acab11bc5d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="544" width="23" height="10" uuid="ed4d9d6b-c7ad-4bfd-a1b7-f567605bc85b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="556" width="137" height="15" uuid="a6ba327c-9041-41f7-946b-a025aebd17ce"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="559" width="23" height="10" uuid="53f0f396-196a-4664-997a-d7458f4bc6a6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="571" width="137" height="15" uuid="2302a0fe-0b67-448e-81bd-7152b9aad32f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="574" width="23" height="10" uuid="281e3153-e0da-45cf-b4cb-a0a30300444c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="586" width="137" height="15" uuid="c71de9ca-b494-44c8-9e64-25069a620eb1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="589" width="23" height="10" uuid="c592a0cb-8a08-44a1-88e8-6b4073821300"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="601" width="137" height="15" uuid="6bc77369-a989-491d-80de-a9ff6159e534"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="604" width="23" height="10" uuid="051bb9b2-54bc-48cc-ae80-892196d01f1c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="616" width="137" height="15" uuid="a185b20b-d0f0-49bc-ad27-6a060661ce78"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="619" width="23" height="10" uuid="8318d4f8-1261-4a54-8716-415099a00305"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="631" width="137" height="15" uuid="d166d15c-7ff3-4a4d-b5e2-435d3b3319bc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="634" width="23" height="10" uuid="a062b19f-5a4e-4229-9f8d-184532ec6077"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="646" width="137" height="15" uuid="bc75066a-b675-4688-a5a7-91b34990fc99"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="649" width="23" height="10" uuid="671aa123-cc15-4302-8c7a-a7f82466ed30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="661" width="137" height="15" uuid="0f86fdb1-c75b-4bf5-af13-a79680b8bbab"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="664" width="23" height="10" uuid="f5ea536d-1827-4e03-b03b-af0e80ec42cf"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="676" width="137" height="15" uuid="f268950d-39a1-4306-b28f-3b947a409842"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="679" width="23" height="10" uuid="0075fc27-a156-44e5-9bce-a7fcbe7eb356"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="691" width="137" height="15" uuid="c8671494-5dc7-46e8-8974-08bc23095073"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="694" width="23" height="10" uuid="16a9b63d-86c1-4789-88eb-705ba0cef7ed"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="706" width="137" height="15" uuid="9cb1f9f1-a94a-4bad-87db-1449b8a05236"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="13" y="709" width="23" height="10" uuid="bf45ba81-af95-42c3-908e-a786aaedd9f2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="616" width="51" height="15" uuid="2ca9aac2-3769-4238-b5c8-3a96bbe2d0b4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="601" width="51" height="15" uuid="3f424513-4db4-4dae-b9ab-c4f1ed1948c3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="616" width="51" height="15" uuid="968cb2b0-1b17-4fd7-b610-fcd44ce0052e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="601" width="51" height="15" uuid="5ce73396-8c88-4589-af62-33cd0023bb87"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="631" width="51" height="15" uuid="53a6c272-24bf-449e-b5d1-a8a69888bbff"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="631" width="51" height="15" uuid="3b8b5927-c8ee-4ca3-9456-ac16ef017a2a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="646" width="51" height="15" uuid="2a2fbd6a-1e71-4cae-b811-a9dbdc9b70e8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="646" width="51" height="15" uuid="42b2973c-dba6-43f4-82cc-9993a7c5923a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="661" width="51" height="15" uuid="1e81a04b-be64-44bc-9c82-cd3c3ee88c45"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="661" width="51" height="15" uuid="7fa7b62b-d331-4513-8224-bdf2af13d08c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="676" width="51" height="15" uuid="fe050c7b-4309-4458-8314-3b5ce894fd08"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="676" width="51" height="15" uuid="efb3d23a-79f7-426d-8a8c-ac3c3a950dcb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="691" width="51" height="15" uuid="9e41a601-a83c-4947-ad0b-3569bff5ae49"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="691" width="51" height="15" uuid="10837b98-487b-4538-8aed-c44a1c7844f8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="199" y="706" width="51" height="15" uuid="36e3dfb2-b0c3-488e-be13-e24f99fb3ba9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="706" width="51" height="15" uuid="6a9460c8-4209-4dce-8d8b-fbb0a605beb9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="39" y="530" width="100" height="11" uuid="1f99cb6c-172c-4c97-be10-3e57513763a1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[R.P.R]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="545" width="100" height="11" uuid="f95bd923-7185-418d-bb6f-86bfbeb70705"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[V.D.R.L]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="558" width="100" height="11" uuid="5dc7820b-bd8a-46fb-8dce-cb766c146f40"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tifico H]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="573" width="100" height="11" uuid="bf557aca-5cca-4200-b56e-5aa7bd933d47"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tifico O]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="589" width="100" height="11" uuid="147275ff-4731-4830-9d0a-461e4c2b3f92"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Paratifico A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="603" width="100" height="11" uuid="d2a3a904-a824-4f0c-bdd4-340ed51812dd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Paratifico B]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="619" width="100" height="11" uuid="6beb2a29-bdc1-40e5-84a3-bc7ba5c53698"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86622-Brucellas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="633" width="120" height="11" uuid="0e527a74-9fdd-4bb9-a692-39264a230405"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86140-Proteina C Reactivas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="649" width="110" height="11" uuid="dad49d16-d8e8-4cce-a0b6-48e5709b5330"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86060-Antiestreptolisina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="663" width="115" height="11" uuid="98ab2be7-2250-45da-aadf-444e89d76239"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86430-Factor Rematoideo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="679" width="100" height="11" uuid="c4f7b348-8350-4b3d-a4ea-83629c52718a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86689-VIH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="694" width="115" height="11" uuid="1d6c7c17-d325-46b4-bc20-1bece47386a0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[81025-Test de Embarazo]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="392" y="229" width="23" height="10" uuid="06455cf6-1171-4cc3-819c-7da1efed8a38"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="241" width="149" height="15" uuid="ea0f8eeb-7166-40d5-9f1d-3c7bee163018"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="256" width="149" height="15" uuid="86d3ce66-b898-4075-92b6-9ea2d8eb0e09"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="271" width="149" height="15" uuid="c3cbb003-bf29-4104-9846-f4ba3079a4a4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="286" width="149" height="15" uuid="efdceff7-d726-4c38-9205-3df2870c5810"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="301" width="149" height="15" uuid="52da03ea-6aa0-4c7d-ba70-0b6bd1d380fb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="316" width="149" height="15" uuid="33b7cc9c-6ef3-4fa4-84ab-904cd0147650"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="331" width="149" height="15" uuid="db0ef943-b4ac-4adf-b2f9-c48ed8b5afaf"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="281" y="229" width="100" height="11" uuid="8d517f2c-0a3c-423f-aa3d-727afc1ca371"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[85015-Hemoglobina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="244" width="100" height="11" uuid="7c714b52-9ec1-4ced-9c85-ee12825a2e68"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[85014-Hematocrito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="259" width="37" height="11" uuid="68451b63-5b36-45a3-9aa3-ecbb53d018b2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hematíes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="275" width="80" height="11" uuid="b9d5a0c4-8f22-4e2e-b27e-2be2d2883f24"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[89055-Leucocitos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="436" width="37" height="11" uuid="7d139d1c-e241-412d-8b7f-8513556dd9af"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[V.S.G]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="451" width="80" height="11" uuid="12580f56-9c48-4819-a022-e3d754077b42"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[85049-Plaquetas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="466" width="90" height="11" uuid="597a6260-9efb-4ba1-90a6-d0841cd316d5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[T. de Coagulación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="481" width="73" height="11" uuid="c5b416e0-7b5d-4130-8b2d-ec0c3134dedc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[T. de Sangria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="347" width="52" height="11" uuid="c8543147-cfa4-442d-8e60-bd76774b4f4f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Abastonados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="363" width="62" height="11" uuid="531d63e2-c9ea-4b0b-a5b8-736a18a85388"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Segmentados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="377" width="80" height="11" uuid="af2ea03a-a0e0-423f-b9e9-9bcc583ea6aa"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[89190-Eosinófilos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="393" width="37" height="11" uuid="7b855f20-27f9-4501-8746-fb6e057151bb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Basófilos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="409" width="52" height="11" uuid="1df5a291-0f38-48a8-9099-5151655e7063"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Monocitos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="422" width="80" height="11" uuid="2e9ab9f5-d2ae-436b-ac60-7a3b1561852c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86361-Linfocitos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="11" y="721" width="528" height="20" uuid="d4c40a07-1359-4371-8491-19a4a920a91a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="13" y="723" width="100" height="20" uuid="81b8b16e-83c2-49c5-8431-e5906ca5e52e"/>
+				<text><![CDATA[RESPONSABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="723" width="117" height="18" uuid="db8e99c7-c5f5-4d6d-aeee-679ebfe6b7a8"/>
+				<text><![CDATA[FECHA DE RESULTADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="498" width="73" height="11" uuid="a18a875f-9b3c-4d37-a1ac-74e173faef73"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[T. de Protrombina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="512" width="100" height="11" uuid="8c2d7706-3202-4da7-84fc-fe5589fd896d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[T. de Trombloplastina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="530" width="110" height="11" uuid="0605b1d5-2541-4cfb-a582-0f9018b382d1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86900-Grupo Sanguineo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="544" width="110" height="11" uuid="86ac8c7d-0a97-4753-8655-99ee119a948e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86901-Factor RH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="558" width="100" height="11" uuid="74e06269-61e1-4567-8166-b7381235f2fd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[87207-Gota Gruesa]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="250" y="601" width="140" height="15" uuid="0ef9bdf5-047a-4065-9b0d-e0836fb91998"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="254" y="603" width="131" height="11" uuid="2454bf50-8bd9-467b-8723-03f0779479ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MICROBIOLOGIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="165" width="176" height="20" uuid="8529bd85-31da-4603-8edf-16c8a0a37e4e"/>
+				<textFieldExpression><![CDATA[$F{nombre_usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="145" width="177" height="20" uuid="6687ed24-d659-471b-a480-e685c07cbffe"/>
+				<textFieldExpression><![CDATA[$F{establecimiento_nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="109" y="186" width="349" height="20" uuid="235f9ea6-8d05-4165-a1a2-0e4bb265a339"/>
+				<text><![CDATA[Z349 - Supervisión de embarazo normal no especificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="229" width="11" height="13" uuid="fde4cf98-caea-4036-a3d0-fbf0a2295733">
+					<printWhenExpression><![CDATA[$F{examen_glucosa}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="229" width="11" height="14" uuid="8c56ee5e-7caa-4658-801d-1a2ccef796d3">
+					<printWhenExpression><![CDATA[$F{examen_hemoglobina}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="274" width="11" height="13" uuid="35d5283a-739d-4b4a-a54c-df90793d0b46">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="348" width="11" height="13" uuid="e957a6f2-e168-4c51-a3f7-01ed8d0faa56">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="363" width="11" height="13" uuid="de00205a-d4af-4ea6-b8c0-c7b7a4c46992">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="407" width="11" height="13" uuid="47c7125d-6099-480f-876c-99449e9f417e">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="392" width="11" height="13" uuid="2d2243f3-1f64-4e13-bd9d-a79cf80fe29b">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="377" width="11" height="13" uuid="f6aadb45-dab2-4384-831e-07828168671b">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="421" width="11" height="13" uuid="1a50293e-f3d5-40c4-904f-012da6b2a92c">
+					<printWhenExpression><![CDATA[$F{examen_hemograma}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="528" width="11" height="13" uuid="3c7b889b-a511-4a24-8e55-3945248eca57">
+					<printWhenExpression><![CDATA[$F{examen_grupo_sanguineo}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="543" width="11" height="13" uuid="93888c5a-a175-4efc-adea-682c25e480aa">
+					<printWhenExpression><![CDATA[$F{examen_factor}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="229" width="100" height="11" uuid="c2346957-2fa1-4793-9484-ff4f344a0557"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Examen Completo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="398" y="228" width="11" height="14" uuid="bb16a56f-36d5-46f3-bf18-9c0b95bc8215">
+					<printWhenExpression><![CDATA[$F{examen_orina}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="390" y="345" width="149" height="15" uuid="18fe75f3-d4a8-4368-8aee-00e894a5e41d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="360" width="149" height="15" uuid="3de5be91-f817-4bb8-9d21-83a4a7545003"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="390" width="149" height="15" uuid="45f9ba39-5507-4586-92f9-deb5094f31c0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="405" width="149" height="15" uuid="82ecbd30-b5c4-4d04-a454-227877f09923"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="420" width="149" height="15" uuid="58954dc1-bf07-41c6-aaa8-22cdcb5ed5bc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="434" width="149" height="15" uuid="44bd6986-a85a-4203-811f-c652f2c6c037"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="449" width="149" height="15" uuid="29441a8e-dabc-45ce-9e95-7ca810fe4315"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="464" width="149" height="15" uuid="bba79e00-d9e0-4eba-a5c3-6723e3a820ad"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="479" width="149" height="15" uuid="d7c2839c-0ab2-4a01-9198-60f163f5752a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="494" width="149" height="15" uuid="e2ab13fa-5177-414b-83cf-c0e7e31369f5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="509" width="149" height="17" uuid="53ecb77b-b5dd-4b3b-892a-695f665e2efa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="526" width="149" height="15" uuid="a134ec0e-3904-48b9-9405-f2351b7300a5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="541" width="149" height="15" uuid="110ab2c8-a331-479a-aea1-12df20210fba"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="556" width="149" height="15" uuid="b8bb6202-3c03-4ffa-a01b-ebc56ee6308b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="571" width="149" height="15" uuid="4a0ceb72-709e-4ecd-85e8-9a980bfaf78c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="586" width="149" height="15" uuid="66d0ae2e-0069-482a-844d-15e7a861fd3b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="601" width="149" height="15" uuid="1ca944eb-51ba-400f-9e46-921d2ce8bcac"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="616" width="149" height="15" uuid="95f2c9a4-ada9-4682-8097-6809f762dc2a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="631" width="149" height="15" uuid="47ad39b4-4145-4ccd-825f-956c4a96cc90"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="646" width="149" height="15" uuid="a9963cfc-cd4c-4c98-a785-e843e4912d0b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="661" width="149" height="15" uuid="c7de2165-4706-42d2-95a4-d12427953860"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="616" width="140" height="15" uuid="c6ac5365-ec07-470f-a7db-0344ca455a74"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="631" width="140" height="15" uuid="efd5a8f3-fa3a-41a7-9c5f-29643d149234"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="646" width="140" height="15" uuid="2e7e964a-61d2-4c32-b656-1528fe6618ba"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="661" width="140" height="15" uuid="886ca2fa-23a8-4cf8-aa62-ebe7b1f6e539"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="676" width="140" height="15" uuid="4f6fcef8-5b50-4c8d-a8ad-34143d00e777"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="676" width="149" height="15" uuid="7477c23f-9969-4562-a275-d9ac0be4c4c0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="691" width="140" height="15" uuid="fd1c63ce-edf3-409b-940f-86c8387e8dcc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="691" width="149" height="15" uuid="1942998d-d702-4b10-9e22-c60e96cb9092"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="250" y="706" width="140" height="15" uuid="2ff46c19-c8b2-43ce-8d07-79c623edee7c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="706" width="149" height="15" uuid="a27de60c-fee4-4b38-8510-152978034405"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="358" y="229" width="27" height="11" uuid="65d3efa6-1c75-418d-a7a4-3b7aa09bc20f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[g/dl]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="243" width="7" height="11" uuid="5d5bda8b-40f3-4ed4-9885-ff1bac92ae7f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="258" width="27" height="11" uuid="5d8fb97d-b6d9-4e6d-ad61-c191c0fa2461"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="273" width="27" height="11" uuid="3b151de9-a394-411a-baf3-f6af406bdeef"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="289" width="27" height="11" uuid="b0c6079e-8880-4e67-b451-e79c1e74ba6c"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="304" width="27" height="11" uuid="2f7bec02-e674-43ef-a71c-c00183c232c3"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="318" width="27" height="11" uuid="8f0587be-e49e-4843-af1e-742232bc1e0d"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="332" width="27" height="11" uuid="316ad568-83e0-40ff-87ec-8679f077190f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="347" width="27" height="11" uuid="ba747d62-a10d-4b2c-9080-419b1052b7a3"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="361" width="27" height="11" uuid="b6ed72ae-5522-4ff2-bcc9-0606f238ea9a"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="376" width="27" height="11" uuid="6058418b-ff94-444b-a5e5-e6ded46eb695"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="392" width="27" height="11" uuid="dda615ca-b07e-41a3-9913-e359927dddd4"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="407" width="27" height="11" uuid="533dc6d3-1090-45a9-a075-695054a8f433"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="422" width="27" height="11" uuid="b2f841e4-b2a1-411b-bafb-f9713acb151b"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="436" width="27" height="11" uuid="21ba26b4-c309-4ae7-b58a-22ea4949e964"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[mm/h]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="451" width="27" height="11" uuid="2f6a6635-8c0f-47ee-bdc7-e8a7c69a346d"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[pmmc]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="254" y="694" width="23" height="10" uuid="178e1bf3-b502-46b4-81ef-de53727ae5a4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="679" width="23" height="10" uuid="80323851-a25a-4ebb-a53d-221f5eddd0e3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="664" width="23" height="10" uuid="8c311607-1544-4b3a-bdc3-5294b98127b0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="649" width="23" height="10" uuid="e0cfcd82-b040-46da-b406-31b4b23e3b1b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="634" width="23" height="10" uuid="de580e88-a08a-4d21-8d54-6e9ef727af7e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="709" width="23" height="10" uuid="a6e74e7a-4c69-4efa-bc57-7bd32a5607dd"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="281" y="709" width="100" height="11" uuid="41046e14-8b24-48dd-b014-ccd9f537b23b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reacción Inflamatoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="694" width="100" height="11" uuid="f5db546d-8468-45bb-baa3-5f7dc2b43902"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82270-Sangre Oculta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="678" width="100" height="11" uuid="7e22c1a9-61cc-4cfe-9757-b89dbfe68a29"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Concentración]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="664" width="100" height="11" uuid="69618341-1a05-4071-a104-30203e44f8d5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[87172-Graham]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="634" width="100" height="11" uuid="2fec2fb2-fe49-448e-891e-04da86f037c0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ex Directo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="618" width="131" height="11" uuid="4dd17f5e-c9a7-451f-8ddd-20d796525e1e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PARASITOLOGIA (HECES)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="394" y="559" width="23" height="10" uuid="e778fbb6-1f2c-4a3d-9a36-a3e665dfe9cc"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="418" y="243" width="100" height="11" uuid="8d473f61-6e93-4bfa-b5d1-a92a5e6565a4"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reacción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="393" width="100" height="11" uuid="9855ec8b-6bef-45d8-a530-80e390aba590"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cel Epiteliales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="377" width="125" height="11" uuid="ca3bebc1-2b94-4387-b6dd-03d57e8433ba"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[81015-Sedimentario Urinario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="362" width="100" height="11" uuid="693a5bae-aaa7-49fb-b719-c3106b173acd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Thavenon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="348" width="100" height="11" uuid="cfd5e9db-a42f-4c00-a0c4-53b7ea1ead05"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bilirrubina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="333" width="100" height="11" uuid="9a18e926-069d-4937-ad5a-940f3da1889b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Urobilinógeno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="319" width="100" height="11" uuid="bb359ab0-25ac-4f6a-97c9-4fed74bbfc6e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nitritos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="303" width="100" height="11" uuid="c78b2a58-267e-407e-8a93-8f10cbb06daa"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cetonas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="288" width="100" height="11" uuid="52080a3a-bede-4f76-9781-c41a82d4b0f1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Proteinas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="274" width="100" height="11" uuid="bb8791b9-e7c8-485a-a75a-89c6d63cda98"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Glucosa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="258" width="100" height="11" uuid="742f1aa2-4fe4-4815-974f-e7740eb1d71e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Densidad]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="392" y="378" width="23" height="10" uuid="656b000d-c5a0-41cf-8b90-e7852091a639"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="398" y="377" width="11" height="14" uuid="498d53b6-e70f-4c6a-8619-e07e5404fcb5">
+					<printWhenExpression><![CDATA[$F{examen_orina}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="408" width="100" height="11" uuid="231c5cfd-f88a-4f2d-af91-8e33c41777a8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Leucocitos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="496" width="130" height="11" uuid="ac6b15cd-13c1-40c1-9877-9a6cfaf7b8a8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[82575-Depuración Creatinina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="467" width="130" height="11" uuid="67bc3f51-127e-48e7-84ca-8940b22616bb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[84156-Proteinuria 24 horas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="450" width="100" height="11" uuid="583dde72-3bf8-4024-9795-c1060a52cc93"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cristales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="436" width="100" height="11" uuid="f58f41e8-14e8-4c24-8042-f7908bb70252"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cilindros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="423" width="100" height="11" uuid="d8bb2440-7f2d-4aec-a47f-52998a8181d1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hematíes]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="394" y="467" width="23" height="10" uuid="32487327-da89-43e3-85c3-2f0e4a742370"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="394" y="497" width="23" height="10" uuid="af49a57e-7893-4778-8c3b-b9e4ba84ecce"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="394" y="528" width="23" height="10" uuid="4cb4d65a-1bd1-4094-a1f4-fcc0ef6c224d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="394" y="544" width="23" height="10" uuid="7ba95117-f9b4-402c-bba8-cd6f45e14b63"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="394" y="574" width="23" height="10" uuid="c82c155a-b44c-4ee0-b30b-60ad3ade1caf"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="394" y="589" width="23" height="10" uuid="06126356-de52-4238-9b63-8b5453d9a6e7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="393" y="619" width="23" height="10" uuid="556f7fff-60c5-4d8a-b72a-ad04ae084679"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="419" y="620" width="100" height="11" uuid="36b1fa8c-7f76-4863-985c-a0cf1e287e45"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cultivo de:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="635" width="100" height="11" uuid="a5e19f53-e80b-44d4-8df2-78a0da918c43"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Directo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="679" width="100" height="11" uuid="8c2f2d3e-c9ff-41ab-ac88-3879e3b84e92"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cultivos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="665" width="100" height="11" uuid="5d3772ec-f9d3-467a-87e3-cf259d9441b3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gram:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="2" width="100" height="15" uuid="252bc970-6ed8-4e3e-8766-ac5ba2b79e02"/>
+				<text><![CDATA[REG. LABORATORIO]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="221" y="0" width="100" height="50" uuid="9db156d5-981e-4066-abed-5dd4a64a7b03"/>
+				<imageExpression><![CDATA[$P{establecimiento_logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="419" y="543" width="130" height="11" uuid="7106c9c7-f378-41d5-a1b9-d60bbd7dacd3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86592-Prueba Rápida sífilis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="529" width="130" height="11" uuid="4e9ec0ee-4a4e-4992-a64f-5250abcfb95b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[86703-Prueba rápida VIH]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement x="439" y="165" width="103" height="20" uuid="55a086b4-fbda-4a83-870e-180ce786c792"/>
+				<textFieldExpression><![CDATA[$F{control_created}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="13" y="3" width="131" height="47" uuid="e6f5141e-ad43-41de-9029-abc2aa2a67d7"/>
+				<imageExpression><![CDATA[$P{logo_minsa}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

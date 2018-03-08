@@ -1,0 +1,74 @@
+{% load static %}
+
+<div class="panel panel-default" id="data-buscar-body">
+    <table class="table table-bordered table-striped" id="ficha-problema-table">
+        <thead>
+        <tr>
+            <td colspan="5">PHQ9</td>
+        </tr>
+        <tr>
+            <th>Durante las <b>últimas 2 semanas</b> ¿Con qué frecuencia ha sentido molestia debido a cualquiera de las siguientes condiciones?</th>
+            <th>Para nada</th>
+            <th>Varios días (por ejemplo, entre 1 y 6 días)</th>
+            <th>La mitad de los días (por ejemplo, entre 7 y 11 días)</th>
+            <th>Casi todos los días (por ejemplo, 12 días o más)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.poco_interes_o_placer %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.desanimada_deprimida %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.problemas_dormir %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.cansancio %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.alimenticio %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.falta_autoestima %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.dificultad_concentracion %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.mueve_lento_o_hiperactivo %}
+        </tr>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.pensamientos_autodestructivos %}
+        </tr>
+        <tr>
+            <td>Puntaje</td>
+            <td colspan="4" class="text-center" id="ficha-problema-puntaje">{{ form.puntaje.value|default_if_none:'' }}</td>
+            {{ form.puntaje }}
+        </tr>
+        <tr class="phq9-alerts">
+            <td colspan="5" style="color: red !important; font-size: 16px">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="panel panel-default" id="data-buscar-body">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Nada en absoluto</th>
+            <th>Algo dificil</th>
+            <th>Muy dificil</th>
+            <th>Extremadamente dificil</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% include 'controles/partials/field_choices_as_tds.html' with field=form.difucultad_cumplir_labores %}
+        </tr>
+        </tbody>
+    </table>
+</div>

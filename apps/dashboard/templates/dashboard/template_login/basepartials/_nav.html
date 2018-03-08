@@ -1,0 +1,50 @@
+{% load static %}
+<div class="nav-side-menu " id="sidebar-wrapper">
+  <div class="menu-list heightList">
+    <ul id="menu-content" class="menu-content collapse in ">
+      {% if establecimiento_actual %}
+        <li class="hospitalSidebar">
+          <div class="col-lg-4 col-md-4 col-xs-12">
+            <i class="fa fa-hospital-o" id="iconNameHospital"></i>
+          </div>
+          <div class="col-lg-8 col-md-8 hidden-xs ">
+            <p class="nameHospitalSidebar aparece ellipsis">{{ establecimiento_actual.nombre }}</p>
+          </div>
+        </li>
+      {% endif %}
+      <a href="#">
+        <li data-toggle="collapse" data-target="#moduloSelected" class="collapsed row active activos"
+            aria-hidden="true">
+          <div class="col-lg-3 col-md-3 col-xs-3">
+            <img class="modulo-icon" src="{% static 'minsalogin/vendor/img/smiling-baby.png' %}">
+          </div>
+          <div class="col-lg-6 col-md-3 col-xs-6 ">
+            <p class="modulo aparece ellipsis">WAWARED<p>
+          </div>
+          <div class="col-lg-3 col-md-3 col-xs-3">
+            <i class="fa fa-angle-down flechaMenuDespl" aria-hidden="true"></i>
+          </div>
+        </li>
+      </a>
+      <ul class="sub-menu collapse in" id="moduloSelected">
+        {% block navmenu %}{% endblock %}
+      </ul>
+    </ul>
+  </div>
+  {% if auth_apps %}
+    <div class="menu-bottom">
+      <div class="row">
+        {% for app_key, app_data in auth_apps.apps.items %}
+          {% if app_key != auth_apps.current.app_identifier %}
+            <a href="{{ app_data.url }}">
+              <div class=" flotar convertwidth">
+                <img src="{% static 'minsalogin/vendor/img/fetus.png' %}" class="modulo-icon2">
+                <p class="modulo aparece">{{ app_data.name }}</p>
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>

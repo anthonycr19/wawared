@@ -1,0 +1,87 @@
+{% load static %}
+{% load form_tags %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+<script src="{% static 'js/vendor/select2.min.js' %}"></script>
+    {% cie_select egreso_form.diagnostico %}
+    {% cie_select egreso_form.diagnostico_traslado %}
+    {% cie_select egreso_form.diagnostico_fallecimiento %}
+    <script>
+        $(document).on('ready', function () {
+            $('#id_egreso-fecha').datepicker();
+            $('#id_egreso-hora').timepicker({
+                defaultTime: 'current',
+                showSeconds: false,
+                template: false,
+                showMeridian: false
+            });
+            var $egresoTipo = $('#id_egreso-tipo');
+            var $vive = $('#id_vive');
+            var $diagnosticoTrasladoWrapper = $('#id_egreso-diagnostico_traslado').parents('.form-group');
+            var $diagnosticoFallecimientoWrapper = $('#id_egreso-diagnostico_fallecimiento').parents('.form-group');
+            var $necropsiaWrapper = $('input[name="necropsia"]').parents('.form-group');
+            var $establecimientoTrasladoWrapper = $('#id_egreso-establecimiento_traslado').parents('.form-group');
+
+            var $tieneEgreso = $('#id_tiene_egreso');
+            var $tieneMalformacionesCongenitas = $('#id_tiene_malformaciones_congenitas');
+            var $egresoFields = $('#egreso-fields');
+            var $malformacionesCongenitasFields = $('#malformaciones-congenitas');
+
+            changeTipo($egresoTipo.val());
+            checkEgreso($tieneEgreso.is(':checked'));
+            checkVive($vive.is(':checked'));
+            checkMalformacionesCongenitas($tieneMalformacionesCongenitas.is(':checked'));
+            $egresoTipo.on('change', function () {
+                changeTipo(this.value);
+            });
+
+            $tieneEgreso.on('change', function () {
+                checkEgreso($(this).is(':checked'));
+            });
+
+            $vive.on('change', function () {
+                checkVive($(this).is(':checked'));
+            });
+
+            $tieneMalformacionesCongenitas.on('change', function () {
+                checkMalformacionesCongenitas($(this).is(':checked'));
+            });
+
+            function changeTipo(tipo) {
+                if (tipo === 'traslado') {
+                    $diagnosticoFallecimientoWrapper.hide();
+                    $diagnosticoTrasladoWrapper.show();
+                    $establecimientoTrasladoWrapper.show();
+                } else if (tipo === 'fallece') {
+                    $diagnosticoFallecimientoWrapper.show();
+                    $diagnosticoTrasladoWrapper.hide();
+                    $establecimientoTrasladoWrapper.hide();
+                } else {
+                    $diagnosticoFallecimientoWrapper.hide();
+                    $diagnosticoTrasladoWrapper.hide();
+                    $establecimientoTrasladoWrapper.hide();
+                }
+            }
+            function checkEgreso(value) {
+                if (value) {
+                    $egresoFields.show();
+                } else {
+                    $egresoFields.hide();
+                }
+            }
+            function checkVive(value) {
+                if (value) {
+                    $necropsiaWrapper.hide();
+                } else {
+                    $necropsiaWrapper.show();
+                }
+            }
+            function checkMalformacionesCongenitas(value) {
+                if (value) {
+                    $malformacionesCongenitasFields.show();
+                } else {
+                    $malformacionesCongenitasFields.hide();
+                }
+            }
+        });
+</script>

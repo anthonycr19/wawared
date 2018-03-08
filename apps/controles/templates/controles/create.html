@@ -1,0 +1,40 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Crear control prenatal{% endblock %}
+{% block extra_style %}
+    <link href="{% static 'css/datepicker.css' %}" rel="stylesheet" media="screen">
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" name="form-control" id="form-control" role="form" method="post">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Crear Atención prenatal</h3>
+                    </div>
+                    {% include 'embarazos/partials/control_paciente_resume_header.html' with paciente=paciente %}
+                    {% include 'controles/partials/control_form.html' with form=form %}
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                            <a class="btn btn-default" href="{% url 'controles:list' paciente.id %}">Regresar atenciones</a>
+                        </div>
+
+                        <div class="text-right">
+                            <!--<button type="submit" class="ladda-button" data-color="blue" data-style="contract-overlay">
+                                <span class="ladda-label">Guardar</span>
+                                -->
+                                 <input class="btn btn-green" type="submit" value="Guardar" id="btn-guardar"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    {% include 'controles/partials/control_form_js.html' with embarazo=embarazo %}
+{% endblock %}

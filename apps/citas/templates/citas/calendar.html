@@ -1,0 +1,77 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Calendario{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Programación de citas</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.getJSON('{% url 'cita:events' %}', function (data) {
+            var i, len = data.length;
+            var events = [];
+            for (i=0; i<len; i++) {
+                var _event = data[i],
+                    fiveHours = (5 * 60 * 60 * 1000),
+                    _start = new Date((new Date(_event.start)).valueOf() + fiveHours);
+                events.push({
+                    title: _event.title,
+                    start: _start,
+                    url: _event.url,
+                    allDay: false
+                });
+            }
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay'
+                },
+                editable: true,
+                events: events,
+                defaultEventMinutes: 30,
+                buttonText: {
+                    day: 'Dia',
+                    month: 'Mes',
+                    year: 'Año',
+                    today: 'Hoy',
+                    week: 'Semana',
+                    weekNumberTitle: ''
+                },
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                titleFormat: {
+                    week: 'd[MMM yyyy]{ -[ ] d MMM yyyy}'
+                },
+                selectable: true,
+                select: function (start, end, fullDay) {
+                    console.log(start, end, fullDay);
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,969 @@
+{% load static %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/vendor/moment.js' %}"></script>
+<script src="{% static 'js/vendor/jquery.validate.js' %}"></script>
+<script src="{% static 'js/vendor/additional-methods.js' %}"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+        var arrowKeys = [37, 38, 39, 40];
+
+        if ($zika_viajo.val()=='si') {
+            $('.zika_donde').show();
+            $('.zika_sintomas').show();
+        }
+        else {
+            $('.zika_donde').hide();
+            $('.zika_sintomas').hide();
+        }
+        var talla = "{{ embarazo.talla|floatformat:'.2f' }}";
+        var $peso = $('#id_peso');
+        var $imc = $('#id_imc');
+        var $egFUM = $('#id_eg_fum');
+        var $egEcografia = $('#id_eg_ecografia');
+        var $reflejos = $('#id_reflejos');
+        $imc.attr('readOnly', true);
+
+        $('#id_psicoprofilaxis_fecha_1').addClass("psicoprofilaxis_fecha_1");
+        $('#id_psicoprofilaxis_fecha_2').addClass("psicoprofilaxis_fecha_2");
+        $('#id_psicoprofilaxis_fecha_3').addClass("psicoprofilaxis_fecha_3");
+        $('#id_psicoprofilaxis_fecha_4').addClass("psicoprofilaxis_fecha_4");
+        $('#id_psicoprofilaxis_fecha_5').addClass("psicoprofilaxis_fecha_5");
+        $('#id_psicoprofilaxis_fecha_6').addClass("psicoprofilaxis_fecha_6");
+
+        $('#id_visita_domiciliaria_fecha_1').addClass("visita_domiciliaria_fecha_1");
+        $('#id_visita_domiciliaria_fecha_2').addClass("visita_domiciliaria_fecha_2");
+        $('#id_visita_domiciliaria_fecha_3').addClass("visita_domiciliaria_fecha_3");
+        $('#id_visita_domiciliaria_fecha_4').addClass("visita_domiciliaria_fecha_4");
+        $('#id_visita_domiciliaria_fecha_5').addClass("visita_domiciliaria_fecha_5");
+        $('#id_visita_domiciliaria_fecha_6').addClass("visita_domiciliaria_fecha_6");
+
+        $('#id_visita_domiciliaria_fecha_1').addClass("class-date");
+        $('#id_visita_domiciliaria_fecha_2').addClass("class-date");
+        $('#id_visita_domiciliaria_fecha_3').addClass("class-date");
+        $('#id_visita_domiciliaria_fecha_4').addClass("class-date");
+        $('#id_visita_domiciliaria_fecha_5').addClass("class-date");
+        $('#id_visita_domiciliaria_fecha_6').addClass("class-date");
+
+        $('#id_atencion_fecha').addClass("atencion_fecha");
+        $('#id_proxima_cita').addClass("proxima_cita");
+
+        $('#id_zika_pais').addClass("zika_pais");
+        $('#id_zika_departamento').addClass("zika_departamento");
+        $('#id_zika_provincia').addClass("zika_provincia");
+        $('#id_peso').addClass("peso");
+
+        //Psicologia
+        $('#id_ic_psicologia_fecha_1').addClass("ic_psicologia_fecha_1");
+        $('#id_ic_psicologia_fecha_2').addClass("ic_psicologia_fecha_2");
+        $('#id_ic_psicologia_fecha_3').addClass("ic_psicologia_fecha_3");
+        //Mecicina
+        $('#id_ic_medicina_fecha_1').addClass("ic_medicina_fecha_1");
+        $('#id_ic_medicina_fecha_2').addClass("ic_medicina_fecha_2");
+        $('#id_ic_medicina_fecha_3').addClass("ic_medicina_fecha_3");
+        //Nutricion
+        $('#id_ic_nutricion_fecha_1').addClass("ic_nutricion_fecha_1");
+        $('#id_ic_nutricion_fecha_2').addClass("ic_nutricion_fecha_2");
+        $('#id_ic_nutricion_fecha_3').addClass("ic_nutricion_fecha_3");
+        //Odontologia
+        $('#id_ic_odontologia_fecha_1').addClass("ic_odontologia_fecha_1");
+        $('#id_ic_odontologia_fecha_2').addClass("ic_odontologia_fecha_2");
+        $('#id_ic_odontologia_fecha_3').addClass("ic_odontologia_fecha_3");
+        //Enfermeria
+        $('#id_ic_enfermeria_fecha_1').addClass("ic_enfermeria_fecha_1");
+        $('#id_ic_enfermeria_fecha_2').addClass("ic_enfermeria_fecha_2");
+        $('#id_ic_enfermeria_fecha_3').addClass("ic_enfermeria_fecha_3");
+        //Laboratorio
+        $('#id_ic_laboratorio_fecha_1').addClass("ic_laboratorio_fecha_1");
+        $('#id_ic_laboratorio_fecha_2').addClass("ic_laboratorio_fecha_1");
+        $('#id_ic_laboratorio_fecha_3').addClass("ic_laboratorio_fecha_1");
+        //Ecografia
+        $('#id_ic_ecografia_fecha_1').addClass("ic_ecografia_fecha_1");
+        $('#id_ic_ecografia_fecha_2').addClass("ic_ecografia_fecha_2");
+        $('#id_ic_ecografia_fecha_3').addClass("ic_ecografia_fecha_3");
+
+        var validator = $('#form-control').validate({
+            errorClass: "alert alert-danger",
+            errorElement: "div",
+            messages: {
+                atencion_fecha: {
+                    required: 'Este campo es requerido'
+                },
+                proxima_cita: {
+                    required: 'Este campo es requerido'
+                },
+                peso: {
+                    required: 'Este campo es requerido'
+                },
+            }
+        });
+
+        $.validator.addMethod('range_peso', function (value) {
+            return /^([0-9]{0,3})(\.[0-9]{1,2})?$/.test(value);
+        }, 'Por favor ingrese un valor valido para peso actual.');
+
+        $.validator.addMethod('dependent_fecha', function (value, dom, params) {
+            var _name_property = params['name_property'];
+            if(params['min']  && value.length > 0 ){
+                if( $(_name_property + params['min']).val().length > 0 && moment($(_name_property + params['min']).val(),"DD/MM/YYYY").diff(moment(value,"DD/MM/YYYY")) > 0){
+                    return false;
+                }
+            }
+            if(params['max'] && value.length > 0){
+                if($(_name_property + params['max']).val().length >0 && moment($(_name_property + params['max']).val(),"DD/MM/YYYY").diff(moment(value,"DD/MM/YYYY")) < 0){
+                    return false;
+                }
+            }
+            return true;
+        }, 'Por favor ingrese la fecha dentro de un rango valido.');
+
+        $.validator.addMethod('dependent_fechaatencion', function (value) {
+            var dateNow = moment($('#id_atencion_fecha').val(), 'DD/MM/YYYY');
+            if(value.length > 0 && moment(value,"DD/MM/YYYY").diff(dateNow) < 0){
+                return false;
+            }
+            return true;
+        }, 'Por favor ingrese la fecha de proxima cita dentro de un rango valido.');
+
+        $.validator.addMethod('dependent_zika', function (value) {
+            var selected_option = $("#id_zika_viajo").val();
+            if(selected_option == "si" && (value==undefined || value==null || value=="")){
+                return false;
+            }
+            return true;
+        }, 'Por favor seleccion una opción');
+
+        $.validator.addClassRules({
+            peso: {
+                required: true,
+                range_peso : true,
+            },
+            atencion_fecha: {
+                required: true,
+            },
+            proxima_cita: {
+                required: true,
+                dependent_fechaatencion:true,
+            },
+            zika_pais:{
+                dependent_zika:true,
+            },
+            zika_departamento:{
+                dependent_zika:true,
+            },
+            zika_provincia:{
+                dependent_zika:true,
+            },
+            psicoprofilaxis_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_psicoprofilaxis_fecha_',
+                },
+            },
+            psicoprofilaxis_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_psicoprofilaxis_fecha_',
+                },
+            },
+            psicoprofilaxis_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    max: '4',
+                    name_property:'#id_psicoprofilaxis_fecha_',
+                },
+            },
+            psicoprofilaxis_fecha_4: {
+                dependent_fecha: {
+                    min: '3',
+                    max: '5',
+                    name_property:'#id_psicoprofilaxis_fecha_',
+                },
+            },
+            psicoprofilaxis_fecha_5: {
+                dependent_fecha: {
+                    min: '4',
+                    max: '6',
+                    name_property:'#id_psicoprofilaxis_fecha_',
+                },
+            },
+            psicoprofilaxis_fecha_6: {
+                dependent_fecha: {
+                    min: '5',
+                    name_property:'#id_psicoprofilaxis_fecha_',
+                },
+            },
+            ic_psicologia_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_psicologia_fecha_',
+                },
+            },
+            ic_psicologia_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_psicologia_fecha_',
+                },
+            },
+            ic_psicologia_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_psicologia_fecha_',
+                },
+            },
+            ic_medicina_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_medicina_fecha_',
+                },
+            },
+            ic_medicina_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_medicina_fecha_',
+                },
+            },
+            ic_medicina_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_medicina_fecha_',
+                },
+            },
+            ic_nutricion_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_nutricion_fecha_',
+                },
+            },
+            ic_nutricion_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_nutricion_fecha_',
+                },
+            },
+            ic_nutricion_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_nutricion_fecha_',
+                },
+            },
+            ic_odontologia_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_odontologia_fecha_',
+                },
+            },
+            ic_odontologia_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_odontologia_fecha_',
+                },
+            },
+            ic_odontologia_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_odontologia_fecha_',
+                },
+            },
+            ic_enfermeria_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_enfermeria_fecha_',
+                },
+            },
+            ic_enfermeria_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_enfermeria_fecha_',
+                },
+            },
+            ic_enfermeria_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_enfermeria_fecha_',
+                },
+            },
+            ic_laboratorio_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_laboratorio_fecha_',
+                },
+            },
+            ic_laboratorio_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_laboratorio_fecha_',
+                },
+            },
+            ic_laboratorio_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_laboratorio_fecha_',
+                },
+            },
+            ic_ecografia_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_ic_ecografia_fecha_',
+                },
+            },
+            ic_ecografia_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_ic_ecografia_fecha_',
+                },
+            },
+            ic_ecografia_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    name_property:'#id_ic_ecografia_fecha_',
+                },
+            },
+            visita_domiciliaria_fecha_1: {
+                dependent_fecha: {
+                    max: '2',
+                    name_property:'#id_visita_domiciliaria_fecha_',
+                },
+            },
+            visita_domiciliaria_fecha_2: {
+                dependent_fecha: {
+                    min: '1',
+                    max: '3',
+                    name_property:'#id_visita_domiciliaria_fecha_',
+                },
+            },
+            visita_domiciliaria_fecha_3: {
+                dependent_fecha: {
+                    min: '2',
+                    max: '4',
+                    name_property:'#id_visita_domiciliaria_fecha_',
+                },
+            },
+            visita_domiciliaria_fecha_4: {
+                dependent_fecha: {
+                    min: '3',
+                    max: '5',
+                    name_property:'#id_visita_domiciliaria_fecha_',
+                },
+            },
+            visita_domiciliaria_fecha_5: {
+                dependent_fecha: {
+                    min: '4',
+                    max: '6',
+                    name_property:'#id_visita_domiciliaria_fecha_',
+                },
+            },
+            visita_domiciliaria_fecha_6: {
+                dependent_fecha: {
+                    min: '5',
+                    name_property:'#id_visita_domiciliaria_fecha_',
+                },
+            },
+        });
+
+        $('#visitas_domiciliarias').find('.class-date').on('keydown', function () {
+            return false;
+        }).datepicker().on('changeDate', function(e){
+            validator.element('#id_visita_domiciliaria_fecha_1');
+            validator.element('#id_visita_domiciliaria_fecha_2');
+            validator.element('#id_visita_domiciliaria_fecha_3');
+            validator.element('#id_visita_domiciliaria_fecha_4');
+            validator.element('#id_visita_domiciliaria_fecha_5');
+            validator.element('#id_visita_domiciliaria_fecha_6');
+        });
+
+        $('#psicoprofilaxis').find('input').on('keydown', function () {
+            return false;
+        }).datepicker().on('changeDate', function(e){
+            validator.element('#id_psicoprofilaxis_fecha_1');
+            validator.element('#id_psicoprofilaxis_fecha_2');
+            validator.element('#id_psicoprofilaxis_fecha_3');
+            validator.element('#id_psicoprofilaxis_fecha_4');
+            validator.element('#id_psicoprofilaxis_fecha_5');
+            validator.element('#id_psicoprofilaxis_fecha_6');
+        });
+
+        $('.zika_donde').find('select').on('change',function(e){
+            validator.element('#id_zika_pais');
+            validator.element('#id_zika_departamento');
+            validator.element('#id_zika_provincia');
+        });
+
+        $('#id_peso').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_peso');
+            }
+        });
+
+        var $interconsultas = $('#interconsultas');
+
+        $interconsultas.find('input[type="checkbox"]').on('change', function () {
+            var $this = $(this);
+            if ($this.is(':checked')) {
+                $this.parents('tr').find('input[type="text"]').prop('disabled', false);
+            } else {
+                $this.parents('tr').find('input[type="text"]').prop('disabled', true);
+                $.each($(this).parent().parent().find('input[type="text"]'),function(index,elem){
+                    $(elem).val('').datepicker('update');
+                });
+            }
+        }).trigger('change');
+
+        $interconsultas.find('input[type="text"]').on('keydown', function () {
+            return false;
+        }).datepicker().on('changeDate', function(e){
+            validator.element('#id_ic_psicologia_fecha_1');
+            validator.element('#id_ic_psicologia_fecha_2');
+            validator.element('#id_ic_psicologia_fecha_3');
+            //Mecicina
+            validator.element('#id_ic_medicina_fecha_1');
+            validator.element('#id_ic_medicina_fecha_2');
+            validator.element('#id_ic_medicina_fecha_3');
+            //Nutricion
+            validator.element('#id_ic_nutricion_fecha_1');
+            validator.element('#id_ic_nutricion_fecha_2');
+            validator.element('#id_ic_nutricion_fecha_3');
+            //Odontologia
+            validator.element('#id_ic_odontologia_fecha_1');
+            validator.element('#id_ic_odontologia_fecha_2');
+            validator.element('#id_ic_odontologia_fecha_3');
+            //Enfermeria
+            validator.element('#id_ic_enfermeria_fecha_1');
+            validator.element('#id_ic_enfermeria_fecha_2');
+            validator.element('#id_ic_enfermeria_fecha_3');
+            //Laboratorio
+            validator.element('#id_ic_laboratorio_fecha_1');
+            validator.element('#id_ic_laboratorio_fecha_2');
+            validator.element('#id_ic_laboratorio_fecha_3');
+            //Ecografia
+            validator.element('#id_ic_ecografia_fecha_1');
+            validator.element('#id_ic_ecografia_fecha_2');
+            validator.element('#id_ic_ecografia_fecha_3');
+        });
+
+        var $egElegida = $('#id_eg_elegida');
+
+        function validateEGElegida (value) {
+            $('.fum, .ecografia, .altura-uterina').removeClass('success');
+            if (value === 'fum') {
+                $('.fum').addClass('success');
+            } else if (value === 'ecografia') {
+                $('.ecografia').addClass('success');
+            } else {
+                $('.altura-uterina').addClass('success');
+            }
+        }
+
+        $egElegida.on('change', function () {
+            validateEGElegida(this.value);
+        }).parents('.form-group').hide();
+
+        validateEGElegida($egElegida.val());
+
+        $('#js-btn-eg-fum').on('click', function () {
+            $egElegida.val('fum').trigger('change');
+        });
+        $('#js-btn-eg-eco').on('click', function () {
+            $egElegida.val('ecografia').trigger('change');
+        });
+        $('#js-btn-eg-au').on('click', function () {
+            $egElegida.val('altura uterina').trigger('change');
+        });
+
+        var nowPicker = new Date();
+        var $presionSistolica = $('#id_presion_sistolica'),
+            $presionDiastolica = $('#id_presion_diastolica'),
+            $frecuenciaRespiratoria = $('#id_frecuencia_respiratoria'),
+            $temperatura = $('#id_temperatura'),
+            $pulso = $('#id_pulso'),
+            $alturaUterina = $('#id_altura_uterina'),
+            $fcf = $('#id_fcf'),
+            $fechaAtencion = $('#id_atencion_fecha'),
+            $proximaCita = $('#id_proxima_cita');
+
+            $fechaAtencionPicker = $fechaAtencion.datepicker({
+                onRender: function (date) {
+                    //Se retiro la validacion de fecha para poder permitir ingresos anteriores
+                    return ''; //date.valueOf() < (nowPicker.valueOf()) ? 'disabled' : '';
+                }
+            });
+
+            $egAlturaUterina = $('#id_eg_altura_uterina'),
+            $fechaProbablePartoFum = $('#id_fecha_probable_parto_fum'),
+            $fechaProbablePartoEcografia = $('#id_fecha_probable_parto_ecografia'),
+            $fechaProbablePartoAlturaUterina = $('#id_fecha_probable_parto_altura_uterina');
+            {% if embarazo.fum %}
+            var fum = moment("{{ embarazo.fum|date:'d/m/Y' }}", 'DD/MM/YYYY'),
+            fechaPartoFum = moment("{{ embarazo.fum|date:'d/m/Y' }}", 'DD/MM/YYYY').add('days', '280');
+            {% endif %}
+            {% if embarazo.primera_ecografia.fecha %}
+            var ecografia = moment("{{ embarazo.primera_ecografia.fecha|date:'d/m/Y' }}", 'DD/MM/YYYY'),
+            fechaPartoEcografia = moment("{{ embarazo.primera_ecografia.fecha_probable_parto|date:'d/m/Y' }}", 'DD/MM/YYYY');
+            {% endif %}
+        {% if embarazo.fum %}
+        $fechaProbablePartoFum.val(fechaPartoFum.format('DD/MM/YYYY'));
+        {% endif %}
+        {% if embarazo.primera_ecografia.fecha %}
+        $fechaProbablePartoEcografia.val(fechaPartoEcografia.format('DD/MM/YYYY'));
+        {% else %}
+        $fechaProbablePartoEcografia.val('');
+        {% endif %}
+
+        function calculateFechaProbableParto (value) {
+            var date = moment(value, 'DD/MM/YYYY');
+            {% if embarazo.fum %}
+            var diff = date.diff(fum, 'days');
+            $egFUM.val(Math.floor(diff / 7) + ' ' + (diff % 7) + '/7');
+            {% endif %}
+            {% if embarazo.primera_ecografia.fecha %}
+            diff = date.diff(ecografia, 'days') + {{ embarazo.primera_ecografia.eg_dias }};
+            $egEcografia.val(Math.floor(diff / 7) + ' ' + (diff % 7) + '/7');
+            {% endif %}
+            var alturaUterina = $alturaUterina.val();
+            if (alturaUterina.length) {
+                var au = 24 * 3600 * parseInt(alturaUterina) * 8 * 1000; // se multiplica por 1000 porque js maneja el timpo en milisegundos
+                var components = value.split('/');
+                var formattedDate = new Date(components[2], parseInt(components[1]) - 1, components[0]);
+                var fppAlturaUterina = new Date(formattedDate.getTime() + 345600000 + 24192000000 - au);
+                $fechaProbablePartoAlturaUterina.val(moment(fppAlturaUterina).format('DD/MM/YYYY'));
+                $egAlturaUterina.val((parseInt(alturaUterina) * 8 / 7).toFixed(0));
+            } else {
+                $egAlturaUterina.val('');
+                $fechaProbablePartoAlturaUterina.val('');
+            }
+        }
+
+        //Fecha se complico.
+        $proximaCitaPicker = $proximaCita.datepicker({
+            onRender: function (date) {
+                    return date.valueOf() < nowPicker.valueOf() ? 'disabled' : '';
+                }
+        }).on("changeDate",function(e){
+            validator.element('#id_proxima_cita');
+        });
+
+        $fechaAtencionPicker.on('changeDate', function () {
+            calculateFechaProbableParto(this.value);
+            $proximaCita.val('').datepicker('update');
+        });
+
+        $fechaAtencion.on('keydown', function () {
+            return false;
+        });
+        $proximaCita.on('keydown', function () {
+            return false;
+        });
+
+        setTimeout(function () {
+            calculateFechaProbableParto($fechaAtencion.val());
+        }, 1000);
+
+        if ($fechaAtencion.val() === '') {
+            $fechaAtencion.val(moment().format('DD/MM/YYYY'));
+        }
+
+        $('.btn-save-before').on('click', function (event) {
+
+            event.preventDefault();
+            $('#next-url').val($(this).data('next-url'));
+            $('form').submit();
+        });
+
+        function calculateImc() {
+            var w = parseFloat($peso.val());
+            var h = parseFloat(talla) / 100;
+            var imc = w / (Math.pow(h, 2));
+            if (isNaN(imc)) {
+                imc = 0.0;
+            }
+            $imc.val(imc.toFixed(2));
+            var clasificacion = '';
+            if (imc < 19.8) {
+                clasificacion = 'Bajo peso';
+            } else if (imc >= 19.8 && imc <= 26) {
+                clasificacion = 'Normal';
+            } else if (imc > 26 && imc <= 29) {
+                clasificacion = 'Sobrepeso';
+            } else {
+                clasificacion = 'Obesidad';
+            }
+            $imc.parent().find('.input-group-addon').html(clasificacion);
+        }
+
+        function calculateGanancia(){
+            var nuevo = parseFloat($peso.val());
+            var anterior = parseFloat({{embarazo.peso}});
+            var ganancia = nuevo - anterior;
+            $('#id_ganancia_peso').val(ganancia.toFixed(2));
+        }
+
+        var arrowKeys = [37, 38, 39, 40];
+        function validateOnlyNumber (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                var value = $(this).val();
+                value = Math.round(value * 10) / 10;
+                if (isNaN(value)) {
+                    value = 666;
+                }
+                $(this).prop('value', value);
+            }
+        }
+        $peso.on('keyup', function (event) {
+            calculateImc();
+            calculateGanancia();
+        });
+
+        function validateDigits (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                if(this.name!='temperatura')
+                {
+                    this.value = this.value.replace(/[^0-9\.]/g, '');
+                }
+            }
+        }
+
+        function validateDecimal (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                _value = this.value;
+
+                if (isNaN(_value)) {
+                    return;
+                }
+
+                if(!(_value+"").match(/^\d{1,3}(\.\d{1,2})?$/g))
+                {
+                    this.value = this.value.replace(/^\d{1,3}(\.\d{1,2})?$/g, '');
+
+                    return false;
+                }
+            }
+        }
+
+        $("input[type='number']").on('mouseup', validateDigits);
+        $("input[type='number']:not('.peso,.temperatura')").on('keyup', validateDigits);
+        $temperatura.on('keyup', validateDecimal);
+
+        $presionSistolica.on('focusout', validateOnlyNumber);
+        $presionDiastolica.on('focusout', validateOnlyNumber);
+        $frecuenciaRespiratoria.on('focusout', validateOnlyNumber);
+        $pulso.on('focusout', validateOnlyNumber);
+        $alturaUterina.on('keyup', function (event) {
+             if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+                calculateFechaProbableParto($fechaAtencion.val());
+            }
+        });
+        $fcf.on('focusout', validateOnlyNumber);
+
+        function addMessageToInput (elem, message) {
+            var $this = $(elem);
+            var htmlMessage = '<div class="alert alert-danger">' + message + '</div>';
+
+            if ($this.parents('.col-sm-7').html().indexOf(message) === -1) {
+                $this.parents('.col-sm-7').append(htmlMessage);
+            }
+        }
+
+        function addMessageToInput2 (elem, message) {
+            var $this = $(elem);
+            var htmlMessage = '<div class="alert alert-danger">' + message + '</div>';
+
+            if ($this.parents('.col-sm-12').html().indexOf(message) === -1) {
+                $this.parents('.col-sm-12').append(htmlMessage);
+            }
+        }
+
+        function removeMessageFromInput (elem) {
+            $(elem).parents('.col-sm-7').find('.alert').remove();
+        }
+
+        function validateRange (begin, end, message, elem) {
+
+            var _value = parseFloat(elem.value);
+            if (!(_value >= begin && _value <= end)) {
+                addMessageToInput(elem, message);
+            } else {
+                removeMessageFromInput(elem);
+            }
+        }
+
+        $temperatura.on('change', function () {
+            this.value = parseFloat(this.value).toFixed(1);
+
+            validateRange(36, 37.5, 'Los rangos normales se encuentra entre 36°C y 37,5°C, por favor verificar la información', this);
+        });
+
+        if ("{{ numero_control }}" !== '1') {
+            $presionSistolica.on('change', function () {
+                primer_control_presion_sistolica = parseInt("{{ primer_control_presion_sistolica }}");
+                inf = primer_control_presion_sistolica - 30;
+                sup = primer_control_presion_sistolica + 30;
+                validateRange(inf, sup, 'POSIBLE PRE-ECLAMPSIA, seguimiento continuo a la paciente', this);
+            });
+            $presionDiastolica.on('change', function () {
+                primer_control_presion_diastolica = parseInt("{{ primer_control_presion_diastolica }}");
+                inf = primer_control_presion_diastolica - 15;
+                sup = primer_control_presion_diastolica + 15;
+                validateRange(inf, sup, 'POSIBLE PRE-ECLAMPSIA, seguimiento continuo a la paciente', this);
+            });
+        }
+        $pulso.on('keyup', function () {
+            validateRange(60, 100, 'Los rangos normales se encuentra entre 60  a 100 latidos por minuto, por favor verifique la información', this);
+        });
+        $frecuenciaRespiratoria.on('keyup', function () {
+            validateRange(12, 20, 'Los rangos normales se encuentran entre 12  a 20 respiraciones por minuto, por favor verifique la información', this);
+        });
+        $fcf.on('change', function () {
+            var value = parseInt(this.value);
+            if (isNaN(value)) {
+                return;
+            }
+            if (value < 120) {
+                addMessageToInput2(this, 'El bebé puede estar con BRADICARDIA');
+            }
+            if (value > 160) {
+                addMessageToInput2(this, 'El bebé puede estar con TAQUICARDIA');
+            }
+            if (140 <= value && value <=160) {
+                removeMessageFromInput(this);
+            }
+        });
+        $fcf.trigger('change');
+
+        $reflejos.trigger('change');
+        $alturaUterina.on('change', function () {
+            var value = parseInt(this.value);
+            if (isNaN(value)) {
+                return;
+            }
+            if (value > 36) {
+                addMessageToInput(this, 'Riesgo de MACROSOMIA FETAL o alguna patología')
+            }
+        });
+        $alturaUterina.trigger('change');
+        var $ocItem = $('.oc_item'), $ocNoAplica = $('#id_oc_no_aplica'), $ocNoSeHizo = $('#id_oc_no_se_hizo');
+        $ocItem.on('change', function () {
+            if ($(this).is(':checked')) {
+                $ocNoAplica.attr('checked', false);
+                $ocNoSeHizo.attr('checked', false);
+            }
+        });
+        $ocNoSeHizo.on('change', function () {
+            if ($(this).is(':checked')) {
+                $ocItem.attr('checked', false);
+                $ocNoAplica.attr('checked', false);
+            }
+        });
+        $ocNoAplica.on('change', function () {
+            if ($(this).is(':checked')) {
+                $ocItem.attr('checked', false);
+                $ocNoSeHizo.attr('checked', false);
+            }
+        });
+
+        document.getElementById('remove-control-0-row').style.display= 'none';
+
+
+        $(function () {
+
+            $('.add-row').click(function() {
+            return addForm(this, '{{ exf_formset.prefix }}');
+
+            });
+            $('.delete-row').click(function() {
+            return deleteForm(this, '{{ exf_formset.prefix }}');
+            })
+
+
+        });
+
+        $(this).find('[type=hidden]').each(function() {
+
+                if(this.name.includes("eliminado"))
+                {
+                    if($(this).val()=='1')
+                    {
+                        $(this).parents('.dynamic-form').hide();
+                    }
+                }
+            });
+
+        $('#id_ocultar').hide();
+
+    });
+
+    function addForm(btn, prefix) {
+
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+        if(formCount>=5)
+        {
+            return false;
+        }
+
+        var row = $('.dynamic-form:first').clone(true).get(0);
+        $(row).removeAttr('id').insertAfter($('.dynamic-form:last')).children('.hidden').removeClass('hidden');
+
+        $(row).attr("id", prefix+'-'+formCount+'-row');
+
+        $(row).find('input, select, label').each(function() {
+            updateElementIndex(this, prefix, formCount);
+            if(this.id != "id_control-"+formCount+"-control")
+            {
+                $(this).val('');
+            }
+
+        });
+
+        $("td", $(row))[5].innerHTML='<a id="remove-control-'+prefix+'-row" href="javascript:void( \
+        0)"class="delete-row" >Eliminar</a>';
+
+        $(row).find('.delete-row').click(function() {
+            deleteForm(this, prefix);
+        });
+
+        $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+
+        return false;
+    }
+
+    function updateElementIndex(el, prefix, ndx){
+
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+
+        if ($(el).attr("for")) $(el).attr("for",$(el).attr("for").replace(id_regex, replacement));
+
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement); }
+
+    function deleteForm(btn, prefix) {
+        $(btn).parents('.dynamic-form').hide();
+
+        $(btn).parents('.dynamic-form').find('input').each(function() {
+
+            if(this.name.includes("eliminado"))
+            {
+                $(this).val(1);
+            }
+        });
+
+        var forms = $('.dynamic-form');
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).children().not(':last').children().each(function() {
+                updateElementIndex(this, prefix, i);
+            });
+        }
+        return false;
+    }
+
+
+    function showAddAnotherPopup(triggeringLink) {
+        var win = window.open(triggeringLink.href, 'plan parto', 'height=500,width=800,resizable=yes,scrollbars=yes');
+        win.focus();
+        return false;
+    }
+
+    var $zika_viajo = $('#id_zika_viajo'),
+        $zika_pais = $('#id_zika_pais'),
+        $zika_departamento = $('#id_zika_departamento'),
+        $zika_provincia = $('#id_zika_provincia'),
+        $zika_sintoma_fiebre = $('#id_zika_sintoma_fiebre'),
+        $zika_sintoma_malestar = $('#id_zika_sintoma_malestar'),
+        $zika_sintoma_dolorcabeza = $('#id_zika_sintoma_dolorcabeza'),
+        $zika_sintoma_sarpullido = $('#id_zika_sintoma_sarpullido'),
+        $zika_sintoma_conjuntivitis = $('#id_zika_sintoma_conjuntivitis');
+
+    function operador_zika(){
+        $zika_departamento.prop('value', '');
+        $zika_provincia.prop('value', '');
+        $zika_sintoma_fiebre.attr('checked', false);
+        $zika_sintoma_malestar.attr('checked', false);
+        $zika_sintoma_dolorcabeza.attr('checked', false);
+        $zika_sintoma_sarpullido.attr('checked', false);
+        $zika_sintoma_conjuntivitis.attr('checked', false);
+    }
+
+    $zika_viajo.on('change', function () {
+        if ($zika_viajo.val()=='si') {
+            $('.zika_donde').show();
+            $('.zika_sintomas').show();
+            $zika_pais.find("option[value=1]").attr("selected", true).change();
+        }
+        else {
+            $('.zika_donde').hide();
+            $('.zika_sintomas').hide();
+            $zika_pais.prop('value', '');
+        }
+        operador_zika();
+    });
+
+    var urls = {
+        departamentos: "{% url 'ubigeo:departamentos' 0 %}",
+        provincias: "{% url 'ubigeo:provincias' 0 %}",
+        distritos: "{% url 'ubigeo:distritos' 0 %}"
+    };
+
+    function loadOnChange(elem, url, next, callback, nextCallback) {
+        if (typeof callback !== 'undefined') {
+            callback();
+        }
+        var option = $(elem).find('option:selected').val();
+        var optiontext = $(elem).find('option:selected').text();
+
+        $.getJSON(url.replace('0', option), function (data) {
+            var html = '', len = data.length, i;
+            html += '<option value="">--Seleccionar--</option>';
+            for (i = 0; i < len; i++) {
+                var item = data[i];
+                if(optiontext == item.nombre){
+                    html += '<option value="' + item.id + '" selected>' + item.nombre + '</option>';
+                }else{
+                    html += '<option value="' + item.id + '">' + item.nombre + '</option>';
+                }
+            }
+            next.empty().html(html);
+            if (typeof nextCallback !== 'undefined') {
+                nextCallback();
+            }
+        });
+    }
+
+    $zika_pais.on('change', function () {
+        $zika_departamento.prop('value', '0');
+        $zika_provincia.prop('value', '0');
+        if ($zika_pais.val()==1) {
+            $zika_departamento.prop('disabled', false);
+            $zika_provincia.prop('disabled', false);
+            loadOnChange(this, urls.departamentos, $zika_departamento, function () {
+                $zika_departamento.empty();
+                $zika_provincia.empty();
+            }, function () {
+                $zika_departamento.trigger('change');
+            });
+        }
+        else {
+            $zika_departamento.prop('value', '0');
+            $zika_provincia.prop('value', '0');
+            $zika_departamento.prop('disabled', true);
+            $zika_provincia.prop('disabled', true);
+        }
+    });
+
+    $zika_departamento.on('change', function () {
+        loadOnChange(this, urls.provincias, $zika_provincia, function () {
+            $zika_provincia.empty();
+        }, function () {
+            $zika_provincia.trigger('change');
+        });
+    });
+
+</script>

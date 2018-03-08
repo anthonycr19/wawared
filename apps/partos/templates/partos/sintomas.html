@@ -1,0 +1,240 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Sintomas{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Sintomas del control prenatal</h3>
+                </div>
+                {% include 'partos/paciente_header.html' with paciente=paciente %}
+                {% include 'partos/tabs.html' with ingreso=ingreso %}
+                <div class="panel-body">
+                    <div id="data-gestante" class="panel panel-default">
+                        <div class="panel-heading">
+                            Buscar sintomas
+                        </div>
+                        <div class="panel-body">
+                            <row>
+                                <input id="asintomatica" type="checkbox" {% if asintomatica %}checked{% endif %}/>
+                                <label for="asintomatica" style="font-size: 18px !important;"><h3>ASINTOMÁTICA</h3></label>
+                                <p id="asintomatica-help" style="display: {% if asintomatica %}block{% else %}none{% endif %}">Cuando el selecciona asintomática no se podrá agregar nuevos sintomas y los que ya esten agregados se borrarán</p>
+                            </row>
+                            <form role="search" method="get" action="">
+                                <input id="input-search" type="text" name="q" autofocus style="width: 100%">
+                            </form>
+                        </div>
+                        <div id="list_sintomas" class="panel-body">
+                            <div class="panel panel-default" id="data-buscar-body">
+                                <table id="js-sintomas-table" class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="check-all"/></th>
+                                        <th>Nombre</th>
+                                        <th>Observación</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for sintoma in sintomas %}
+                                    <tr class="success">
+                                        <td>
+                                            <input type="checkbox" class="checkbox-cie" data-cie="{{ sintoma.cie.codigo }}" checked disabled/>
+                                        </td>
+                                        <td>{{ sintoma.cie.nombre_display|title }}</td>
+                                        <td>
+                                            <textarea class="form-control" data-validate="sintomas" rows="1">{{ sintoma.observacion }}</textarea>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="checkbox-delete hidden"/>
+                                            <button class="btn btn-danger btn-delete">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                    {% for cie in cies %}
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="checkbox-cie" data-cie="{{ cie.codigo }}"/>
+                                        </td>
+                                        <td>{{ cie.nombre_display|title }}</td>
+                                        <td>
+                                            <textarea class="form-control" data-validate="sintomas" disabled rows="1"></textarea>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <input class="btn btn-green" type="submit" value="Guardar" id="btn-save"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/vendor/select2.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var $checkAll = $('#check-all');
+            var $checkBoxIce = $('.checkbox-cie:not(:disabled)');
+            var $asintomatica = $('#asintomatica');
+            var $asintomaticaHelp = $('#asintomatica-help');
+            var $sintomasTable = $('#js-sintomas-table');
+            $asintomatica.on('change', function () {
+                if ($(this).is(':checked')) {
+                    $asintomaticaHelp.show();
+                    $sintomasTable.find('textarea, input').prop('disabled', true);
+                    $checkAll.prop('disabled', true);
+                    $('#input-search').select2('enable', false);
+                    $('#list_sintomas').hide();
+                } else {
+                    $asintomaticaHelp.hide();
+                    $sintomasTable.find('textarea, input').prop('disabled', false);
+                    $checkAll.prop('disabled', false);
+                    $('#input-search').select2('enable', true);
+                    $('#list_sintomas').show();
+                }
+            });
+
+            var addObserverChangeCheckbox = function(){
+                $.each($("input[type='checkbox'].checkbox-cie"),function(index,elem){
+                    $(elem).on("click",function(){
+                        $list_elem = $(this).parent().parent().find('[data-validate=sintomas]')
+                        if(this.checked){
+                           $.each($list_elem,function(index,el){
+                                $(el).attr('disabled',false);
+                           });
+                        }else{
+                            $.each($list_elem,function(index,el){
+                                $(el).attr('disabled',true);
+                                if($(el).is( "select" )){
+                                   $(el).select2("val","");
+                                }else{
+                                   $(el).val("");
+                                }
+                           });
+                    }});
+                });
+            }
+            addObserverChangeCheckbox();
+
+            $checkAll.on('change', function () {
+                if ($('#check-all').is(':checked')) {
+                    $checkBoxIce.prop('checked', true).trigger('change');
+                } else {
+                    $checkBoxIce.prop('checked', false).trigger('change');
+                }
+            });
+            $('.btn-delete').on('click', function (event) {
+                event.preventDefault();
+                var $this = $(this);
+                var $checkbox =  $this.parent().find('.checkbox-delete');
+                var currentValue = $checkbox.is(':checked');
+                $checkbox.prop('checked', !currentValue);
+                if (!currentValue) {
+                    $this.parents('tr').addClass('danger');
+                } else {
+                    $this.parents('tr').removeClass('danger');
+                }
+            });
+            $checkBoxIce.on('change', function () {
+                var $this = $(this);
+                if ($this.is(':checked')) {
+                    $this.parents('tr').addClass('success');
+                } else {
+                    $this.parents('tr').removeClass('success');
+                }
+            });
+            var $tbody = $('table').find('tbody');
+            $('#input-search').select2({
+                placeholder: 'Ingrese el nombre o codigo del cie',
+                minimumInputLength: 3,
+                ajax: {
+                    url: '{% url 'cie:api_search' %}',
+                    dataType: 'json',
+                    type: 'get',
+                    data: function (term, page) {
+                        return {
+                            q: term
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                formatSelection: function (cie) {
+                    if ($tbody.html().indexOf(cie.codigo) === -1) {
+                        var html = '<tr>\
+                                        <td>\
+                                            <input type="checkbox" class="checkbox-cie" data-cie="#codigo" checked/>\
+                                        </td>\
+                                        <td>#nombre</td>\
+                                        <td>\
+                                            <textarea class="form-control observacion" data-validate=sintomas rows="1"></textarea>\
+                                        </td>\
+                                        <td></td>\
+                                    </tr>';
+                        var compiled = html.replace(/#codigo/g, cie.codigo).replace(/#nombre/g, cie.nombre);
+                        $tbody.prepend(compiled);
+                    }
+                    return this.placeholder;
+                },
+                formatResult: function (cie) {
+                    return '<p>' + cie.nombre + '</p>';
+                },
+                formatNoMatches: function (term) {
+                    return 'No se encontraron resultados';
+                }
+            }).on("change", function(e) {
+                addObserverChangeCheckbox();
+            });
+            $('#btn-save').on('click', function (event) {
+                event.preventDefault();
+                var sintomas = [];
+                $('.checkbox-cie:checked').each(function (checkbox) {
+                    sintomas.push({
+                        codigo: $(this).data('cie'),
+                        observacion: $(this).parents('tr').find('textarea').val(),
+                        delete: $(this).parents('tr').find('.checkbox-delete').is(':checked')
+                    });
+                });
+                var _data = {
+                    asintomatica: $asintomatica.is(':checked'),
+                    sintomas: sintomas
+                };
+                $.ajax({
+                    method: 'post',
+                    url: '{% url 'partos:sintomas' ingreso.id %}',
+                    contentType: 'application/json',
+                    data: JSON.stringify(_data),
+                    dataType: 'text',
+                    success: function () {
+                        document.location.href = '{% url 'partos:partograma' ingreso.id %}';
+                    }
+                });
+            });
+            if ($asintomatica.is(':checked')) {
+                $sintomasTable.find('textarea').prop('disabled', true);
+                $checkBoxIce.prop('disabled', true);
+                $checkAll.prop('disabled', true);
+                $('#input-search').select2('enable', false);
+            }
+        });
+    </script>
+{% endblock %}

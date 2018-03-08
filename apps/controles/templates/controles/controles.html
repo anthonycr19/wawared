@@ -1,0 +1,178 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Atenciones{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" method="post">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Atenciones prenatales embarazo actual</h3>
+                    </div>
+                    {% include 'embarazos/partials/control_paciente_resume_header.html' with paciente=paciente %}
+                    <div class="panel-body">
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <div class="btn-group">
+                                {% if 'embarazos.change_embarazo' in user.get_all_permissions %}
+                                <a class="btn btn-default" href="{% url 'embarazos:update_current' paciente.id %}">Editar embarazo actual</a>
+                                {% endif %}
+                                {% if 'embarazos.change_fichaviolenciafamiliar' in user.get_all_permissions %}
+                                <a class="btn btn-default" href="{% url 'embarazos:violencia_update' paciente.id %}">Editar Violencia/Género</a>
+                                {% endif %}
+                                {% if 'controles.add_control' in user.get_all_permissions %}
+                                <a class="btn btn-green" href="{% url 'controles:create' embarazo.id %}">Crear nueva atención</a>
+                                {% endif %}
+                                <a class="btn btn-default" href="{% url 'embarazos:ecografias' paciente.id %}">Ecografias</a>
+                                <a class="btn btn-default" data-toggle="modal" href="#reports-modal">Reportes</a>
+                                {% if 'embarazos.change_embarazo' in user.get_all_permissions %}
+                                <a class="btn btn-danger" href="{% url 'embarazos:terminar_embarazo' paciente.id embarazo.id %}">Terminar embarazo</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel panel-default" id="data-buscar-body">
+                            <table class="table table-bordered table-striped">
+                                <thead class="panel-heading">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha atención</th>
+                                    <th>Próxima cita</th>
+                                    <th>Edad gestacional en la atención</th>
+                                    <th>Fecha probable del parto</th>
+                                    <th>Establecimiento</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody class="panel-body">
+                                {% for control in controles %}
+                                <tr>
+                                    <td>{{ control.numero }}</td>
+                                    <td>{{ control.atencion_fecha|date:'d/m/Y' }}</td>
+                                    <td>{{ control.proxima_cita|date:'d/m/Y' }}</td>
+                                    <!-- <td>{{ control.cita.fecha|date:'d/m/Y' }}</td> -->
+                                    <td>{{ control.get_eg }}</td>
+                                    <td>{{ control.fecha_probable_parto|date:'d/m/Y' }}</td>
+                                    <td>{{ control.establecimiento.nombre }}</td>
+                                    <td>
+                                        {% if 'controles.change_control' in user.get_all_permissions %}
+                                        <a class="btn btn-default" href="{% url 'controles:edit' control.id %}">Editar</a>
+                                        {% else %}
+                                        <a class="btn btn-default" href="{% url 'controles:detail' control.id %}">Ver detalle</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="pull-left">
+                                {% if 'pacientes.change_paciente' in user.get_all_permissions %}
+                                <a class="btn btn-default" href="{% url 'paciente:update' paciente.id %}">Ir al detalle de la paciente</a>
+                                {% else %}
+                                <a class="btn btn-default" href="{% url 'paciente:detail' paciente.id %}">Ir al detalle de la paciente</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="reports-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Reportes</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <a class="list-group-item" href="{% url 'embarazos:reports:ficha_tamizaje' embarazo.id %}">Ficha de tamizaje de violencia</a>
+                    <!-- <a class="list-group-item" href="{% url 'embarazos:reports:tamizaje_depresion' embarazo.id %}">Tamizaje depresión</a> -->
+                    <!-- calculate with the last control -->
+                    {% with embarazo.controles.last as last_control %}
+                    {% if last_control %}
+                    <a class="list-group-item" href="{% url 'controles:reports:solicitud_prueba_elisa' last_control.id %}">Solicitud prueba ELISA</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:solicitud_examen_citologico' last_control.id %}">Solicitud examen citológico</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:solicitud_examenes_clinicos' last_control.id %}">Solicitud examenes clínicos</a>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <span class="col-lg-5">Historia Clinica</span>
+                            {% if historia_clinica_sign %}
+                                <span class="col-lg-4">
+                                    <a href="{% url 'controles:reports:historia_clinica' last_control.id 2 %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF FIRMADO
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:historia_clinica' last_control.id %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:historia_clinica' last_control.id  1 %}">
+                                    <i class="glyphicon glyphicon-lock"></i>Firmar
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <span class="col-lg-5">Plan parto</span>
+                            {% if plan_parto_sign %}
+                                <span class="col-lg-4">
+                                    <a href="{% url 'controles:reports:plan_parto' last_control.id 2 %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF FIRMADO
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:plan_parto' last_control.id %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:plan_parto' last_control.id  1 %}">
+                                    <i class="glyphicon glyphicon-lock"></i>Firmar
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a class="list-group-item" href="{% url 'controles:reports:tarjeta_seguimiento' last_control.id %}">Tarjeta de seguimiento</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:receta_unica_estandarizada' last_control.id %}">Receta Única Estandarizada</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:receta_unica_flujo_vaginal' last_control.id %}">Receta Única Flujo Vaginal</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:receta_unica_prueba_rapida' last_control.id %}">Receta Única Prueba Rápida</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:hoja_referencia' last_control.id %}">Hoja de referencia</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:carne_control_prenatal' last_control.id %}">Carnet de Atención Prenatal</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:control_prenatal_excel' last_control.id %}">Atención prenatal</a>
+
+                    {% if paciente.numero_documento %}
+                        {% with paciente.tiene_seguro as seguro %}
+
+                        {% if seguro %}
+                            <a class="list-group-item" href="{% url 'controles:fua:009' last_control.id %}">Fua 009</a>
+                            <a class="list-group-item" href="{% url 'controles:fua:011' last_control.id %}">Fua 011</a>
+                            <a class="list-group-item" href="{% url 'controles:fua:013' last_control.id %}">Fua 013</a>
+                            <a class="list-group-item" href="{% url 'controles:fua:024' last_control.id %}">Fua 024</a>
+                            <a class="list-group-item" href="{% url 'controles:fua:071' last_control.id %}">Fua 071</a>
+
+                        {% endif %}
+
+                        {% endwith %}
+
+                    {% endif %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,850 @@
+{% load static %}
+<script src="{% static 'js/jquery.js' %}"></script>
+{% include 'session_security/all.html' %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/vendor/jquery.validate.js' %}"></script>
+<script src="{% static 'js/vendor/additional-methods.js' %}"></script>
+<script type="text/javascript">
+    $(document).on('ready', function () {
+
+        var arrowKeys = [37, 38, 39, 40];
+        // Validacion tipo de documento
+        var DNI = 'dni', CE = 'ce', PASAPORTE = 'pasaporte';
+        var PRIMARIA = "12" , SECUNDARIA = "13";
+        var validateCase = DNI;
+
+        var $seguroSis = $('#id_seguro_sis');
+        var $componente = $('#id_componente');
+        var $afiliacion = $('#id_afiliacion');
+        var $codigoAfiliacion = $('#id_codigo_afiliacion');
+        var $tipoDocumento = $('#id_tipo_documento');
+        var $numeroDocumento = $('#id_numero_documento');
+        var $diaNacimiento = $('#id_dia_nacimiento');
+        var $mesNacimiento = $('#id_mes_nacimiento');
+        var $anioNacimiento = $('#id_anio_nacimiento');
+        var $dniResponsable = $('#id_dni_responsable');
+        var $telefono = $('#id_telefono');
+        var $celular = $('#id_celular');
+        var $celular2 = $('#id_celular2');
+        var $celularWawared = $('#id_celular_wawared');
+        var $responsableOtros = $('#id_responsable_otros');
+        var $tipoParentesco = $('#id_tipo_parentesco_responsable');
+        var $age = $('#age');
+        var $seguroNoSIS = $('.js-otro-seguro'); // class from PacienteForm
+        var $estudio = $('#id_estudio');
+        var $tiempoEstudio = $('#id_tiempo_estudio');
+        var $hc_input = $('#id_hc');
+
+        //Agregar validacion de  Nombres*/
+        $('#id_nombres').addClass("nombres");
+        $('#id_apellido_paterno').addClass("apellido_paterno");
+        $('#id_apellido_materno').addClass("apellido_materno");
+        $('#id_dni_responsable').addClass("dni_responsable");
+        $('#id_hc').addClass("hc");
+        $('#id_telefono').addClass("telefono");
+        $('#id_celular').addClass("celular");
+        $('#id_celular2').addClass("celular2");
+        $('#id_celular_wawared').addClass("celular_wawared");
+        $('#id_numero_documento').addClass("numero_documento");
+        $('#id_departamento_residencia').addClass("departamento_residencia");
+        $('#id_provincia_residencia').addClass("provincia_residencia");
+        $('#id_distrito_residencia').addClass("distrito_residencia");
+        $('#id_categorizacion').addClass("categorizacion");
+        $('#id_direccion').addClass("direccion");
+        $('#id_estudio').addClass("estudio");
+        $('#id_tiempo_estudio').addClass("tiempo_estudio");
+        $('#id_ocupacion').addClass("ocupacion");
+        $('#id_estado_civil').addClass("estado_civil");
+        $('#id_nombre_responsable').addClass("nombre_responsable");
+
+        $('#id_apellido_paterno').addClass("reniec");
+        $('#id_apellido_materno').addClass("reniec");
+        $('#id_nombres').addClass("reniec");
+        $('#id_dia_nacimiento').addClass("reniec");
+        $('#id_mes_nacimiento').addClass("reniec");
+        $('#id_anio_nacimiento').addClass("reniec");
+        $('#id_departamento_nacimiento').addClass("reniec");
+        $('#id_provincia_nacimiento').addClass("reniec");
+
+        var validator = $('#form-paciente').validate({
+            errorClass: "alert alert-danger",
+            errorElement: "div",
+            messages: {
+                nombres: {
+                    required: 'Este campo es requerido'
+                },
+                apellido_paterno: {
+                    required: 'Este campo es requerido'
+                },
+                apellido_materno: {
+                    required: 'Este campo es requerido'
+                },
+                hc: {
+                    required: 'Este campo es requerido'
+                },
+                numero_documento:{
+                     required: 'Este campo es requerido'
+                },
+                departamento_residencia:{
+                    required: 'Este campo es requerido'
+                },
+                provincia_residencia:{
+                    required: 'Este campo es requerido'
+                },
+                distrito_residencia:{
+                    required: 'Este campo es requerido'
+                },
+                categorizacion:{
+                    required: 'Este campo es requerido'
+                },
+                direccion:{
+                    required: 'Este campo es requerido'
+                },
+                estudio:{
+                    required: 'Este campo es requerido'
+                },
+                tiempo_estudio:{
+                    required: 'Este campo es requerido'
+                },
+                ocupacion:{
+                    required: 'Este campo es requerido'
+                },
+                estado_civil:{
+                    required: 'Este campo es requerido'
+                }
+            }
+        });
+
+        $.validator.addMethod('charnegative', function (value) {
+            return (value === '') ||  /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/.test(value);
+        }, 'Por favor ingrese un valor valido para el campo');
+
+        $.validator.addMethod('dniresponsable_edad', function (value, dom, params) {
+            return (Number($(params.el).val())>=18 || (Number($(params.el).val())<=18 && value.length > 0));
+        }, 'Por favor ingrese un dni del responsable para el menor de edad');
+
+        $.validator.addMethod('nombreresponsable_edad', function (value, dom, params) {
+            return (Number($(params.el).val())>=18 || (Number($(params.el).val())<=18 && value.length > 0));
+        }, 'Por favor ingrese el nombre del responsable para el menor de edad');
+
+        $.validator.addMethod('hce', function (value) {
+            return /^[0-9]+$/.test(value);
+        }, 'Por favor ingrese un valor valido para historia clinica');
+
+        $.validator.addMethod('formatdocumento', function (value, dom, params) {
+
+            var tipo = ( typeof params.el == 'undefined' || params.el === null || params.el === '')?validateCase:params.el ;
+            switch(tipo){
+                case CE:
+                    //return (value === '') || /^[0-9a-zA-Z]{12}$/.test(value);
+                    //break;
+                    return true;
+                case DNI:
+                    return (value === '') || /^[0-9]{8}$/.test(value);
+                    break;
+                case PASAPORTE:
+                    //return (value === '') || /^[0-9a-zA-Z]{12}$/.test(value);
+                    //break;
+                    return true;
+                default:
+                    return true;
+            }
+        }, 'Por favor ingrese un valor valido para el documento de identidad');
+
+        $.validator.addMethod('lengthTelefono', function (value) {
+            return (value.length==10 || value.length==9 || value.length==8 || value.length==7 || value.length==0) ;
+        }, 'El numero de telefono no es valido');
+        $.validator.addMethod('lengthCelular1', function (value) {
+            return (value.length==9 || value.length==0) ;
+        }, 'El numero de telefono no es valido (9 digitos)');
+        $.validator.addMethod('lengthCelular2', function (value) {
+            return (value.length==9 || value.length==0) ;
+        }, 'El numero de telefono no es valido (9 digitos)');
+        $.validator.addMethod('lengthCelularWawared', function (value) {
+            return (value.length==9 || value.length==0) ;
+        }, 'El numero de telefono no es valido (9 digitos)');
+
+        // agrego una regla de validacion
+        $.validator.addClassRules({
+            nombres: {
+                required: true,
+                charnegative: true,
+            },
+            apellido_paterno: {
+                required: true,
+                charnegative: true,
+            },
+            apellido_materno: {
+                required: true,
+                charnegative: true,
+            },
+            dni_responsable: {
+                dniresponsable_edad: {
+                    el: '#age',
+                },
+                formatdocumento:{
+                    el: DNI,
+                }
+            },
+            nombre_responsable: {
+                nombreresponsable_edad: {
+                    el: '#age',
+                    being: null
+                },
+                charnegative: true,
+            },
+            hc:{
+                required: true,
+                hce: true,
+            },
+            departamento_residencia:{
+                required: true,
+            },
+            provincia_residencia:{
+                required: true,
+            },
+            distrito_residencia:{
+                required: true,
+            },
+            categorizacion:{
+                required: true,
+            },
+            telefono:{
+                lengthTelefono: true,
+            },
+            celular:{
+                lengthCelular1: true,
+            },
+            celular2:{
+                lengthCelular2: true,
+            },
+            celular_wawared:{
+                lengthCelularWawared: true,
+            },
+            numero_documento:{
+                required: true,
+                formatdocumento:true,
+            },
+            direccion:{
+                required: true,
+            },
+            estudio:{
+                required: true,
+            },
+            tiempo_estudio:{
+                required: true,
+            },
+            ocupacion:{
+                required: true,
+            },
+            estado_civil:{
+                required: true,
+            }
+        });
+
+        //********Ejecutar Eventos********/
+        $('#id_nombres').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_nombres');
+            }
+        });
+        $('#id_apellido_paterno').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_apellido_paterno');
+            }
+        });
+        $('#id_apellido_materno').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_apellido_materno');
+            }
+        });
+        $('#id_numero_documento').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_numero_documento');
+            }
+        });
+
+        $(document).on('change','#id_dia_nacimiento,#id_mes_nacimiento,#id_anio_nacimiento',function(){
+            validator.element('#id_dni_responsable');
+            validator.element('#id_nombre_responsable');
+        });
+        $hc_input.on('focusout', function(){
+            validator.element('#id_hc');
+        });
+        $telefono.on('focusout', function(){
+            validator.element('#id_telefono');
+        });
+        $celular.on('focusout', function(){
+            validator.element('#id_celular');
+        });
+        $celular2.on('focusout', function(){
+            validator.element('#id_celular2');
+        });
+        $celularWawared.on('focusout', function(){
+            validator.element('#id_celular_wawared');
+        });
+
+        $("#id_estudio").on("change",function(){
+
+            var html = "";
+            var maxrange = 9;
+            var option = $(this).find('option:selected').val();
+            switch(option){
+                case PRIMARIA:
+                    maxrange = 6;
+                    break;
+                case SECUNDARIA:
+                    maxrange = 5;
+                    break;
+                default:
+                    break;
+            }
+            html += '<option value="" selected class="form-control input-sm">---------</option>';
+            for (var i = 1; i <= maxrange; i++) {
+                html += '<option value="' + i + '" class="form-control input-sm">' + i + '</option>';
+            }
+
+            $("#id_tiempo_estudio").empty().html(html);
+        });
+        /**********************************/
+        function validateOnlyNumber (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                var value = $(this).val();
+                console.log(value);
+                value = Math.round(value * 10) / 10;
+                console.log(value);
+                if (isNaN(value)) {
+                    value = '';
+                }
+                console.log(value);
+                $(this).prop('value', value);
+            }
+        }
+
+        if ($tipoDocumento.val() === 'nodoc' || $tipoDocumento.val() ==='notrajo') {
+            $numeroDocumento.prop("disabled",true);
+            $numeroDocumento.val('');
+            $dniResponsable.prop("required",true);
+        }
+
+        $numeroDocumento.on('change', function () {
+            $codigoAfiliacion.val(this.value);
+        });
+        // calculate age
+        function calculateAge () {
+            var birthday = new Date($anioNacimiento.val(), parseInt($mesNacimiento.val()) - 1, $diaNacimiento.val());
+            var diff = Date.now() - birthday.getTime();
+            var age = new Date(diff);
+            age = Math.abs(age.getUTCFullYear() - 1970);
+            $age.val(age);
+        }
+        calculateAge();
+
+        if (parseInt($tipoParentesco.val()) === 5) {
+            $responsableOtros.parents('.form-group').show();
+        } else {
+            $responsableOtros.parents('.form-group').hide();
+        }
+        $tipoParentesco.on('change', function () {
+            if (parseInt(this.value) === 5) {
+                $responsableOtros.parents('.form-group').show();
+            } else {
+                $responsableOtros.parents('.form-group').hide();
+            }
+        });
+
+        $componente.attr('readonly', true);
+        $afiliacion.attr('readonly', true);
+        $codigoAfiliacion.attr('readonly', true);
+
+        var $picker = $('#id_fecha_nacimiento').datepicker();
+
+        var $inputPhoto = $('#input-foto');
+        var $wrapperPhoto = $('#input-foto-wrapper');
+        $picker.on('changeDate', function () {
+            $picker.datepicker('hide');
+        });
+        $wrapperPhoto.on('click', function (event) {
+            event.preventDefault();
+            $inputPhoto.trigger('click');
+        });
+        $inputPhoto.on('change', function (event) {
+            if (event.target.files.length) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    $wrapperPhoto.find('img').attr('src', event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        var $paisResidenciaSelect = $('#id_pais_residencia');
+        var $departamentoResidenciaSelect = $('#id_departamento_residencia');
+        var $provinciaResidenciaSelect = $('#id_provincia_residencia');
+        var $distritoResidenciaSelect = $('#id_distrito_residencia');
+
+        var $paisNacimientoSelect = $('#id_pais_nacimiento');
+        var $departamentoNacimientoSelect = $('#id_departamento_nacimiento');
+        var $provinciaNacimientoSelect = $('#id_provincia_nacimiento');
+
+        var urls = {
+            departamentos: '{% url 'ubigeo:departamentos' 0 %}',
+            provincias: '{% url 'ubigeo:provincias' 0 %}',
+            distritos: '{% url 'ubigeo:distritos' 0 %}',
+            consultadni: '{% url 'dnireniec:search_dni' 0 %}'
+
+        };
+
+        function loadOnChange(elem, url, next, callback, nextCallback) {
+            if (typeof callback !== 'undefined') {
+                callback();
+            }
+            var option = $(elem).find('option:selected').val();
+            var optiontext = $(elem).find('option:selected').text();
+
+            $.getJSON(url.replace('0', option), function (data) {
+                var html = '', len = data.length, i;
+                html += '<option value="">--Seleccionar--</option>';
+                for (i=0; i<len; i++) {
+                    var item = data[i];
+                    if(optiontext == item.nombre){
+                       html += '<option value="' + item.id + '" selected>' + item.nombre + '</option>';
+                    }else{
+                       html += '<option value="' + item.id + '">' + item.nombre + '</option>';
+                    }
+                }
+                next.empty().html(html);
+                if (typeof nextCallback !== 'undefined') {
+                    nextCallback();
+                }
+            });
+        }
+
+        $paisResidenciaSelect.on('change', function () {
+            loadOnChange(this, urls.departamentos, $departamentoResidenciaSelect, function () {
+                $departamentoResidenciaSelect.empty();
+                $provinciaResidenciaSelect.empty();
+                $distritoResidenciaSelect.empty();
+            }, function () {
+                $departamentoResidenciaSelect.trigger('change');
+            });
+        });
+        $departamentoResidenciaSelect.on('change', function () {
+            loadOnChange(this, urls.provincias, $provinciaResidenciaSelect, function () {
+                $provinciaResidenciaSelect.empty();
+                $distritoResidenciaSelect.empty();
+            }, function () {
+                $provinciaResidenciaSelect.trigger('change');
+            });
+        });
+        $provinciaResidenciaSelect.on('change', function () {
+            loadOnChange(this, urls.distritos, $distritoResidenciaSelect, function () {
+                $distritoResidenciaSelect.empty();
+            });
+        });
+
+        $paisNacimientoSelect.on('change', function () {
+            loadOnChange(this, urls.departamentos, $departamentoNacimientoSelect, function () {
+                $departamentoNacimientoSelect.empty();
+                $provinciaNacimientoSelect.empty();
+            }, function () {
+                if ($("#id_pais_nacimiento").children("option:selected").val() === "1"){
+                    $("#id_departamento_nacimiento").attr("disabled",false);
+                    $('#id_provincia_nacimiento').attr("disabled",false);
+                    $departamentoNacimientoSelect.trigger('change');
+                }
+                else{
+                    $("#id_departamento_nacimiento").attr("disabled",true);
+                    $('#id_provincia_nacimiento').attr("disabled",true);
+                }
+            });
+        });
+        $departamentoNacimientoSelect.on('change', function () {
+            loadOnChange(this, urls.provincias, $provinciaNacimientoSelect, function () {
+                $provinciaNacimientoSelect.empty();
+            }, function () {
+                $provinciaNacimientoSelect.trigger('change');
+            });
+        });
+
+        $tipoDocumento.on('change', function () {
+            validateCase = $(this).find('option:selected').val();
+            $numeroDocumento.val('').focus();
+            if (validateCase == 'nodoc' || validateCase =='notrajo'){
+              $numeroDocumento.prop("disabled",true);
+              $numeroDocumento.val('');
+              $numeroDocumento.prop("required",false);
+              $dniResponsable.prop("required",true);
+            }else{
+              $numeroDocumento.prop("disabled",false);
+              $dniResponsable.prop("required",false);
+            }
+        });
+
+        $telefono.on('keyup', function (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9]/ig, '');
+                this.value = this.value.substring(0, 10);
+            }
+        });
+
+        $celular.on('keyup', function (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9]/ig, '');
+                this.value = this.value.substring(0, 9);
+                $celularWawared.val(this.value);
+            }
+        });
+
+        $celular2.on('keyup', function (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9]/ig, '');
+                this.value = this.value.substring(0, 9);
+            }
+        });
+
+        $celularWawared.on('keyup', function (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9]/ig, '');
+                this.value = this.value.substring(0, 9);
+            }
+        });
+
+        $dniResponsable.on('keyup', function (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+                this.value = this.value.substring(0, 8);
+            }
+        });
+
+        $numeroDocumento.on('keyup', function (event) {
+
+            if (validateCase === CE) {
+                this.value = this.value.substring(0, 20);
+            } else{
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    if (validateCase === DNI) {
+                        this.value = this.value.replace(/[^0-9]/ig, '');
+                        this.value = this.value.substring(0, 8);
+                    }
+                    if (validateCase === PASAPORTE) {
+                        this.value = this.value.substring(0, 20);
+                    }
+                }
+            }
+            if ($seguroSis.is(':checked')) {
+                $codigoAfiliacion.val(this.value);
+            }
+        });
+
+        //Indice del Objeto
+        PATERNO = 4
+        MATERNO = 5
+        NOMBRE = 7
+        DEPART_RESIDENCIA = 16
+        PROV_RESIDENCIA = 17
+        DIST_RESIDENCIA = 18
+        DIRECCION_RESIDENCIA = 36
+        PAIS_NACIMIENTO = 15
+        DEPART_NACIMIENTO = 26
+        PROV_NACIMIENTO = 27
+        DIST_NACIMIENTO = 28
+        FECHA_NACIMIENTO = 29
+
+        //Llamar el servicio de DNI
+        $numeroDocumento.on('keyup blur',function(e){
+
+            if ($("#id_numero_documento").prop("readonly")){
+                return true;
+            }
+
+            if (validateCase === DNI && this.value.length == 8) {
+
+                if($("#id_tipo_documento").val()!='dni')
+                {
+                    return true;
+                }
+
+                $numeroDocumento.attr("disabled",true);
+                $("#mensaje_reniec").css("display","");
+
+                //$.getJSON(urls.consultadni.replace('0',this.value), function (data) {
+                $.getJSON('/api/resources/paciente/'+this.value+'/', function (data) {
+                    $("#mensaje_reniec").css("display","none");
+                    $numeroDocumento.attr("disabled",false);
+                    if(data[0] == "5114"){
+                        $numeroDocumento.val("");
+                        clearDataReniec();
+                        alert("El Dni ingresado no existe");
+                    }else{
+                        fillDataReniec(data);
+                    }
+                }).fail(function() {
+                    $("#mensaje_reniec").css("display","none");
+                    $numeroDocumento.attr("disabled",false);
+                    alert("Error en la comunicacion con el servidor de Reniec");
+                });
+            }
+        });
+
+        var consultandoDni= false;
+
+        $dniResponsable.on('keyup blur',function(e){
+
+            if (this.value.length == 8 && !consultandoDni) {
+                $dniResponsable.attr("disabled",true);
+                $("#mensaje_reniec").css("display","");
+                //$.getJSON(urls.consultadni.replace('0',this.value), function (data) {
+                $.getJSON('/api/resources/paciente/'+this.value+'/', function (data) {
+                    consultandoDni = true;
+                    $("#mensaje_reniec").css("display","none");
+                    $dniResponsable.attr("disabled",false);
+                    if(data[0] == "5114"){
+                        $dniResponsable.val("");
+                        $("#id_nombre_responsable").val("");
+                        alert("El Dni ingresado no existe");
+                    }else{
+                        $("#id_nombre_responsable").val(data['PATERNO'] + ' ' + data['MATERNO'] + ', ' + data['NOMBRE']);
+                    }
+
+                    consultandoDni = false;
+
+                }).fail(function() {
+                    $("#mensaje_reniec").css("display","none");
+                    $dniResponsable.attr("disabled",false);
+                    $("#id_nombre_responsable").val("");
+                    alert("Error en la comunicacion con el servidor de Reniec");
+                    consultandoDni = false;
+                });
+            }
+        });
+
+        var fillDataReniec = function(datos){
+            $("#id_hc").val($numeroDocumento.val());
+            $("#id_nombres").val(datos['NOMBRE'])
+            $("#id_apellido_paterno").val(datos['PATERNO'])
+            $("#id_apellido_materno").val(datos['MATERNO'])
+
+            $("#id_dia_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).val() == Number(datos['FECHA_NACIMIENTO'].split("/")[0]);
+            }).attr('selected', true).trigger("change")
+            $("#id_mes_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).val() == Number(datos['FECHA_NACIMIENTO'].split("/")[1]).toString();
+            }).attr('selected', true).trigger("change")
+            $("#id_anio_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['FECHA_NACIMIENTO'].split("/")[2];
+            }).attr('selected', true).trigger("change")
+            $("#id_departamento_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['DEPART_NACIMIENTO'].toLowerCase();
+            }).attr('selected', true)
+            $("#id_provincia_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['PROV_NACIMIENTO'].toLowerCase();
+            }).attr('selected', true)
+
+            $("#id_departamento_residencia option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['DEPART_RESIDENCIA'].toLowerCase();
+            }).attr('selected', true)
+            $("#id_provincia_residencia option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['PROV_RESIDENCIA'].toLowerCase();
+            }).attr('selected', true)
+            $("#id_distrito_residencia option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['DIST_RESIDENCIA'].toLowerCase();
+            }).attr('selected', true)
+
+            $("#id_estado_civil option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['ESTADO_CIVIL'].toLowerCase();
+            }).attr('selected', true)
+
+            $("#id_etnia option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['ETNIA'].toLowerCase();
+            }).attr('selected', true)
+
+            $("#id_estudio option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['ESTUDIO'].toLowerCase();
+            }).attr('selected', true)
+
+            $("#id_ocupacion option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == datos['OCUPACION'].toLowerCase();
+            }).attr('selected', true)
+
+
+            $("#id_direccion").val(datos['DIRECCION_RESIDENCIA']);
+            $("#id_origen_phr").val('True');
+
+
+            $('#id_nombres').attr('readonly', true);
+            $('#id_apellido_paterno').attr('readonly', true);
+            $('#id_apellido_materno').attr('readonly', true);
+            $('#id_tipo_documento').prop('disabled', true);
+            $('#id_numero_documento').attr('readonly', true);
+            $('#id_dia_nacimiento').prop('disabled', true);
+            $('#id_mes_nacimiento').prop('disabled', true);
+            $('#id_anio_nacimiento').prop('disabled', true);
+
+        }
+
+        var clearDataReniec = function(){
+
+            $("#id_nombres").val("")
+            $("#id_apellido_paterno").val("")
+            $("#id_apellido_materno").val("")
+
+            $("#id_dia_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == "1";
+            }).attr('selected', true).trigger("change")
+
+            $("#id_mes_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).val() == "1";
+            }).attr('selected', true).trigger("change")
+
+            $("#id_anio_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).text().toLowerCase() == "1980";
+            }).attr('selected', true).trigger("change")
+
+
+            $("#id_departamento_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).val() == "";
+            }).attr('selected', true)
+
+            $("#id_provincia_nacimiento option").filter(function() {
+                //may want to use $.trim in here
+                return $(this).val() == "";
+            }).attr('selected', true)
+
+        }
+
+        // validacion seguro
+        $seguroSis.on('change', function () {
+            validateSeguro($seguroSis.is(':checked'));
+        });
+        validateSeguro($seguroSis.is(':checked'));
+
+        if ($seguroSis.is(':checked')) { // validate when form is loaded
+            $seguroNoSIS.prop('checked', false).prop('disabled', true);
+        } else {
+            $seguroNoSIS.prop('disabled', false);
+        }
+
+        // Validacion fecha de nacimiento
+
+        function generateDays(quantity) {
+            var i;
+            var html = '';
+            for (i=1; i<=quantity; i++) {
+                html += '<option value=' + i + '>' + i + '</option>';
+            }
+            return html;
+        }
+
+        var mes30 = [4, 6, 9, 11];
+        var dias28 = generateDays(28);
+        var dias29 = generateDays(29);
+        var dias30 = generateDays(30);
+        var dias31 = generateDays(31);
+
+        function isBisiesto (anio) {
+            return (anio % 4 == 0 && anio % 100 !== 0) || anio % 400 === 0;
+        }
+
+        function validateDates () {
+            var option = parseInt($mesNacimiento.find('option:selected').val());
+            var prevDay = parseInt($diaNacimiento.find('option:selected').val());
+            var topLimit = 0;
+            if (option === 2) {
+                var anio = parseInt($anioNacimiento.find('option:selected').val());
+                if (isBisiesto(anio)) { // bisisesto
+                    $diaNacimiento.html(dias29);
+                    topLimit = 29;
+                } else {
+                    $diaNacimiento.html(dias28);
+                    topLimit = 28;
+                }
+            } else if (mes30.indexOf(option) !== -1) { // 30 dias
+                $diaNacimiento.html(dias30);
+                topLimit = 30;
+            } else { // 31 dias
+                $diaNacimiento.html(dias31);
+                topLimit = 31;
+            }
+            if (prevDay >= 1 && prevDay <= topLimit) {
+                $diaNacimiento.find('[value=' + prevDay + ']').prop('selected', true);
+            }
+            calculateAge();
+        }
+
+        $diaNacimiento.on('change', function () {
+            calculateAge();
+        });
+        $mesNacimiento.on('change', validateDates);
+        $anioNacimiento.on('change', validateDates);
+
+        function validateEstudio(value) {
+            if (value.toLowerCase() === 'analfabeta'){
+                $tiempoEstudio.val('0');
+            }
+            $tiempoEstudio.attr('disabled', value.toLowerCase() === 'analfabeta');
+        }
+
+        function validateSeguro(value) {
+            if (value) {
+                $componente.attr('readonly', false);
+                $afiliacion.attr('readonly', false);
+                $codigoAfiliacion.attr('readonly', false);
+                $seguroNoSIS.prop('checked', false).prop('disabled', true);
+                $codigoAfiliacion.val($numeroDocumento.val());
+            } else {
+                $componente.attr('readonly', true);
+                $afiliacion.attr('readonly', true);
+                $codigoAfiliacion.attr('readonly', true);
+                $seguroNoSIS.prop('disabled', false);
+            }
+        }
+
+        validateEstudio($estudio.find('option:selected').text());
+        $estudio.on('change', function () {
+            validateEstudio($(this).find('option:selected').text());
+        });
+
+        // validate form submit
+        $('form').on('submit', function (event) {
+            var messages = [];
+            if ($seguroSis.is(':checked')) {
+                if ($componente.val() === 'no aplica' || $afiliacion.val() === 'no aplica' || $codigoAfiliacion.val() === '') {
+                    messages.push('Ingresar componente afiliacion y codigo de afiliacion');
+                }
+            }
+            /*if (validateCase === CE) {
+                if ($numeroDocumento.val().length !== 9) {
+                    messages.push('El CE debe tener 9 caracteres');
+                }
+            }*/
+            if (messages.length) {
+                alert(messages.join('\n'));
+                return false;
+            } else {
+                $('#id_tipo_documento').prop('disabled', false);
+                $('#id_dia_nacimiento').prop('disabled', false);
+                $('#id_mes_nacimiento').prop('disabled', false);
+                $('#id_anio_nacimiento').prop('disabled', false);
+                return true;
+            }
+        });
+    });
+</script>

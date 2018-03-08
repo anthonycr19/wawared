@@ -1,0 +1,76 @@
+{% extends 'dashboard/base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}Ecografías{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}"/>
+    <script src="{% static 'js/vendor/sweetalert.min.js' %}"></script>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Ecografías embarazo actual</h3>
+                </div>
+                {% include 'partos/paciente_header.html' with paciente=paciente %}
+                {% include 'partos/tabs.html' with ingreso=ingreso %}
+                <div class="panel-body">
+                    <div class="panel panel-default" id="data-buscar-body">
+                        <div id="data-head" class="panel-heading">
+                            Ecografías
+                            {% if 'embarazos.add_ecografia' in user.get_all_permissions %}
+                            <div class="pull-right">
+                                <a class="btn btn-green" href="{% url 'partos:ecografia_create' paciente.id %}"><span class="glyphicon glyphicon-plus"></span> Agregar ecografía</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>EG Semana</th>
+                                <th>EG Dia</th>
+                                <th>Fecha probable parto</th>
+                                <th>Edad gestacional actual</th>
+                                <th>Observacion</th>
+                                {% if 'embarazos.change_ecografia' in user.get_all_permissions %}
+                                <th>Opciones</th>
+                                <th>Eliminar</th>
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for ecografia in ecografias %}
+                            <tr>
+                                <td>{{ ecografia.numero }}</td>
+                                <td>{{ ecografia.fecha|date:'d/m/Y' }}</td>
+                                <td>{{ ecografia.eg_semana }}</td>
+                                <td>{{ ecografia.print_eg_dia }}</td>
+                                <td>{{ ecografia.fecha_probable_parto|date:'d/m/Y' }}</td>
+                                <td>{{ ecografia.edad_gestacional_actual }}</td>
+                                <td>{{ ecografia.observacion }}</td>
+                                {% if 'embarazos.change_ecografia' in user.get_all_permissions %}
+                                <td>
+                                    <a class="btn btn-default" href="{% url 'partos:ecografia_edit' paciente.id ecografia.id %}">Editar</a>
+                                </td>
+                                <td>
+                                    <div id="eliminar-ecografia">
+                                      <a class="btn btn-danger" href="{% url 'partos:ecografia_delete' paciente.id ecografia.id %}">Eliminar</a>
+                                    </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'embarazos/partials/ecografia_delete_js.html' %}
+{% endblock %}

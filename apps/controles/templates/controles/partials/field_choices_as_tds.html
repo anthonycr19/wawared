@@ -1,0 +1,13 @@
+<td>
+    {{ field.label }}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+</td>
+{% for radio in field %}
+{% if show_radio_label %}
+    <td>{{ radio }}</td>
+{% else %}
+    <td class="text-center">{{ radio.tag }}</td>
+{% endif %}
+{% endfor %}

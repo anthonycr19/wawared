@@ -1,0 +1,419 @@
+[
+{
+    "pk": 1, 
+    "model": "establecimientos.diresa", 
+    "fields": {
+        "nombre": "80", 
+        "modified": "2014-09-11T15:50:20.761", 
+        "created": "2014-09-11T15:50:20.761"
+    }
+},
+{
+    "pk": 1, 
+    "model": "establecimientos.red", 
+    "fields": {
+        "diresa": 1, 
+        "nombre": "Ventanilla", 
+        "estado": true, 
+        "modified": "2014-09-11T15:57:39.090", 
+        "created": "2014-09-11T15:50:20.765"
+    }
+},
+{
+    "pk": 1, 
+    "model": "establecimientos.microred", 
+    "fields": {
+        "nombre": "3 de Febrero", 
+        "estado": true, 
+        "modified": "2014-09-11T15:59:06.370", 
+        "red": 1, 
+        "created": "2014-09-11T15:50:20.768"
+    }
+},
+{
+    "pk": 2, 
+    "model": "establecimientos.microred", 
+    "fields": {
+        "nombre": "M\u00e1rquez", 
+        "estado": true, 
+        "modified": "2014-09-11T15:59:01.502", 
+        "red": 1, 
+        "created": "2014-09-11T15:50:20.776"
+    }
+},
+{
+    "pk": 3, 
+    "model": "establecimientos.microred", 
+    "fields": {
+        "nombre": "Angamos", 
+        "estado": true, 
+        "modified": "2014-09-11T15:58:48.689", 
+        "red": 1, 
+        "created": "2014-09-11T15:50:20.787"
+    }
+},
+{
+    "pk": 4, 
+    "model": "establecimientos.microred", 
+    "fields": {
+        "nombre": "Forjando Salud", 
+        "estado": true, 
+        "modified": "2014-09-11T15:58:40.069", 
+        "red": 1, 
+        "created": "2014-09-11T15:50:20.800"
+    }
+},
+{
+    "pk": 5, 
+    "model": "establecimientos.microred", 
+    "fields": {
+        "nombre": "Sanidades Internacionales", 
+        "estado": true, 
+        "modified": "2014-09-11T15:56:03.639", 
+        "red": 1, 
+        "created": "2014-09-11T15:56:03.639"
+    }
+},
+{
+    "pk": 1, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.828", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.828", 
+        "disa": null, 
+        "codigo_his": "000006267", 
+        "lote": 12, 
+        "nombre": "C.S. Ciudad Pachacutec", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A209", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "", 
+        "lote": 12, 
+        "nombre": "DIRESA Callao", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "DIRESA", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 2, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006238", 
+        "lote": 12, 
+        "nombre": "C.S. Marquez", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070101A215", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 2, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006259", 
+        "lote": 12, 
+        "nombre": "C.S. Ventanilla Este", 
+        "descripcion": "Ventanilla Este", 
+        "logo": "", 
+        "codigo": "070106A203", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 2, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006258", 
+        "lote": 12, 
+        "nombre": "C.S. Ventanilla Baja", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A206", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 6, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 3, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006257", 
+        "lote": 12, 
+        "nombre": "C.S. Angamos", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A201", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 7, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 3, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006262", 
+        "lote": 12, 
+        "nombre": "C.S. Hijos de Grau", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A209", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 8, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 3, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006268", 
+        "lote": 12, 
+        "nombre": "C.S. Defensores de la Patria", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A210", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 9, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 3, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006255", 
+        "lote": 12, 
+        "nombre": "C.S. Ventanilla Alta", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A205", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 10, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 4, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006256", 
+        "lote": 12, 
+        "nombre": "C.S. Villa los Reyes", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A207", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 11, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 3, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006260", 
+        "lote": 12, 
+        "nombre": "C.S. Mi Peru", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A202", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 12, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000007126", 
+        "lote": 12, 
+        "nombre": "Hospital de Ventanilla", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A204", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 13, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 4, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006261", 
+        "lote": 12, 
+        "nombre": "C.S. Luis Felipe", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A308", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 14, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000006266", 
+        "lote": 12, 
+        "nombre": "C.S. 3 de Febrero", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A213", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 15, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.829", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.829", 
+        "disa": null, 
+        "codigo_his": "000007314", 
+        "lote": 12, 
+        "nombre": "C.S. Peru-Corea", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "07106215", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 16, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 4, 
+        "created": "2014-09-11T15:50:20.830", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.830", 
+        "disa": null, 
+        "codigo_his": "000006263", 
+        "lote": 12, 
+        "nombre": "C.S. Santa Rosa de Pachacutec", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A208", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 17, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.830", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.830", 
+        "disa": null, 
+        "codigo_his": "", 
+        "lote": 12, 
+        "nombre": "C.S. Cayetano Heredia", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A999", 
+        "telefono": "", 
+        "red": 1
+    }
+},
+{
+    "pk": 18, 
+    "model": "establecimientos.establecimiento", 
+    "fields": {
+        "microred": 1, 
+        "created": "2014-09-11T15:50:20.830", 
+        "diresa": 1, 
+        "modified": "2014-09-11T15:50:20.830", 
+        "disa": null, 
+        "codigo_his": "000006264", 
+        "lote": 12, 
+        "nombre": "C.S. Bahia Blanca", 
+        "descripcion": "", 
+        "logo": "", 
+        "codigo": "070106A211", 
+        "telefono": "", 
+        "red": 1
+    }
+}
+]

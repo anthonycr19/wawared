@@ -1,0 +1,14 @@
+{% load form_filter %}
+<div class="form-group">
+    <label for="{{ field.auto_id }}" class="col-sm-{% if left %}{{ left }}{% else %}5{% endif %} control-label">{% if field.field.required %}* {% endif %}{{ field.label }}</label>
+    <div class="col-sm-{% if left %}{{ right }}{% else %}7{% endif %}">
+        {% if without_class == True %}
+        {{ field }}
+        {% else %}
+        {{ field|add_class:"form-control input-sm" }}
+        {% endif %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div>

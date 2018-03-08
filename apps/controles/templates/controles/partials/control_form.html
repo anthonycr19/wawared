@@ -1,0 +1,626 @@
+{% load static %}
+{% load form_filter %}
+
+<div class="panel-body">
+    <div id="data-gestante" class="panel panel-default">
+        <div class="panel-heading">
+            Atención prenatal #{% if numero_control %}{{ numero_control }}{% else %}{{ control.numero }}{% endif %}
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="btn-group">
+                {% if 'controles.change_control' in user.get_all_permissions and 'controles.add_control' in user.get_all_permissions %}
+                    <button class="btn btn-default btn-save-before"
+                    {% if 'sintomas' in request.path %}
+                        style="background-color: green;color: white;"
+                    {% endif %}
+                    data-next-url="sintomas">Sintomas</button>
+                    <button class="btn btn-default btn-save-before"
+                    {% if 'fisico' in request.path %}
+                        style="background-color: green;color: white;"
+                    {% endif %}
+                    data-next-url="examen_fisico">Examen Físico</button>
+                    <button class="btn btn-default btn-save-before"
+                    {% if 'laboratorio' in request.path %}
+                        style="background-color: green;color: white;"
+                    {% endif %}
+                    data-next-url="laboratorio">Laboratorio</button>
+                    <button class="btn btn-default btn-save-before"
+                    {% if 'diagnostico' in request.path %}
+                        style="background-color: green;color: white;"
+                    {% endif %}
+                    data-next-url="diagnostico">Diagnóstico</button>
+                    <button class="btn btn-default btn-save-before" data-next-url="agregar_ecografia">Agregar ecografía</button>
+                {% else %}
+                    {% if form.instance.id %}
+                        <a class="btn btn-default"
+                        {% if 'sintomas' in request.path %}
+                            style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'controles:sintomas_detail' form.instance.id %}">Sintomas</a>
+                        <a class="btn btn-default"
+                        {% if 'fisico' in request.path %}
+                            style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'controles:examen_fisico_detail' form.instance.id %}">Examen Físico</a>
+                        <a class="btn btn-default"
+                        {% if 'laboratorio' in request.path %}
+                            style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'controles:laboratorio_detail' form.instance.id %}">Laboratorio</a>
+                        <a class="btn btn-default"
+                        {% if 'diagnostico' in request.path %}
+                            style="background-color: green;color: white;"
+                        {% endif %}
+                        href="{% url 'controles:diagnostico_detail' form.instance.id %}">Diagnóstico</a>
+                    {% endif %}
+                {% endif %}
+                {% if form.instance.id %}
+                    <button class="btn btn-default" data-toggle="modal" data-target="#reports-modal">Reportes</button>
+                    {% if 'controles.delete_control' in user.get_all_permissions %}
+                    <a class="btn btn-danger" href="{% url 'controles:delete' form.instance.id %}" onclick="return confirm('¿Seguro que desea eliminar el control?')">Eliminar control</a>
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="row col-md-12">
+                    <div class="col-md-4">
+                        <label >En las últimas dos semanas ¿ha viajado?</label>
+                    </div>
+                    <div class="col-md-2">{{ form.zika_viajo|add_class:'form-control' }}</div>
+                    <div class="col-md-6"></div>
+                </div>
+
+                <div class="col-md-6 zika_donde">
+                    <label class="control-label"><b>¿A dónde?</b></label>
+                    {% include 'dashboard/partials/form_group_select.html' with field=form.zika_pais %}
+                    {% include 'dashboard/partials/form_group_select.html' with field=form.zika_departamento %}
+                    {% include 'dashboard/partials/form_group_select.html' with field=form.zika_provincia %}
+                </div>
+
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="hidden" name="next_url" id="next-url"/>
+                    {% include 'dashboard/partials/form_group_date.html' with field=form.atencion_fecha %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.peso addon='kg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.ganancia_peso addon='kg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.imc addon=form.instance.imc_clasificacion|capfirst %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.temperatura addon='C' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_sistolica addon='mmHg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_diastolica addon='mmHg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.pulso addon='min' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.frecuencia_respiratoria addon='resp / min' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.altura_uterina addon='cm' %}
+                    <!--
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.fcf addon='lat / min' %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.situacion %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.presentacion %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.posicion %}-->
+                </div>
+                <div class="col-md-4">
+                    <!--
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.movimientos_fetales %}
+                    -->
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.dinamica_uterina %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.proteinuria_cualitativa %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.edemas %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.reflejos %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.examen_pezon %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.indicacion_hierro addon='tabletas' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.indicacion_calcio addon='tabletas' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.indicacion_acido_folico addon='tabletas' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.indicacion_hierro_acido_folico addon='tabletas' %}
+                </div>
+                <div class="col-md-4">
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.perfil_biofisico %}
+                    {% include 'dashboard/partials/form_group_date.html' with field=form.proxima_cita %}
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Plan de parto</label>
+                        <div class="col-sm-7">
+                            {% if 'embarazos.change_planparto' %}
+                            <a class="btn btn-default"  style="width: 100%" href="{% url 'embarazos:plan_parto_edit' embarazo.id %}" onclick="return showAddAnotherPopup(this);">Ficha plan de parto</a>
+                            {% else %}
+                            <a class="btn btn-default"  style="width: 100%" href="{% url 'embarazos:plan_parto' embarazo.id %}" onclick="return showAddAnotherPopup(this);">Ficha plan de parto</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.numero_formato_sis %}
+                    <div class="panel-body">
+                        <div id="data-buscar-body" class="panel panel-default">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Orientación consejeria</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Planificación familiar</td>
+                                        <td>{{ form.oc_planificacion_familiar|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Signos de alarma</td>
+                                        <td>{{ form.oc_signos_alarma|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lactancia Materna</td>
+                                        <td>{{ form.oc_lactancia_materna|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ITS</td>
+                                        <td>{{ form.oc_its|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nutrición</td>
+                                        <td>{{ form.oc_nutricion|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Inmunizaciones</td>
+                                        <td>{{ form.oc_inmunizaciones|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VIH</td>
+                                        <td>{{ form.oc_vih|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TBC</td>
+                                        <td>{{ form.oc_tbc|add_class:'oc_item' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No se hizo</td>
+                                        <td>{{ form.oc_no_se_hizo }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No aplica</td>
+                                        <td>{{ form.oc_no_aplica }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--######################################################################-->
+
+
+                   <label class="col-md-5 control-label" style="text-align: left;">Evaluación del feto</label>
+                <div class="pull-right">
+                    <a class="btn btn-green add-row" href="javascript:;" >
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+
+                                <div  id="data-examen-fisico-fetal-body" data-formset-prefix="{{ exf_formset.prefix }}">
+
+                                    <table class="table table-striped table-bordered" name="table-examen-fisico-fetal">
+                                        <thead>
+                                        <tr>
+                                            <th><label control-label">FCF</label></th>
+                                            <th><label control-label">Situacion</label></th>
+                                            <th><label control-label">Presentacion</label></th>
+                                            <th><label control-label">Posicion</label></th>
+                                            <th><label control-label">Movimientos fetales</label></th>
+                                            <th><label control-label">Opción</label></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody-examenfisico-fetal">
+
+                                        {% for exf in exf_formset %}
+                                        <tr id="{{ exf.prefix }}-row" class="dynamic-form">
+                                            {{ exf.id }}
+                                            {% for hidden in exf.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+
+                                            <td>{% include 'dashboard/partials/form_group_input_addon_sin_label.html' with field=exf.fcf addon='lat / min' %}</td>
+                                            <td>{% include 'dashboard/partials/form_group_select_sin_label.html' with field=exf.situacion %}</td>
+                                            <td>{% include 'dashboard/partials/form_group_select_sin_label.html' with field=exf.presentacion %}</td>
+                                            <td>{% include 'dashboard/partials/form_group_select_sin_label.html' with field=exf.posicion %}</td>
+                                            <td>{% include 'dashboard/partials/form_group_select_sin_label.html' with field=exf.movimientos_fetales %}</td>
+                                            <td>
+                                                    <a id="remove-{{ exf.prefix }}-row" href="javascript:void(0)" class="delete-row">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {{ exf_formset.management_form }}
+                                </div>
+                <!--######################################################################-->
+                <div class="col-md-12">
+                    <div class="panel-body">
+                        <div id="data-buscar-body" class="panel panel-default">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Interconsultas</th>
+                                        <th>Fecha #1</th>
+                                        <th>Fecha #2</th>
+                                        <th>Fecha #3</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="interconsultas">
+                                    <tr>
+                                        <td>Psicología</td>
+                                        <td>{{ form.ic_psicologia }}</td>
+                                        <td>{{ form.ic_psicologia_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_psicologia_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_psicologia_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Medicina</td>
+                                        <td>{{ form.ic_medicina }}</td>
+                                        <td>{{ form.ic_medicina_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_medicina_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_medicina_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nutrición</td>
+                                        <td>{{ form.ic_nutricion }}</td>
+                                        <td>{{ form.ic_nutricion_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_nutricion_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_nutricion_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Odontología</td>
+                                        <td>{{ form.ic_odontologia }}</td>
+                                        <td>{{ form.ic_odontologia_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_odontologia_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_odontologia_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enfermeria</td>
+                                        <td>{{ form.ic_enfermeria }}</td>
+                                        <td>{{ form.ic_enfermeria_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_enfermeria_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_enfermeria_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Laboratorio</td>
+                                        <td>{{ form.ic_laboratorio }}</td>
+                                        <td>{{ form.ic_laboratorio_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_laboratorio_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_laboratorio_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ecografía</td>
+                                        <td>{{ form.ic_ecografia }}</td>
+                                        <td>{{ form.ic_ecografia_fecha_1|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_ecografia_fecha_2|add_class:'form-control' }}</td>
+                                        <td>{{ form.ic_ecografia_fecha_3|add_class:'form-control' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel-body">
+                        <div id="data-buscar-body" class="panel panel-default">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Psicoprofilaxis (Fecha)</th>
+                                </tr>
+                                </thead>
+                                <tbody id="psicoprofilaxis">
+                                <tr>
+                                    <td>#1</td>
+                                    <td>{{ form.psicoprofilaxis_fecha_1|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#2</td>
+                                    <td>{{ form.psicoprofilaxis_fecha_2|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#3</td>
+                                    <td>{{ form.psicoprofilaxis_fecha_3|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#4</td>
+                                    <td>{{ form.psicoprofilaxis_fecha_4|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#5</td>
+                                    <td>{{ form.psicoprofilaxis_fecha_5|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#6</td>
+                                    <td>{{ form.psicoprofilaxis_fecha_6|add_class:'form-control' }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="panel-body">
+                        <div id="data-buscar-body" class="panel panel-default">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Visitas Domiciliarias</th>
+                                </tr>
+                                </thead>
+                                <tbody id="visitas_domiciliarias">
+                                <tr>
+                                    <td>#1</td>
+                                    <td>{{ form.visita_domiciliaria_fecha_1|add_class:'form-control' }}</td>
+                                    <td>{{ form.visita_domiciliaria_actividad_1|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#2</td>
+                                    <td>{{ form.visita_domiciliaria_fecha_2|add_class:'form-control' }}</td>
+                                    <td>{{ form.visita_domiciliaria_actividad_2|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#3</td>
+                                    <td>{{ form.visita_domiciliaria_fecha_3|add_class:'form-control' }}</td>
+                                    <td>{{ form.visita_domiciliaria_actividad_3|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#4</td>
+                                    <td>{{ form.visita_domiciliaria_fecha_4|add_class:'form-control' }}</td>
+                                    <td>{{ form.visita_domiciliaria_actividad_4|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#5</td>
+                                    <td>{{ form.visita_domiciliaria_fecha_5|add_class:'form-control' }}</td>
+                                    <td>{{ form.visita_domiciliaria_actividad_5|add_class:'form-control' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>#6</td>
+                                    <td>{{ form.visita_domiciliaria_fecha_6|add_class:'form-control' }}</td>
+                                    <td>{{ form.visita_domiciliaria_actividad_6|add_class:'form-control' }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Antitetánica
+                    <div class="row">
+                        <div class="col-md-3">
+                            {% include 'dashboard/partials/form_group_input.html' with field=vacuna_form.antitetanica_numero_dosis_previas %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel-body">
+                            <div id="data-buscar-body">
+                                <table class="table table-bordered table-striped" style="width: 70%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Mes de gestación</th>
+                                            <th>No</th>
+                                            <th>N/A</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="col-md-5">
+                                            <label for="{{ vacuna_form.antitetanica_primera_dosis.auto_id }}" class="col-sm-12 control-label">{{ vacuna_form.antitetanica_primera_dosis.label }}</label>
+                                        </td>
+                                        <td class="col-md-3 antitetanica-valor">
+                                            <div class="input-group">
+                                                {{ vacuna_form.antitetanica_primera_dosis_valor|add_class:'form-control input-sm' }}
+                                                <span class="input-group-addon">Meses</span>
+                                            </div>
+                                            <input type="radio" class="hidden" name="{{ vacuna_form.antitetanica_primera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_primera_dosis True %}checked{% endifequal %} value="True"/>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <label>
+                                                <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_primera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_primera_dosis False %}checked{% endifequal %} value="False"/>
+                                            </label>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <label>
+                                                <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_primera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_primera_dosis None %}checked{% endifequal %} value="None"/>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-5">
+                                            <label for="{{ vacuna_form.antitetanica_segunda_dosis.auto_id }}" class="col-sm-12 control-label">{{ vacuna_form.antitetanica_segunda_dosis.label }}</label>
+                                        </td>
+                                        <td class="col-md-3 antitetanica-valor">
+                                            <div class="input-group">
+                                                {{ vacuna_form.antitetanica_segunda_dosis_valor|add_class:'form-control input-sm' }}
+                                                <span class="input-group-addon">Meses</span>
+                                            </div>
+                                            <input type="radio" class="hidden" name="{{ vacuna_form.antitetanica_segunda_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_segunda_dosis True %}checked{% endifequal %} value="True"/>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <label>
+                                                <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_segunda_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_segunda_dosis False %}checked{% endifequal %} value="False"/>
+                                            </label>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <label>
+                                                <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_segunda_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_segunda_dosis None %}checked{% endifequal %} value="None"/>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-5">
+                                            <label for="{{ vacuna_form.antitetanica_tercera_dosis.auto_id }}" class="col-sm-12 control-label">{{ vacuna_form.antitetanica_tercera_dosis.label }}</label>
+                                        </td>
+                                        <td class="col-md-3 antitetanica-valor">
+                                            <div class="input-group">
+                                                {{ vacuna_form.antitetanica_tercera_dosis_valor|add_class:'form-control input-sm' }}
+                                                <span class="input-group-addon">Meses</span>
+                                            </div>
+                                            <input type="radio" class="hidden" name="{{ vacuna_form.antitetanica_tercera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_tercera_dosis True %}checked{% endifequal %} value="True"/>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <label>
+                                                <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_tercera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_tercera_dosis False %}checked{% endifequal %} value="False"/>
+                                            </label>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <label>
+                                                <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_tercera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_tercera_dosis None %}checked{% endifequal %} value="None"/>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel panel-default" id="data-buscar-body">
+                        <table class="table table-stripped table-bordered">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="fum {% if form.instance.eg_elegida == 'fum' %}success{% endif %}">Fecha última menstruación</th>
+                                <th class="ecografia {% if form.instance.eg_elegida == 'ecografia' %}success{% endif %}">Ecografía</th>
+                                <th class="altura-uterina {% if form.instance.eg_elegida == 'altura uterina' %}success{% endif %}">Altura uterina</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Edad gestacional actual</td>
+                                <td class="fum {% if form.instance.eg_elegida == 'fum' %}success{% endif %}">{{ form.eg_fum|add_class:'form-control input-sm' }}</td>
+                                <td class="ecografia {% if form.instance.eg_elegida == 'ecografia' %}success{% endif %}">{{ form.eg_ecografia|add_class:'form-control input-sm' }}</td>
+                                <td class="altura-uterina {% if form.instance.eg_elegida == 'altura uterina' %}success{% endif %}">{{ form.eg_altura_uterina|add_class:'form-control input-sm' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha probable de parto</td>
+                                <td class="fum {% if form.instance.eg_elegida == 'fum' %}success{% endif %}">{{ form.fecha_probable_parto_fum|add_class:'form-control input-sm' }}</td>
+                                <td class="ecografia {% if form.instance.eg_elegida == 'ecografia' %}success{% endif %}">{{ form.fecha_probable_parto_ecografia|add_class:'form-control input-sm' }}</td>
+                                <td class="altura-uterina {% if form.instance.eg_elegida == 'altura uterina' %}success{% endif %}">{{ form.fecha_probable_parto_altura_uterina|add_class:'form-control input-sm' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Edad gestacional elegida</td>
+                                <td colspan="3">
+                                    {% include 'dashboard/partials/form_group_input.html' with field=form.eg_elegida %}
+                                    <div class="btn-group">
+                                        <button id="js-btn-eg-fum" class="btn btn-default" type="button" {% if not embarazo.fum %}disabled{% endif %}>FUM</button>
+                                        <button id="js-btn-eg-eco" class="btn btn-default" type="button" {% if not embarazo.primera_ecografia %}disabled{% endif %}>Ecografía</button>
+                                        <button id="js-btn-eg-au" class="btn btn-default" type="button">Altura Uterina</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="id_ocultar">
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.asintomatica %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.visito_diagnosticos %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="reports-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Reportes</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                {% if form.instance.id %}
+                    <div class="list-group-item">
+                        <div class="row">
+                            <span class="col-lg-5">Ficha de tamizaje de violencia</span>
+                            {% if tamizaje_violencia_sign %}
+                                <span class="col-lg-4">
+                                    <a href="{% url 'embarazos:reports:ficha_tamizaje' form.instance.embarazo.id 2 %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF FIRMADO
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="col-lg-2">
+                                    <a href="{% url 'embarazos:reports:ficha_tamizaje' form.instance.embarazo.id %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a href="{% url 'embarazos:reports:ficha_tamizaje' form.instance.embarazo.id  1 %}">
+                                    <i class="glyphicon glyphicon-lock"></i>Firmar
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a class="list-group-item" href="{% url 'embarazos:reports:tamizaje_depresion' form.instance.embarazo.id %}">Tamizaje depresión</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:solicitud_prueba_elisa' form.instance.id %}">Solicitud prueba ELISA</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:solicitud_examen_citologico' form.instance.id %}">Solicitud examen citológico</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:receta_unica_estandarizada' form.instance.id %}">Receta Única Estandarizada</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:receta_unica_flujo_vaginal' form.instance.id %}">Receta Única Flujo Vaginal</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:receta_unica_prueba_rapida' form.instance.id %}">Receta Única Prueba Rápida</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:solicitud_examenes_clinicos' form.instance.id %}">Solicitud examenes clínicos</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:historia_clinica' form.instance.id %}">Historia clínica</a>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <span class="col-lg-5">Plan parto</span>
+                            {% if plan_parto_sign %}
+                                <span class="col-lg-4">
+                                    <a href="{% url 'controles:reports:plan_parto' form.instance.embarazo.id 2 %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF FIRMADO
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:plan_parto' form.instance.embarazo.id %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:plan_parto' form.instance.embarazo.id  1 %}">
+                                    <i class="glyphicon glyphicon-lock"></i>Firmar
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a class="list-group-item" href="{% url 'controles:reports:tarjeta_seguimiento' form.instance.id %}">Tarjeta de seguimiento</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:hoja_referencia' form.instance.id %}">Hoja de referencia</a>
+                    <a class="list-group-item" href="{% url 'controles:reports:carne_control_prenatal' form.instance.id %}">Carnet de Control Prenatal</a>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <span class="col-lg-5">Control prenatal</span>
+                            {% if control_prenatal_sign %}
+                                <span class="col-lg-4">
+                                    <a href="{% url 'controles:reports:control_prenatal_excel' form.instance.id 2 %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF FIRMADO
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:control_prenatal_excel' form.instance.id %}">
+                                    <i class="glyphicon glyphicon-eye-open"></i>VER PDF
+                                    </a>
+                                </span>
+                                <span class="col-lg-2">
+                                    <a href="{% url 'controles:reports:control_prenatal_excel' form.instance.id 1 %}">
+                                    <i class="glyphicon glyphicon-lock"></i>Firmar
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

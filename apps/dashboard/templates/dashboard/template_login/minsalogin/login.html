@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/vendor/animate/css/animate.css' %}">
+  <link rel="stylesheet" href="{% static 'minsalogin/css/main.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'minsalogin/img/favicon.png' %}"/>
+  <title>Historia Clinica</title>
+</head>
+<body class="bodyLogin">
+<section class="contentLogin animated fadeIn">
+  <div class="loginContainer animated zoomIn">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-5">
+          <div class="contentLogoLogin">
+            <img src="{% static 'minsalogin/img/logo_minsa_grande.jpg' %}" alt="Logo Minsa"
+                 class="img-responsive center-block logoMinsa">
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-7">
+          <form action="." method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Usuario" name="username" autofocus required>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Contraseña" name="password" required>
+            </div>
+            {% for message in messages %}
+              <div class="alert alert-danger animate">
+                <span class="body-message">{{ message|safe }}</span>
+              </div>
+            {% endfor %}
+            <button class="btn btn-block btn-primary" id="botonEnviarLogin"> Ingresar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

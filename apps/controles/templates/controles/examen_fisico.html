@@ -1,0 +1,498 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Examen físico{% endblock %}
+{% block extra_style %}
+    <style>
+        #examen-ginecologico-panel li {
+            width: 24%;
+        }
+    </style>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form id="idFormExamFis" class="form-horizontal" role="form" method="post">
+            {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Examen Físico</h3>
+                    </div>
+                    {% include 'embarazos/partials/paciente_resume_header.html' with paciente=paciente %}
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Examen Físico
+                            </div>
+                            {% include 'controles/partials/control_nav.html' with control=control %}
+                            <input type="hidden" name="next_url" id="next-url"/>
+
+                            <div class="panel-body">
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Conservado</th>
+                                            <th>Patológico</th>
+                                            <th>N/A</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.piel_y_mucosas %}
+                                            <td>{{ form.piel_y_mucosas_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.mamas %}
+                                            <td>{{ form.mamas_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.respiratorio %}
+                                            <td>{{ form.respiratorio_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.cardiovascular %}
+                                            <td>{{ form.cardiovascular_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.odontologico %}
+                                            <td>{{ form.odontologico_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.abdomen %}
+                                            <td>{{ form.abdomen_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.urinario %}
+                                            <td>{{ form.urinario_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.neurologico %}
+                                            <td>{{ form.neurologico_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.nivel_conciencia %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.nivel_conciencia_otros %}
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Especuloscopia
+                                        <div class="form-group">
+                                            <label for="{{ form.especuloscopia.auto_id }}" class="col-sm-5 control-label">{{ form.especuloscopia.label }}</label>
+                                            <div class="col-sm-7">
+                                                <ul class="list-inline">
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio" name="{{ form.especuloscopia.name }}" {% ifequal form.instance.especuloscopia True %}checked{% endifequal %} value="True"/>
+                                                            Si
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio" name="{{ form.especuloscopia.name }}" {% ifequal form.instance.especuloscopia False %}checked{% endifequal %} value="False"/>
+                                                            No
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio" name="{{ form.especuloscopia.name }}" {% ifequal form.instance.especuloscopia None %}checked{% endifequal %} value="None"/>
+                                                            N/A
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                                {% for error in form.especuloscopia.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div id="especuloscopia-panel" class="row" {% if not form.instance.especuloscopia %}style="display: none"{% endif %}>
+                                            <div class="col-md-12" id="data-buscar-body">
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.especuloscopia_vagina %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.especuloscopia_cervix %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.especuloscopia_fondo_de_saco %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Tacto vaginal
+                                        <div class="row">
+                                            <div class="col-md-7" id="data-buscar-body">
+                                                <div class="form-group">
+                                                    <label for="{{ form.tv_cambio_cervicales.auto_id }}" class="col-sm-5 control-label">{{ form.tv_cambio_cervicales.label }}</label>
+                                                    <div class="col-sm-7">
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.tv_cambio_cervicales.name }}" {% ifequal form.instance.tv_cambio_cervicales True %}checked{% endifequal %} value="True"/>
+                                                                    Si
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.tv_cambio_cervicales.name }}" {% ifequal form.instance.tv_cambio_cervicales False %}checked{% endifequal %} value="False"/>
+                                                                    No
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.tv_cambio_cervicales.name }}" {% ifequal form.instance.tv_cambio_cervicales None %}checked{% endifequal %} value="None"/>
+                                                                    N/A
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                        {% for error in form.tv_cambio_cervicales.errors %}
+                                                        <div class="alert alert-danger">{{ error }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div id="tacto-vaginal-panel" {% if not form.instance.tv_cambio_cervicales %}style="display: none"{% endif %}>
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_vagina %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_utero %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_hallazgos %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_dilatacion %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_incorporacion %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_altura_presentacion %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_membranas %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_membranas_rotas_tipo %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.tv_membranas_rotas_tiempo addon='Horas' %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_liquido_amniotico %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_otros %}
+                                                    {% include 'dashboard/partials/checkbox.html' with field=form.tv_tb_aplica %}
+                                                    <br/>
+                                                    <table class="table table-bordered table-striped" id="escala-bishop-table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Test de Bishop</th>
+                                                            <th>0</th>
+                                                            <th>1</th>
+                                                            <th>2</th>
+                                                            <th>3</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tv_tb_consistencia show_radio_label=True %}
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tv_tb_posicion show_radio_label=True %}
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tv_tb_borramiento show_radio_label=True %}
+                                                        </tr>
+                                                        <tr>
+                                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tv_tb_dilatacion show_radio_label=True %}
+                                                        </tr>
+                                                        <tr>
+                                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tv_tb_altura_presentacion show_radio_label=True %}
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tv_tb_resultado %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {% include 'dashboard/partials/form_group_radio.html' with field=form.pelvimetria %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.pelvimetria_observacion %}
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Examen Gineco-Obstétrico
+                                        <div class="form-group">
+                                            <label for="{{ form.examen_ginecologico.auto_id }}" class="col-sm-5 control-label">{{ form.examen_ginecologico.label }}</label>
+                                            <div class="col-sm-7">
+                                                <ul class="list-inline">
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio" name="{{ form.examen_ginecologico.name }}" {% ifequal form.instance.examen_ginecologico True %}checked{% endifequal %} value="True"/>
+                                                            Si
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio" name="{{ form.examen_ginecologico.name }}" {% ifequal form.instance.examen_ginecologico False %}checked{% endifequal %} value="False"/>
+                                                            No
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <label>
+                                                            <input type="radio" name="{{ form.examen_ginecologico.name }}" {% ifequal form.instance.examen_ginecologico None %}checked{% endifequal %} value="None"/>
+                                                            N/A
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                                {% for error in form.examen_ginecologico.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="row" id="examen-ginecologico-panel" {% if not form.instance.examen_ginecologico %}style="display: none"{% endif %}>
+                                            <div class="col-md-12">
+                                                {% include 'dashboard/partials/form_group_radio.html' with field=form.eg_dolor %}
+                                                {% include 'dashboard/partials/form_group_radio.html' with field=form.eg_posicion %}
+                                                {% include 'dashboard/partials/form_group_radio.html' with field=form.eg_restos %}
+                                                <div class="form-group">
+                                                    <label for="{{ form.eg_culdocentesis.auto_id }}" class="col-sm-5 control-label">{{ form.eg_culdocentesis.label }}</label>
+                                                    <div class="col-sm-7">
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.eg_culdocentesis.name }}" {% ifequal form.instance.eg_culdocentesis True %}checked{% endifequal %} value="True"/>
+                                                                    Si
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.eg_culdocentesis.name }}" {% ifequal form.instance.eg_culdocentesis False %}checked{% endifequal %} value="False"/>
+                                                                    No
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.eg_culdocentesis.name }}" {% ifequal form.instance.eg_culdocentesis None %}checked{% endifequal %} value="None"/>
+                                                                    N/A
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                        {% for error in form.eg_culdocentesis.errors %}
+                                                        <div class="alert alert-danger">{{ error }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% include 'dashboard/partials/form_group_radio.html' with field=form.eg_fondo_de_saco %}
+                                                <div class="form-group">
+                                                    <label for="{{ form.eg_mal_olor.auto_id }}" class="col-sm-5 control-label">{{ form.eg_mal_olor.label }}</label>
+                                                    <div class="col-sm-7">
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.eg_mal_olor.name }}" {% ifequal form.instance.eg_mal_olor True %}checked{% endifequal %} value="True"/>
+                                                                    Si
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.eg_mal_olor.name }}" {% ifequal form.instance.eg_mal_olor False %}checked{% endifequal %} value="False"/>
+                                                                    No
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.eg_mal_olor.name }}" {% ifequal form.instance.eg_mal_olor None %}checked{% endifequal %} value="None"/>
+                                                                    N/A
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                        {% for error in form.eg_mal_olor.errors %}
+                                                        <div class="alert alert-danger">{{ error }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.eg_vulvas %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.eg_genitales_externos %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.eg_vagina %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                            {% if 'controles.change_examenfisico' in user.get_all_permissions %}
+                            <a class="btn btn-default" href="{% url 'controles:edit' control.id %}">Regresar a atenciones</a>
+                            {% else %}
+                            <a class="btn btn-default" href="{% url 'controles:detail' control.id %}">Regresar a atenciones</a>
+                            {% endif %}
+                        </div>
+                        <div class="text-right">
+                            <input class="btn btn-green" type="submit" value="Guardar"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script>
+        $(document).ready(function(){ 
+
+            $(".table tbody tr").each(function (index, elem) 
+            {
+                var option = $(this).find("td").find("input[type=radio]:checked");
+                if($(option).val()=="n/a"){
+                    $(this).find("td").find('input[type=text]').prop('disabled', true);
+                    $(this).find("td").find('input[type=text]').val("");
+                }else{
+                    $(this).find("td").find('input[type=text]').prop('disabled', false);
+                }
+            });
+
+            $(".table tbody tr").each(function (index, elem){
+                $(this).find("td").find("input[type=radio]").on("click",function(){
+                    if($(this).val()=="n/a"){
+                        $(this).parent().parent().find("td").find('input[type=text]').prop('disabled', true);
+                        $(this).parent().parent().find("td").find('input[type=text]').val("");
+                    }else{
+                        $(this).parent().parent().find("td").find('input[type=text]').prop('disabled', false);
+                    }
+                });
+            });
+            
+            $('table').find('input[type=text]').addClass('form-control');
+            var $nivelConciencia = $('#id_nivel_conciencia');
+            var $nivelConcienciaOtros = $('#id_nivel_conciencia_otros');
+            var $tbResultado = $('#id_tv_tb_resultado');
+            var $aplicaTestBishop = $('#id_tv_tb_aplica');
+            var $escalaBishopTable = $('#escala-bishop-table');
+            var $cambioCervicales = $('input[name="tv_cambio_cervicales"]');
+            var $especuloscopia = $('input[name="especuloscopia"]');
+            var $examenGinecologico = $('input[name="examen_ginecologico"]');
+            var $membranas = $('#id_tv_membranas'),
+                $liquidoAmniotico = $('#id_tv_liquido_amniotico'),
+                $membranasRotasTipo = $('#id_tv_membranas_rotas_tipo'),
+                $membranasRotasTiempo = $('#id_tv_membranas_rotas_tiempo');
+
+            function validateAplicaTestBihop () {
+                if ($aplicaTestBishop.is(':checked')) {
+                    $escalaBishopTable.find('input').prop('disabled', false);
+                    var dilatacion = $('#id_tv_dilatacion').val();
+                    if (dilatacion) {
+                        dilatacion = parseInt(dilatacion);
+                        if (dilatacion === 0) {
+                            $('input[type=radio][name=tv_tb_dilatacion][value="0"]').prop('checked', true);
+                        } else if (dilatacion === 1 || dilatacion === 2) {
+                            $('input[type=radio][name=tv_tb_dilatacion][value="1"]').prop('checked', true);
+                        } else if (dilatacion === 3 || dilatacion === 4) {
+                            $('input[type=radio][name=tv_tb_dilatacion][value="2"]').prop('checked', true);
+                        } else {
+                            $('input[type=radio][name=tv_tb_dilatacion][value="3"]').prop('checked', true);
+                        }
+                    }
+                    var alturaPresentacion = $('#id_tv_altura_presentacion').val();
+                    if (alturaPresentacion) {
+                        alturaPresentacion = parseInt(alturaPresentacion);
+                        if (alturaPresentacion < 2) {
+                            $('input[type=radio][name=tv_tb_altura_presentacion][value="0"]').prop('checked', true);
+                        } else if (alturaPresentacion === 2) {
+                            $('input[type=radio][name=tv_tb_altura_presentacion][value="1"]').prop('checked', true);
+                        } else if (alturaPresentacion === 3) {
+                            $('input[type=radio][name=tv_tb_altura_presentacion][value="2"]').prop('checked', true);
+                        } else if (alturaPresentacion > 3) {
+                            $('input[type=radio][name=tv_tb_altura_presentacion][value="3"]').prop('checked', true);
+                        }
+                    }
+                    var incorporacion = $('#id_tv_incorporacion').val();
+                    if (incorporacion) {
+                        if (incorporacion === '-40%') {
+                            $('input[type=radio][name=tv_tb_borramiento][value="1"]').prop('checked', true);
+                        } else if (incorporacion === '50%') {
+                            $('input[type=radio][name=tv_tb_borramiento][value="2"]').prop('checked', true);
+                        } else if (incorporacion === '70%') {
+                            $('input[type=radio][name=tv_tb_borramiento][value="3"]').prop('checked', true);
+                        } else if (incorporacion === '80%') {
+                            $('input[type=radio][name=tv_tb_borramiento][value="3"]').prop('checked', true);
+                        } else if (incorporacion === '90%') {
+                            $('input[type=radio][name=tv_tb_borramiento][value="3"]').prop('checked', true);
+                        }
+                    }
+                } else {
+                    $escalaBishopTable.find('input').prop('disabled', true).prop('checked', false);
+                    $tbResultado.val('');
+                }
+            }
+            $aplicaTestBishop.on('change', function () {
+                validateAplicaTestBihop();
+            });
+            validateAplicaTestBihop();
+            $tbResultado.attr('readOnly', true);
+            if (parseInt($nivelConciencia.val()) === 5) {
+                $nivelConcienciaOtros.parents('.form-group').show();
+            } else {
+                $nivelConcienciaOtros.parents('.form-group').hide();
+            }
+            $nivelConciencia.on('change', function () {
+                if (this.value === 'otros') {
+                    $nivelConcienciaOtros.parents('.form-group').show();
+                } else {
+                    $nivelConcienciaOtros.parents('.form-group').hide();
+                }
+            });
+            $escalaBishopTable.find('input[type=radio]').on('change', function () {
+                var consistencia, posicion, borramiento, dilatacion, alturaPresentacion;
+                consistencia = parseInt($('input[type=radio][name=tv_tb_consistencia]:checked').val());
+                posicion = parseInt($('input[type=radio][name=tv_tb_posicion]:checked').val());
+                borramiento = parseInt($('input[type=radio][name=tv_tb_borramiento]:checked').val());
+                dilatacion = parseInt($('input[type=radio][name=tv_tb_dilatacion]:checked').val());
+                alturaPresentacion = parseInt($('input[type=radio][name=tv_tb_altura_presentacion]:checked').val());
+                $tbResultado.val(consistencia + posicion + borramiento + dilatacion + alturaPresentacion);
+            });
+            $cambioCervicales.on('change', function () {
+                if (this.value === 'True') {
+                    $('#tacto-vaginal-panel').show();
+                } else {
+                    $('#tacto-vaginal-panel').hide();
+                }
+            });
+            $especuloscopia.on('change', function () {
+                if (this.value === 'True') {
+                    $('#especuloscopia-panel').show();
+                } else {
+                    $('#especuloscopia-panel').hide();
+                }
+            });
+            $examenGinecologico.on('change', function () {
+                if (this.value === 'True') {
+                    $('#examen-ginecologico-panel').show();
+                } else {
+                    $('#examen-ginecologico-panel').hide();
+                }
+            });
+            function checkMembranas (value) {
+                if (value === 'rotas') {
+                    $liquidoAmniotico.parents('.form-group').show();
+                    $membranasRotasTipo.parents('.form-group').show();
+                    $membranasRotasTiempo.parents('.form-group').show();
+                } else {
+                    $liquidoAmniotico.parents('.form-group').hide();
+                    $membranasRotasTipo.parents('.form-group').hide();
+                    $membranasRotasTiempo.parents('.form-group').hide();
+                }
+            }
+            $membranas.on('change', function () {
+                checkMembranas(this.value);
+            });
+            checkMembranas($membranas.val());
+            {% if 'controles.change_examenfisico' not in user.get_all_permissions %}
+            $('input, select, textarea').prop('disabled', true);
+            {% endif %}
+
+            $('.btn-save-before').on('click', function (event) {
+                event.preventDefault();
+                $('#next-url').val($(this).data('next-url'));
+                $('#idFormExamFis').submit();
+            });
+
+        });
+    </script>
+{% endblock %}

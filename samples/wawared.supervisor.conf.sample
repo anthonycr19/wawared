@@ -1,0 +1,10 @@
+[program:wawared]
+command=/opt/apps/app_wawared/env/bin/gunicorn wawared.wsgi:application -c /opt/apps/app_wawared/settings/gunicorn.conf.py
+directory=/opt/apps/app_wawared
+user=www-data
+autostart=true
+autorestart=true
+stdout_logfile=/opt/apps/app_wawared/logs/gunicorn.log
+stderr_logfile=/opt/apps/app_wawared/logs/gunicorn.log
+redirect_stderr=true
+

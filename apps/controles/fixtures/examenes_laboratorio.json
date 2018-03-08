@@ -1,0 +1,342 @@
+[
+{
+    "pk": 12, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Primera prueba r\u00e1pida s\u00edfilis", 
+        "modified": "2014-07-22T15:57:03.323", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.323"
+    }
+},
+{
+    "pk": 13, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Primera prueba r\u00e1pida VIH", 
+        "modified": "2014-07-22T15:57:03.369", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.369"
+    }
+},
+{
+    "pk": 14, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Segunda prueba r\u00e1pida VIH", 
+        "modified": "2014-07-22T15:57:03.370", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.370"
+    }
+},
+{
+    "pk": 15, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Grupo", 
+        "modified": "2014-07-22T15:57:03.371", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.371"
+    }
+},
+{
+    "pk": 16, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Factor RH", 
+        "modified": "2014-07-22T15:57:03.373", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.373"
+    }
+},
+{
+    "pk": 17, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Prueba r\u00e1pida de hemoglobina", 
+        "modified": "2014-07-22T15:57:03.375", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.375"
+    }
+},
+{
+    "pk": 18, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Hemoglobina 1", 
+        "modified": "2014-07-22T15:57:03.376", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.376"
+    }
+},
+{
+    "pk": 19, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Hemoglobina 2", 
+        "modified": "2014-07-22T15:57:03.378", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.378"
+    }
+},
+{
+    "pk": 20, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Hemoglobina al alta", 
+        "modified": "2014-07-22T15:57:03.379", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.379"
+    }
+},
+{
+    "pk": 21, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Glicemia 1", 
+        "modified": "2014-07-22T15:57:03.380", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.380"
+    }
+},
+{
+    "pk": 22, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Glicemia 2", 
+        "modified": "2014-07-22T15:57:03.381", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.381"
+    }
+},
+{
+    "pk": 23, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Examen completo orina 1", 
+        "modified": "2014-07-22T15:57:03.383", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.383"
+    }
+},
+{
+    "pk": 24, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Examen completo orina 2", 
+        "modified": "2014-07-22T15:57:03.386", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.386"
+    }
+},
+{
+    "pk": 25, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Leucocituria", 
+        "modified": "2014-07-22T15:57:03.388", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.388"
+    }
+},
+{
+    "pk": 26, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Nitritos", 
+        "modified": "2014-07-22T15:57:03.389", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.389"
+    }
+},
+{
+    "pk": 27, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "VDRL/RPR 1", 
+        "modified": "2014-07-22T15:57:03.390", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.390"
+    }
+},
+{
+    "pk": 28, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "VDRL/RPR 2", 
+        "modified": "2014-07-22T15:57:03.392", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.392"
+    }
+},
+{
+    "pk": 29, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "ELISA", 
+        "modified": "2014-07-22T15:57:03.393", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.393"
+    }
+},
+{
+    "pk": 30, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "PAP", 
+        "modified": "2014-07-22T15:57:03.394", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.394"
+    }
+},
+{
+    "pk": 31, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "IVA", 
+        "modified": "2014-07-22T15:57:03.395", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.395"
+    }
+},
+{
+    "pk": 32, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Colposcopia", 
+        "modified": "2014-07-22T15:57:03.397", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.397"
+    }
+},
+{
+    "pk": 33, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "IFI/Western Blot", 
+        "modified": "2014-07-22T15:57:03.398", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.398"
+    }
+},
+{
+    "pk": 34, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "HTLV 1", 
+        "modified": "2014-07-22T15:57:03.399", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.399"
+    }
+},
+{
+    "pk": 35, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "TORCH", 
+        "modified": "2014-07-22T15:57:03.400", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.400"
+    }
+},
+{
+    "pk": 36, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Gota gruesa", 
+        "modified": "2014-07-22T15:57:03.402", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.402"
+    }
+},
+{
+    "pk": 37, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Malaria prueba r\u00e1pida", 
+        "modified": "2014-07-22T15:57:03.403", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.403"
+    }
+},
+{
+    "pk": 38, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Fluorescencia malaria", 
+        "modified": "2014-07-22T15:57:03.405", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.405"
+    }
+},
+{
+    "pk": 39, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Urocultivo", 
+        "modified": "2014-07-22T15:57:03.407", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.407"
+    }
+},
+{
+    "pk": 40, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "BK en esputo", 
+        "modified": "2014-07-22T15:57:03.410", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.410"
+    }
+},
+{
+    "pk": 41, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Listeria", 
+        "modified": "2014-07-22T15:57:03.412", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.412"
+    }
+},
+{
+    "pk": 42, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Tamizaje hepatitis B", 
+        "modified": "2014-07-22T15:57:03.414", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.414"
+    }
+},
+{
+    "pk": 43, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "Tolerancia glucosa", 
+        "modified": "2014-07-22T15:57:03.416", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.416"
+    }
+},
+{
+    "pk": 44, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "FTA Abs", 
+        "modified": "2014-07-22T15:57:03.417", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.417"
+    }
+},
+{
+    "pk": 45, 
+    "model": "controles.examenlaboratorio", 
+    "fields": {
+        "nombre": "THPA", 
+        "modified": "2014-07-22T15:57:03.419", 
+        "created_by": null, 
+        "created": "2014-07-22T15:57:03.419"
+    }
+}
+]

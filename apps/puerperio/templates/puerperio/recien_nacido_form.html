@@ -1,0 +1,271 @@
+<form class="form-horizontal" method="post">
+    <div class="row">
+        {% csrf_token %}
+        <div class="col-md-4">
+            {% include 'dashboard/partials/form_group_input.html' with field=form.nombres %}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.apellido_paterno %}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.apellido_materno %}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.sexo %}
+            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.peso addon='g' %}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.peso_por_edad_gestacional %}
+            {% include 'dashboard/partials/checkbox.html' with field=form.tiene_malformaciones_congenitas %}
+            <div class="panel panel-default" id="malformaciones-congenitas">
+                <div class="panel-body">
+                    Malformaciones congénitas
+                    {% include 'dashboard/partials/checkbox.html' with field=form.mc_sindrome_de_down %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.mc_siames %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.mc_labio_leporino %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.mc_paladar_rendido %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.mc_polidactilia %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.temperatura addon='C'%}
+            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.perimetro_cefalico addon='mm'%}
+            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.perimetro_toraxico addon='mm'%}
+            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.talla addon='mm'%}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.examen_fisico %}
+            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.edad_por_examen_fisico addon='sem'%}
+            {% include 'dashboard/partials/checkbox.html' with field=form.vive %}
+            {% include 'dashboard/partials/checkbox.html' with field=form.hospitalizacion %}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.apgar_1 %}
+            {% include 'dashboard/partials/form_group_input.html' with field=form.apgar_5 %}
+            <div class="form-group">
+                <label for="{{ form.necropsia.auto_id }}" class="col-sm-5 control-label">{{ form.necropsia.label }}</label>
+                <div class="col-sm-7">
+                    <ul class="list-inline">
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ form.necropsia.name }}" {% ifequal form.instance.necropsia True %}checked{% endifequal %} value="True"/>
+                                Si
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ form.necropsia.name }}" {% ifequal form.instance.necropsia False %}checked{% endifequal %} value="False"/>
+                                No
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ form.necropsia.name }}" {% ifequal form.instance.necropsia None %}checked{% endifequal %} value="None"/>
+                                N/A
+                            </label>
+                        </li>
+                    </ul>
+                    {% for error in form.necropsia.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Atención inmediata
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_aspiracion_oro_nasal %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_aspiracion_endotraqueal %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_ventilacion_asistida %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_oxigeno %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_masaje_cardiaco %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_bicarbonato %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.ai_adrenalina %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Condición al nacer
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_llanto_inmediato %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_cianotico %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_palido %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_pletorico %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_flacido %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_circular %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_asfixia %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_asfixia_severa %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_impregnacion_meconial %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_caput %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_cefalohematoma %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_edematoso %}
+                    {% include 'dashboard/partials/checkbox.html' with field=form.can_ictericia %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+            {% include 'dashboard/partials/checkbox.html' with field=form.tiene_egreso %}
+            </div>
+        </div>
+    </div>
+    <div class="row" id="egreso-fields">
+        <hr>
+        <div class="col-md-4">
+            {% include 'dashboard/partials/form_group_date.html' with field=egreso_form.fecha %}
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.hora %}
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.tipo %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Alimento al Alta
+                    {% include 'dashboard/partials/checkbox.html' with field=egreso_form.alimento_al_alta_lme %}
+                    {% include 'dashboard/partials/checkbox.html' with field=egreso_form.alimento_al_alta_artificial %}
+                    {% include 'dashboard/partials/checkbox.html' with field=egreso_form.alimento_al_alta_mixto %}
+                    {% include 'dashboard/partials/checkbox.html' with field=egreso_form.alimento_al_alta_no_aplica %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.diagnostico %}
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.diagnostico_traslado %}
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.establecimiento_traslado %}
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.diagnostico_fallecimiento %}
+            {% include 'dashboard/partials/form_group_input.html' with field=egreso_form.peso %}
+            <div class="form-group">
+                <label for="{{ egreso_form.cui.auto_id }}" class="col-md-5 control-label">{{ egreso_form.cui.label }}</label>
+                <div class="col-md-7">
+                    <ul class="list-inline">
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ egreso_form.cui.html_name }}" {% ifequal egreso_form.instance.cui True %}checked{% endifequal %} value="True"/>
+                                Si
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ egreso_form.cui.html_name }}" {% ifequal egreso_form.instance.cui False %}checked{% endifequal %} value="False"/>
+                                No
+                            </label>
+                        </li>
+                    </ul>
+                    {% for error in egreso_form.cui.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="{{ egreso_form.seguro.auto_id }}" class="col-md-5 control-label">{{ egreso_form.seguro.label }}</label>
+                <div class="col-md-7">
+                    <ul class="list-inline">
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ egreso_form.seguro.html_name }}" {% ifequal egreso_form.instance.seguro True %}checked{% endifequal %} value="True"/>
+                                Si
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="{{ egreso_form.seguro.html_name }}" {% ifequal egreso_form.instance.seguro False %}checked{% endifequal %} value="False"/>
+                                No
+                            </label>
+                        </li>
+                    </ul>
+                    {% for error in egreso_form.seguro.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Tamizaje Neonatal
+                    <div class="form-group">
+                        <label for="{{ egreso_form.tn_tsh.auto_id }}" class="col-md-6 control-label">{{ egreso_form.tn_tsh.label }}</label>
+                        <div class="col-md-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_tsh.html_name }}" {% ifequal egreso_form.instance.tn_tsh True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_tsh.html_name }}" {% ifequal egreso_form.instance.tn_tsh False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in egreso_form.tn_tsh.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ egreso_form.tn_fibrosis.auto_id }}" class="col-md-6 control-label">{{ egreso_form.tn_fibrosis.label }}</label>
+                        <div class="col-md-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_fibrosis.html_name }}" {% ifequal egreso_form.instance.tn_fibrosis True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_fibrosis.html_name }}" {% ifequal egreso_form.instance.tn_fibrosis False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in egreso_form.tn_fibrosis.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ egreso_form.tn_fenilceto.auto_id }}" class="col-md-6 control-label">{{ egreso_form.tn_fenilceto.label }}</label>
+                        <div class="col-md-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_fenilceto.html_name }}" {% ifequal egreso_form.instance.tn_fenilceto True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_fenilceto.html_name }}" {% ifequal egreso_form.instance.tn_fenilceto False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in egreso_form.tn_fenilceto.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ egreso_form.tn_hiperplasia.auto_id }}" class="col-md-6 control-label">{{ egreso_form.tn_hiperplasia.label }}</label>
+                        <div class="col-md-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_hiperplasia.html_name }}" {% ifequal egreso_form.instance.tn_hiperplasia True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ egreso_form.tn_hiperplasia.html_name }}" {% ifequal egreso_form.instance.tn_hiperplasia False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in egreso_form.tn_hiperplasia.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input class="btn btn-green" style="float: right" type="submit" value="Guardar"/>
+        </div>
+    </div>
+</form>

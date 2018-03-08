@@ -1,0 +1,182 @@
+{% load static %}
+{% include 'session_security/all.html' %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="{{ form.violencia_fisica.auto_id }}" class="col-sm-5 control-label">{{ form.violencia_fisica.label }}</label>
+            <div class="col-sm-7">
+                <ul class="list-inline">
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_fisica.name }}" {% ifequal form.instance.violencia_fisica True %}checked{% endifequal %} value="True"/>
+                            Si
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_fisica.name }}" {% ifequal form.instance.violencia_fisica False %}checked{% endifequal %} value="False"/>
+                            No
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_fisica.name }}" {% ifequal form.instance.violencia_fisica None %}checked{% endifequal %} value="None"/>
+                            N/A
+                        </label>
+                    </li>
+                </ul>
+                {% for error in form.violencia_fisica.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'dashboard/partials/form_group_input.html' with field=form.violencia_fisica_agresores %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="{{ form.violencia_psicologica.auto_id }}" class="col-sm-5 control-label">{{ form.violencia_psicologica.label }}</label>
+            <div class="col-sm-7">
+                <ul class="list-inline">
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_psicologica.name }}" {% ifequal form.instance.violencia_psicologica True %}checked{% endifequal %} value="True"/>
+                            Si
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_psicologica.name }}" {% ifequal form.instance.violencia_psicologica False %}checked{% endifequal %} value="False"/>
+                            No
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_psicologica.name }}" {% ifequal form.instance.violencia_psicologica None %}checked{% endifequal %} value="None"/>
+                            N/A
+                        </label>
+                    </li>
+                </ul>
+                {% for error in form.violencia_psicologica.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'dashboard/partials/form_group_input.html' with field=form.violencia_psicologica_agresores %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="{{ form.violencia_sexual.auto_id }}" class="col-sm-5 control-label">{{ form.violencia_sexual.label }}</label>
+            <div class="col-sm-7">
+                <ul class="list-inline">
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_sexual.name }}" {% ifequal form.instance.violencia_sexual True %}checked{% endifequal %} value="True"/>
+                            Si
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_sexual.name }}" {% ifequal form.instance.violencia_sexual False %}checked{% endifequal %} value="False"/>
+                            No
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="{{ form.violencia_sexual.name }}" {% ifequal form.instance.violencia_sexual None %}checked{% endifequal %} value="None"/>
+                            N/A
+                        </label>
+                    </li>
+                </ul>
+                {% for error in form.violencia_sexual.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'dashboard/partials/form_group_input.html' with field=form.violencia_sexual_agresores %}
+<div id="violencia-familiar-form" style="{% if not form.instance.violencia_familiar %}display: none{% endif %}">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Físico
+            <div class="row">
+                <div class="col-md-6">
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.hematomas field_instance=form.instance.hematomas %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.cicatrices field_instance=form.instance.cicatrices %}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.fracturas field_instance=form.instance.fracturas %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.mordeduras field_instance=form.instance.mordeduras %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.lesiones field_instance=form.instance.lesiones %}#}
+                </div>
+                <div class="col-sm-6">
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.laceraciones field_instance=form.instance.laceraciones %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.quejas_cronicas field_instance=form.instance.quejas_cronicas %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.cefalea field_instance=form.instance.quejas_cronicas %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.problemas_apetito field_instance=form.instance.problemas_apetito %}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.enuresis field_instance=form.instance.enuresis %}#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Psicológico
+            <div class="row">
+                <div class="col-md-6">
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.falta_de_confianza field_instance=form.instance.falta_de_confianza %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.tristeza field_instance=form.instance.tristeza %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.retraimiento field_instance=form.instance.retraimiento %}
+                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.llanto_frecuente field_instance=form.instance.llanto_frecuente %}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.necesidad_de_ganar field_instance=form.instance.necesidad_de_ganar %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.demanda_de_atencion field_instance=form.instance.demanda_de_atencion %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.agresividad_pasividad field_instance=form.instance.agresividad_pasividad %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.tartamudeo field_instance=form.instance.tartamudeo %}#}
+                </div>
+{#                <div class="col-md-6">#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.temor_padres_hogar field_instance=form.instance.temor_padres_hogar %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.robo_mentira field_instance=form.instance.robo_mentira %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.ausentismo_escolar field_instance=form.instance.ausentismo_escolar %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.llegar_temprano_salir_tarde_escuela field_instance=form.instance.llegar_temprano_salir_tarde_escuela %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.bajo_rendimiento_academico field_instance=form.instance.bajo_rendimiento_academico %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.aislamiento_de_personas field_instance=form.instance.aislamiento_de_personas %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.intento_suicidio field_instance=form.instance.intento_suicidio %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.usa_drogas_alcohol field_instance=form.instance.usa_drogas_alcohol %}#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+{#    <div class="panel panel-default">#}
+{#        <div class="panel-body">#}
+{#            Sexual#}
+{#            <div class="row">#}
+{#                <div class="col-md-12">#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.conducta_sexual_inapropiada field_instance=form.instance.conducta_sexual_inapropiada %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.irritacion_dolor field_instance=form.instance.irritacion_dolor %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.embarazo_precoz field_instance=form.instance.embarazo_precoz %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.aborto_amenaza_ets field_instance=form.instance.aborto_amenaza_ets %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="panel panel-default">#}
+{#        <div class="panel-body">#}
+{#            Negligencia#}
+{#            <div class="row">#}
+{#                <div class="col-md-6">#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.desnutricion field_instance=form.instance.desnutricion %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.no_vacunas field_instance=form.instance.no_vacunas %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.accidentes_enfermedades_frecuentes field_instance=form.instance.accidentes_enfermedades_frecuentes %}#}
+{#                </div>#}
+{#                <div class="col-md-6">#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.descuido_higiene field_instance=form.instance.descuido_higiene %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.falta_estimulacion_desarrollo field_instance=form.instance.falta_estimulacion_desarrollo %}#}
+{#                    {% include 'embarazos/partials/radio_select_true_false_none.html' with field=form.fatiga field_instance=form.instance.fatiga %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+</div>

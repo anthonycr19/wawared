@@ -1,0 +1,268 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load paciente_tags %}
+
+{% block title %}Buscar gestantes{% endblock %}
+
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Buscar Gestante</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <!--<div class="col-sm-5 col-md-offset-7">-->
+                            <form role="search" method="get">
+                                <div class="row" style="margin-left:2px; ">
+                                <div class="col-sm-2">
+                                    <label>Tipo Búsqueda:</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select id="tipo_busqueda_paciente" name="t" class="input-sm select-gray-border reniec">
+                                        <option value="1" class="input-sm select-gray-border">DNI</option>
+                                        <option value="2" class="input-sm select-gray-border">Apellidos y Nombres</option>
+                                        <option value="3" class="input-sm select-gray-border">Otro Documento (Pasaporte, Carnet de extranjería)</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                <div id="id_campos" class="input-group">
+                                    <input type="number" name="q" class="form-control" placeholder="Ingrese dato a buscar" autofocus>
+                                    <span class="input-group-addon">
+                                        <button>
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                                </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row" style="margin-left:2px;">
+                        <form method="get" action="{% url 'paciente:create' %}">
+                            <input class="btn btn-green" id="btn_registrar_ges" type="submit" value="Registrar Gestante" />
+                        </form>
+                        </div>
+                    <!--</div>-->
+
+                </div>
+                <div class="panel-body">
+                    <div id="data-buscar-body" class="panel panel-default">
+                        <table class="table table-striped table-bordered">
+                            <thead class="panel-heading">
+                            <tr>
+                                <th># HC</th>
+                                <th>Nombre y Apellidos</th>
+                                <!--<th>Nro. de Atenciones</th>-->
+                                <th>Fecha de última atención</th>
+                                <th>Opciones</th>
+                            </tr>
+                            </thead>
+                            <tbody class="panel-body">
+                            {% for paciente in object_list %}
+                                <tr>
+                                    {% if paciente.id %}
+                                    <td>{{ paciente|hc:request }}</td>
+                                    <td>
+                                        {% if 'pacientes.change_paciente' in user.get_all_permissions %}
+                                        <a href="{% url 'paciente:update' paciente.id %}">{{ paciente.nombre_completo }}</a>
+                                        {% else %}
+                                        <a href="{% url 'paciente:detail' paciente.id %}">{{ paciente.nombre_completo }}</a>
+                                        {% endif %}
+                                    </td>
+
+                                    {% with paciente.get_ultimo_atencion_embarazo_activo as ultimo_control %}
+                                    <td>
+                                        {% if ultimo_control %}
+                                            {{ ultimo_control.atencion_fecha }}
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            {% if 'pacientes.change_antecedenteginecologico' in user.get_all_permissions %}
+                                                {% if ultimo_control %}
+                                                    <a class="btn btn-default" href="{% url 'controles:create' ultimo_control.embarazo.id %}">Agregar atención</a>
+                                                    <a class="btn btn-default" href="{% url 'embarazos:ultimo_embarazo_from_embarazo_create' paciente.id ultimo_control.embarazo.id %}">Información del parto</a>
+                                                {% else %}
+                                                    <a class="btn btn-default" href="{% url 'embarazos:create' paciente.id %}" style="">Agregar embarazo</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    {% endwith %}
+
+                                    {% else %}
+                                        {% if paciente.nombre_completo %}
+                                            <td>{{paciente.numero_documento}}</td>
+                                            <td>
+                                                {{ paciente.nombre_completo }}
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-default beforeclick" href="{% url 'paciente:create_force_update' paciente.numero_documento %}">Afiliar</a>
+                                            </td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% if msg %}
+                    <div class="alert alert-danger">
+                        {{msg}}
+                    </div>
+                {% endif%}
+                <div class="panel-footer">
+
+                    <p class="pull-left">
+                        Total de resultados {{ total }}
+                    </p>
+                    <div class="pull-right">
+                        {% include 'dashboard/pagination.html' with query=query %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /data-buscar-->
+    </div>
+</div>
+{% endblock %}
+
+
+{% block bottom_scripts %}
+
+<script>
+    $(document).ready(function(){
+
+        var env = false;
+
+        $('html').on('click', 'a.beforeclick', function(event){
+            //event.preventDefault();
+            if (env){
+                $('a').attr("href", "javascript:void(0)");
+            }
+
+            env = true;
+        });
+
+        $("#btn_registrar_ges").hide();
+
+        var t = $_GET("t");
+        var q = $_GET("q");
+        var q2 = $_GET("q2");
+
+        if(t)
+        {
+            $("#tipo_busqueda_paciente").val(t);
+            $_mostrar_campos_x_opcion(t);
+
+            $("#q").val(q);
+
+            if(q2)
+            {
+                $("#q2").val(q2);
+            }
+
+            if(t!="1")
+            {
+                $("#btn_registrar_ges").show();
+            }
+
+        }
+
+
+        $("#tipo_busqueda_paciente").change(function(){
+
+            var opcion = $("#tipo_busqueda_paciente").val();
+
+            $_mostrar_campos_x_opcion(opcion);
+
+        });
+
+        function $_GET(param)
+        {
+            /* Obtener la url completa */
+            url = document.URL;
+            /* Buscar a partir del signo de interrogación ? */
+            url = String(url.match(/\?+.+/));
+            /* limpiar la cadena quitándole el signo ? */
+            url = url.replace("?", "");
+            /* Crear un array con parametro=valor */
+            url = url.split("&");
+
+            /*
+            Recorrer el array url
+            obtener el valor y dividirlo en dos partes a través del signo =
+            0 = parametro
+            1 = valor
+            Si el parámetro existe devolver su valor
+            */
+            x = 0;
+            while (x < url.length)
+            {
+                p = url[x].split("=");
+                if (p[0] == param)
+                {
+                    return decodeURIComponent(p[1]);
+                }
+                x++;
+            }
+        }
+
+        function $_mostrar_campos_x_opcion(opcion)
+        {
+            if(opcion==1)
+            {
+                var vhtml = "<input type=\"number\" id=\"q\" name=\"q\" class=\"form-control\" placeholder=\"DNI\" autofocus>"+
+                            "        <span class=\"input-group-addon\">"+
+                            "            <button>"+
+                            "                <span class=\"glyphicon glyphicon-search\"></span>"+
+                            "            </button>"+
+                            "        </span>";
+                $("#id_campos").html(vhtml);
+                $("#q").focus();
+            }
+
+            if(opcion==2)
+            {
+                var vhtml = "<div class=\"col-sm-6\">"+
+                            "<input type=\"text\" id=\"q2\" name=\"q2\" class=\"form-control\" placeholder=\"Apellidos\" autofocus>"+
+                            "</div>"+
+                            "<div class=\"col-sm-6\">"+
+                            "<input type=\"text\" id=\"q\" name=\"q\" class=\"form-control\" placeholder=\"Nombres\" autofocus>"+
+                            "</div>"+
+                            "        <span class=\"input-group-addon\">"+
+                            "            <button>"+
+                            "                <span class=\"glyphicon glyphicon-search\"></span>"+
+                            "            </button>"+
+                            "        </span>";
+                $("#id_campos").html(vhtml);
+                $("#q2").focus();
+            }
+
+            if(opcion==3)
+            {
+                var vhtml = "<input type=\"text\" id=\"q\" name=\"q\" class=\"form-control\" placeholder=\"Otro Documento\" autofocus>"+
+                            "        <span class=\"input-group-addon\">"+
+                            "            <button>"+
+                            "                <span class=\"glyphicon glyphicon-search\"></span>"+
+                            "            </button>"+
+                            "        </span>";
+                $("#id_campos").html(vhtml);
+                $("#q").focus();
+            }
+        }
+
+
+    });
+
+</script>
+{% endblock %}

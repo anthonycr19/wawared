@@ -1,0 +1,283 @@
+{% load static %}
+{% load thumbnail %}
+{% load form_filter %}
+<script src="{% static 'js/jquery.js' %}"></script>
+{% include 'session_security/all.html' %}
+<div class="panel-body">
+    <div id="data-gestante" class="panel panel-default">
+        <div class="panel-heading">
+            Datos de la gestante
+            <span id="mensaje_reniec" style="color:blue;display:none;">El sistema esta recuperando los datos de la gestante desde la Reniec, este proceso puede tomar unos segundos.</span>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <input id="input-foto" type="file" name="foto" class="hidden"/>
+                <div id="input-foto-wrapper" class="col-md-2" style="cursor: pointer">
+                    {% if paciente.foto.name %}
+                    <img src="{% thumbnail paciente.foto 112x122 %}" width="112" height="112" style="max-width: 112px" alt="{{ paciente.nombre_completo }}"/>
+                    {% else %}
+                    <img src="{% static 'img/foto.png' %}" width="112" height="112" style="max-width: 112px" alt="default foto"/>
+                    {% endif %}
+                </div>
+                <div class="col-md-5">
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.nombres %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.apellido_paterno %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.apellido_materno %}
+                    <div class="form-group">
+                        <label for="" class="col-sm-5 control-label">Fecha de nacimiento</label>
+                        <div class="col-sm-7">
+                            {{ form.dia_nacimiento|add_class:'input-sm select-gray-border' }} {{ form.mes_nacimiento|add_class:'input-sm select-gray-border' }} {{ form.anio_nacimiento|add_class:'input-sm select-gray-border' }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.transfusion_sanguinea.auto_id }}" class="col-sm-5 control-label">{{ form.transfusion_sanguinea.label }}</label>
+                        <div class="col-sm-7">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.transfusion_sanguinea.name }}" {% ifequal form.instance.transfusion_sanguinea True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.transfusion_sanguinea.name }}" {% ifequal form.instance.transfusion_sanguinea False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.transfusion_sanguinea.name }}" {% ifequal form.instance.transfusion_sanguinea None %}checked{% endifequal %} value="None"/>
+                                        N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.transfucion_sanguinea.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Edad</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="age" readonly/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.hc %}
+                    {% if paciente.id %}
+                    {% include 'dashboard/partials/form_group_select.html' with field=form.tipo_documento %}
+                    {% else %}
+                    <div class="form-group">
+                        <label for="id_tipo_documento" class="col-sm-5 control-label">Tipo Documento</label>
+                        <div class="col-sm-7">
+                        <select id="id_tipo_documento" name="tipo_documento" class="form-control input-sm">
+                        <option value="le" class="form-control input-sm">LIBRETA ELECTORAL</option>
+                        <option value="lm" class="form-control input-sm">LIBRETA MILITAR</option>
+                        <option value="boleta" class="form-control input-sm">BOLETA DE INSCRIPCION</option>
+                        <option value="partidanacimiento" class="form-control input-sm">PARTIDA DE NACIMIENTO</option>
+                        <option value="carnetidentidad" class="form-control input-sm">CARNET DE IDENTIDAD</option>
+                        <option value="brevete" class="form-control input-sm">BREVETE</option>
+                        <option value="ce" class="form-control input-sm">CE</option>
+                        <option value="pasaporte" class="form-control input-sm">Pasaporte</option>
+                        <option value="carnetuniversitario" class="form-control input-sm">CARNET UNIVERSITARIO</option>
+                        <option value="nie" class="form-control input-sm">DIE</option>
+                        <option value="noespecifica" class="form-control input-sm">SIN ESPECIFICACION</option>
+                        <option value="notrajo" class="form-control input-sm">NO TRAJO DOCUMENTO</option>
+                        <option value="nodoc" class="form-control input-sm">Indocumentado</option>
+                        </select>
+                        </div>
+                    </div>
+                    {% endif %}                    
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.numero_documento %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.dni_responsable %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.nombre_responsable %}
+                    {% include 'dashboard/partials/form_group_select.html' with field=form.tipo_parentesco_responsable %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.responsable_otros %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /data-gestante-->
+
+    <div id="data-residencia" class="panel panel-default">
+        <div class="panel-heading">
+            Lugar de residencia
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.pais_residencia %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.departamento_residencia %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.provincia_residencia %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.distrito_residencia %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.direccion %}
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.categorizacion %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.urbanizacion %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.telefono %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.celular %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.celular2 %}
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.email %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /data-residencia-->
+
+    <div id="data-nacimiento" class="panel panel-default">
+        <div class="panel-heading">
+            Lugar de nacimiento
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.pais_nacimiento %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.departamento_nacimiento %}
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.provincia_nacimiento %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /data-nacimiento-->
+
+    <div id="data-otros" class="panel panel-default">
+        <div class="panel-heading">
+            Otros
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.estudio %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.tiempo_estudio %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.ocupacion %}
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.estado_civil %}
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.etnia %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /data-otros-->
+
+    <div id="data-sis" class="panel panel-default">
+        <div class="panel-heading">
+            Tipos de seguro
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="controls">
+                            {% include 'dashboard/partials/checkbox.html' with field=form.seguro_sis %}
+                            {% include 'dashboard/partials/checkbox.html' with field=form.seguro_essalud %}
+                            {% include 'dashboard/partials/checkbox.html' with field=form.seguro_privado %}
+                            {% include 'dashboard/partials/checkbox.html' with field=form.seguro_sanidad %}
+                            {% include 'dashboard/partials/checkbox.html' with field=form.seguro_otros %}
+
+                            {% include 'dashboard/partials/form_group_input.html' with field=form.codigo_afiliacion %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="controls">
+                            {% include 'dashboard/partials/form_group_select.html' with field=form.componente %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="controls">
+                            {% include 'dashboard/partials/form_group_select.html' with field=form.afiliacion %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- /data-sis-->
+
+    <div id="data-wawared" class="panel panel-default">
+        <div class="panel-heading">
+            Wawared
+            <div class="pull-right">
+                <a href="#" class="btn btn-green" data-toggle="modal" data-target="#consentimiento">Ver texto de consentimiento</a>
+            </div>
+            <div class="modal fade" id="consentimiento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Texto de Consentimiento</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Señora, está de acuerdo en recibir mensajes de texto al celular que proporcionó. Los mensajes que recibirá son concernientes a su embarazo y sus próximas citas.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-green" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="controls">
+                        <div class="form-group">
+                            <label for="{{ form.recibir_sms.auto_id }}" class="col-sm-5 control-label">{{ form.recibir_sms.label }}</label>
+                            <div class="col-sm-7">
+                                <ul class="list-inline">
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="{{ form.recibir_sms.name }}" {% ifequal form.instance.recibir_sms True %}checked{% endifequal %} value="True"/>
+                                            Si
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="{{ form.recibir_sms.name }}" {% ifequal form.instance.recibir_sms False %}checked{% endifequal %} value="False"/>
+                                            No
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="{{ form.recibir_sms.name }}" {% ifequal form.instance.recibir_sms None %}checked{% endifequal %} value="None"/>
+                                            N/A
+                                        </label>
+                                    </li>
+                                </ul>
+                                {% for error in form.recibir_sms.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% include 'dashboard/partials/form_group_input.html' with field=form.celular_wawared %}
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="controls">
+                        {% include 'dashboard/partials/form_group_select.html' with field=form.operador %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /data-wawared-->
+</div>

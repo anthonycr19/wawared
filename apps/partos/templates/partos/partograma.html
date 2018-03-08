@@ -1,0 +1,1401 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load form_filter %}
+{% block title %}Partograma{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+    <style>
+        .variedad-presentacion {
+            width: 49%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Partograma</h3>
+                </div>
+                {% include 'partos/paciente_header.html' with paciente=partograma.paciente %}
+                {% include 'partos/tabs.html' with ingreso=ingreso %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Partograma</h3> <h6 class="pull-left">(Monitoreo c/30 min)</h6>
+                    <div class="pull-right">
+                        {% if not update_medicion %}
+                        {% if not referida %}
+                        <button class="btn btn-green" type="button" id="btn-new-measurement">Registrar monitoreo</button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#close-partograma-modal" id="btn-close-measurement">Cerrar Partograma</button>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div role="tabpanel" class="tab-pane active" id="monitoring">
+                        {% if not update_medicion %}
+                        <div class="panel-body" id="panel-measurement" {% if not form.errors %}style="display: none"{% endif %}>
+                        {% else %}
+                        <div class="panel-body">
+                        {% endif %}
+                            <form class="form-horizontal" method="post">
+                                <div class="row">
+                                    {% csrf_token %}
+                                    <div class="col-md-4">
+                                        {% include 'dashboard/partials/form_group_date.html' with field=form.fecha %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.hora %}
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Soluciones
+                                                <div class="form-group">
+                                                    <label for="{{ form.soluciones.auto_id }}" class="col-sm-5 control-label">{{ form.soluciones.label }}</label>
+                                                    <div class="col-sm-7">
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.soluciones.name }}" {% ifequal form.instance.soluciones True %}checked{% endifequal %} value="True"/>
+                                                                    Si
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.soluciones.name }}" {% ifequal form.instance.soluciones False %}checked{% endifequal %} value="False"/>
+                                                                    No
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" name="{{ form.soluciones.name }}" {% ifequal form.instance.soluciones None %}checked{% endifequal %} value="None"/>
+                                                                    N/A
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                        {% for error in form.soluciones.errors %}
+                                                        <div class="alert alert-danger">{{ error }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div id="soluciones-panel" {% if not form.instance.soluciones %}style="display: none"{% endif %}>
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.solucion %}
+                                                    {% include 'dashboard/partials/form_group_input.html' with field=form.tocolisis %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.oxitocina addon='U/L' %}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.goteo addon='/min' %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Medicamentos
+                                                <div class="form-group">
+                                                    <label for="{{ form.medicamentos.auto_id }}" class="col-sm-5 control-label">Medicamentos</label>
+                                                    <div class="col-sm-7">
+                                                        <textarea name="{{ form.medicamentos.name }}" class="form-control" id="{{ form.medicamentos.auto_id }}" rows="3">{% if form.medicamentos.value%}{{ form.medicamentos.value }}{% endif %}</textarea>
+                                                        {% for error in form.medicamentos.errors %}
+                                                        <div class="alert alert-danger">{{ error }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Orina
+                                                {% include 'dashboard/partials/form_group_input_addon.html' with field=form.orina_volumen addon='mL' %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.orina_cetona %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.orina_proteinas %}
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Observaciones
+                                                <div class="form-group">
+                                                    <label for="{{ form.observaciones.auto_id }}" class="col-sm-5 control-label">Observaciones</label>
+                                                    <div class="col-sm-7">
+                                                        <textarea name="{{ form.observaciones.name }}" class="form-control" id="{{ form.observaciones.auto_id }}" rows="3">{% if form.observaciones.value%}{{ form.observaciones.value }}{% endif %}</textarea>
+                                                        {% for error in form.observaciones.errors %}
+                                                        <div class="alert alert-danger">{{ error }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Funciones vitales
+                                                {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_sistolica addon='mmHg' %}
+                                                {% include 'dashboard/partials/form_group_input_addon.html' with field=form.presion_diastolica addon='mmHg' %}
+                                                {% include 'dashboard/partials/form_group_input_addon.html' with field=form.pulso addon='min' %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.frecuencia_respiratoria %}
+                                                {% include 'dashboard/partials/form_group_input_addon.html' with field=form.temperatura addon='C' %}
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Feto
+                                                {{ fcfMs.management_form }}
+                                                {% for error in fcfMs.non_form_errors %}
+                                                    <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                                <div id="fcfMs-form-container">
+                                                    {% for fcf_form in fcfMs %}
+                                                    <div class="row" style="margin-left:0; margin-right:0;">
+                                                        {{ fcf_form.id }}
+                                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=fcf_form.fcf addon='lat / min' %}
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <button id="btn-add-baby" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+
+                                                <div class="row hidden" id="empty-form" style="margin-left:0; margin-right:0;" >
+                                                    {{ fcfMs.empty_form.id }}
+                                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=fcfMs.empty_form.fcf addon='lat / min' %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Dinámica uterina
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.du_frecuencia %}
+                                                {% include 'dashboard/partials/form_group_input_addon.html' with field=form.du_duracion addon='Seg' %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.du_intensidad %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.moldeaminetos %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                Tacto vaginal
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.tv_dilatacion %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.tv_incorporacion %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.tv_descenso_cefalico %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.tv_membranas %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.tv_membranas_rotas_tipo %}
+                                                {% include 'dashboard/partials/form_group_input.html' with field=form.tv_liquido_amniotico %}
+                                                <div class="form-group">
+                                                    <label for="variedad_presentacion" class="col-sm-5 control-label">Variedad presentación</label>
+                                                    <div class="col-sm-7">
+                                                        {{ form.tv_variedad_presentacion_val1|add_class:'form-control input-sm variedad-presentacion' }}
+                                                        {{ form.tv_variedad_presentacion_val2|add_class:'form-control input-sm variedad-presentacion' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {% if not update_medicion %}
+                                        <input id="btn-close-add-panel" class="btn btn-default" type="button" value="Cerrar"/>
+                                        {% endif %}
+                                        <input class="btn btn-green" style="float: right" type="submit" value="Guardar"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-body">
+                            <div id="data-buscar-body" class="panel panel-default">
+                                <table class="table table-striped table-bordered">
+                                    <thead class="panel-heading">
+                                    <tr>
+                                        <th colspan="2">
+                                            <button id="btn-toggle-optional-panel" class="btn btn-default" type="button">&gt;</button>
+                                        </th>
+                                        <th rowspan="3" class="optional-panel">Solución</th>
+                                        <th rowspan="3" class="optional-panel">Tocolisis</th>
+                                        <th rowspan="3" class="optional-panel">Oxitocina</th>
+                                        <th rowspan="3" class="optional-panel">Goteo</th>
+                                        <th colspan="5" style="text-align: center">Funciones vitales</th>
+                                        <th colspan="3" style="text-align: center">DIU</th>
+                                        <th>Feto</th>
+                                        <th colspan="8" style="text-align: center">Tacto vaginal</th>
+                                        <th rowspan="3">Editar</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2">Hora</th>
+                                        <th rowspan="2">Atendió</th>
+                                        <th rowspan="2">PA</th>
+                                        <th rowspan="2">FC</th>
+                                        <th rowspan="2">FR</th>
+                                        <th rowspan="2">T</th>
+                                        <th rowspan="2">F</th>
+                                        <th rowspan="2">D</th>
+                                        <th rowspan="2">I</th>
+                                        <th rowspan="2">FCF</th>
+                                        <th rowspan="2">D</th>
+                                        <th rowspan="2">I</th>
+                                        <th rowspan="2">AP</th>
+                                        <th colspan="4" style="text-align: center">Membranas</th>
+                                        <th rowspan="2">VP</th>
+                                    </tr>
+                                    <tr>
+                                        <th>INT</th>
+                                        <th>ROT</th>
+                                        <th>RAM</th>
+                                        <th>REM</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="panel-body">
+
+                                    {% for medicion in partograma.mediciones.all %}
+                                        <tr>
+                                            <td>{{ medicion.hora|date:'H:i' }}</td>
+                                            <td>{{ medicion.created_by.get_full_name }}</td>
+                                            <td class="optional-panel">{{ medicion.solucion }}</td>
+                                            <td class="optional-panel">{{ medicion.tocolisis }}</td>
+                                            <td class="optional-panel">{{ medicion.oxitocina }}</td>
+                                            <td class="optional-panel">{{ medicion.goteo }}</td>
+                                            <td>{{ medicion.presion_arterial }}</td>
+                                            <td>{{ medicion.pulso|stringformat:'d' }}</td>
+                                            <td>{{ medicion.frecuencia_respiratoria|stringformat:'d' }}</td>
+                                            <td>{{ medicion.temperatura|floatformat:3 }}</td>
+                                            <td>{{ medicion.du_frecuencia }}</td>
+                                            <td>{{ medicion.du_duracion }}</td>
+                                            <td>{{ medicion.du_intensidad }}</td>
+                                            <td>
+                                                {% for frecuencias in lista_frecuencias %}
+                                                    {% for fcf in frecuencias %}
+                                                        {% if medicion.id == fcf.medicion_parto_id %}
+                                                        {{fcf.fcf}}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ medicion.tv_dilatacion|stringformat:'d' }}</td>
+                                            <td>{{ medicion.tv_incorporacion }}</td>
+                                            <td>{{ medicion.tv_descenso_cefalico|stringformat:'d' }}</td>
+                                            <td>{% if medicion.tv_membranas == 'integras' %}X{% endif %}</td>
+                                            <td>{% if medicion.tv_membranas == 'rotas' %}X{% endif %}</td>
+                                            <td>{% if medicion.tv_membranas_rotas_tipo == 'artificial' %}X{% endif %}</td>
+                                            <td>{% if medicion.tv_membranas_rotas_tipo == 'espontanea' %}X{% endif %}</td>
+                                            <td>{{ medicion.variedad_presentacion }}</td>
+                                            <td>
+                                                <a class="btn btn-default" href="{% url 'partos:partograma_medicion' ingreso.id medicion.id %}">
+                                                    <span class="glyphicon glyphicon-edit"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="charts">
+                        {% if partograma.mediciones.first %}
+                        <h3 class="text-center">Hora base: {{ partograma.mediciones.first.hora|time:'H:i' }}</h3>
+                        {% endif %}
+                        <h3></h3>
+                        <div id="fcf-chart"></div>
+                        <div id="medicion-chart"></div>
+                        <div id="contracciones-chart"></div>
+                        <div id="presion-chart"></div>
+                        <div id="temperatura-chart"></div>
+                        <div id="orina-chart"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if not update_medicion %}
+<div class="modal fade" id="close-partograma-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Cerrar partograma</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form id='terminacionembarazo-form' class="content-form" action='./' enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.referido %}
+                                    {% include 'dashboard/partials/form_group_date.html' with field=terminacionembarazo_form.fecha_referido %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora %}
+                                    {% include 'dashboard/partials/form_group_date.html' with field=terminacionembarazo_form.fecha %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.tipo %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hidden_name_form %}
+                                </div>
+                            </div>
+                            Tiempo de duración del parto
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+                                        <label for="{{ terminacionembarazo_form.duracion_parto_perdiodo_1_horas.auto_id }}" class="col-sm-{% if left %}{{ left }}{% else %}5{% endif %} control-label">{% if terminacionembarazo_form.duracion_parto_perdiodo_1_horas.field.required %}* {% endif %}{{ terminacionembarazo_form.duracion_parto_perdiodo_1_horas.label }}</label>
+                                        <div class="col-sm-{% if left %}{{ right }}{% else %}7{% endif %}">
+                                            <div class="input-group">
+                                                {% if without_class == True %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_1_horas }}
+                                                {% else %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_1_horas|add_class:'form-control input-sm' }}
+                                                {% endif %}
+                                                <span class="input-group-addon">Horas</span>
+                                                {% if without_class == True %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_1_minutos }}
+                                                {% else %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_1_minutos|add_class:'form-control input-sm' }}
+                                                {% endif %}
+                                                <span class="input-group-addon">minutos</span>
+                                            </div>
+                                            {% for error in terminacionembarazo_form.duracion_parto_perdiodo_1_horas.errors %}
+                                            <div class="alert alert-danger">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.inicio_parto_periodo_1 %}
+                                    <div class="form-group">
+                                        <label for="{{ terminacionembarazo_form.duracion_parto_perdiodo_2_horas.auto_id }}" class="col-sm-{% if left %}{{ left }}{% else %}5{% endif %} control-label">{% if terminacionembarazo_form.duracion_parto_perdiodo_2_horas.field.required %}* {% endif %}{{ terminacionembarazo_form.duracion_parto_perdiodo_2_horas.label }}</label>
+                                        <div class="col-sm-{% if left %}{{ right }}{% else %}7{% endif %}">
+                                            <div class="input-group">
+                                                {% if without_class == True %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_2_horas }}
+                                                {% else %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_2_horas|add_class:'form-control input-sm' }}
+                                                {% endif %}
+                                                <span class="input-group-addon">Horas</span>
+                                                {% if without_class == True %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_2_minutos }}
+                                                {% else %}
+                                                {{ terminacionembarazo_form.duracion_parto_perdiodo_2_minutos|add_class:'form-control input-sm' }}
+                                                {% endif %}
+                                                <span class="input-group-addon">minutos</span>
+                                            </div>
+                                            {% for error in terminacionembarazo_form.duracion_parto_perdiodo_2_horas.errors %}
+                                            <div class="alert alert-danger">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.inicio_parto_periodo_2 %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora_1_parto_periodo_2 %}
+                                    <div class="hora 2" style="display: none">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora_2_parto_periodo_2 %}
+                                    </div>
+                                    <div class="hora 3" style="display: none">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora_3_parto_periodo_2 %}
+                                    </div>
+                                    <div class="hora 4" style="display: none">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora_4_parto_periodo_2 %}
+                                    </div>
+                                    <div class="hora 5" style="display: none">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora_5_parto_periodo_2 %}
+                                        </div>
+                                    <div class="left">
+                                        <button id="btn-add-newhora" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                                        (agregar hora)
+                                    </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.episiotomia %}
+                                    <div style="display: none" id="episiotomia_tipo_div">
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.tipo_episiotomia %}
+                                    </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.desgarro %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.desgarro_grado %}
+                                    <div class="form-group">
+                                            <label for="{{ terminacionembarazo_form.duracion_parto_perdiodo_3_horas.auto_id }}" class="col-sm-{% if left %}{{ left }}{% else %}5{% endif %} control-label">{% if terminacionembarazo_form.duracion_parto_perdiodo_3_horas.field.required %}* {% endif %}{{ terminacionembarazo_form.duracion_parto_perdiodo_3_horas.label }}</label>
+                                            <div class="col-sm-{% if left %}{{ right }}{% else %}7{% endif %}">
+                                                <div class="input-group">
+                                                    {% if without_class == True %}
+                                                    {{ terminacionembarazo_form.duracion_parto_perdiodo_3_horas }}
+                                                    {% else %}
+                                                    {{ terminacionembarazo_form.duracion_parto_perdiodo_3_horas|add_class:'form-control input-sm' }}
+                                                    {% endif %}
+                                                    <span class="input-group-addon">Horas</span>
+                                                    {% if without_class == True %}
+                                                    {{ terminacionembarazo_form.duracion_parto_perdiodo_3_minutos }}
+                                                    {% else %}
+                                                    {{ terminacionembarazo_form.duracion_parto_perdiodo_3_minutos|add_class:'form-control input-sm' }}
+                                                    {% endif %}
+                                                    <span class="input-group-addon">minutos</span>
+                                                </div>
+                                                {% for error in terminacionembarazo_form.duracion_parto_perdiodo_3_horas.errors %}
+                                                <div class="alert alert-danger">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.hora_parto_periodo_3 %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=terminacionembarazo_form.dirigido_parto_periodo_3 %}
+                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=terminacionembarazo_form.sangrado_aproximado addon='ml' %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ placentasM.management_form }}
+                                    {% for error in placentasM.non_form_errors %}
+                                        <div class="alert alert-danger">{{ error }}</div>
+                                    {% endfor %}
+                                    <div id="placentas-form-container">
+                                        {% for placenta_form in placentasM %}
+                                        <div class="row" style="margin-left:0; margin-right:0;">
+                                            {{ placenta_form.id }}
+                                            Placenta
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.placenta_desprendimiento %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.placenta_tipo %}
+                                            {% include 'dashboard/partials/form_group_input_addon.html' with field=placenta_form.placenta_peso addon='g' %}
+                                            {% include 'dashboard/partials/form_group_input_addon.html' with field=placenta_form.placenta_tamanio_ancho addon='cm' %}
+                                            {% include 'dashboard/partials/form_group_input_addon.html' with field=placenta_form.placenta_tamanio_longitud addon='cm' %}
+                                            {% include 'dashboard/partials/form_group_textarea.html' with field=placenta_form.placenta_otras_caracteristicas %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.membranas %}
+                                            Cordón Umbilical
+                                            {% include 'dashboard/partials/form_group_input_addon.html' with field=placenta_form.cordon_umbilical_longitud addon='cm' %}
+                                            {% include 'dashboard/partials/form_group_input_addon.html' with field=placenta_form.cordon_umbilical_diametro addon='cm' %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.cordon_umbilical_insercion %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.cordon_umbilical_vasos %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.cordon_umbilical_circular %}
+                                            <div id="circular_tipo" style="display: none">
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.cordon_umbilical_circular_tipo %}
+                                            </div>
+                                            {% include 'dashboard/partials/form_group_textarea.html' with field=placenta_form.cordon_umbilical_otras_caracteristicas %}
+                                            Líquido Amniótico
+                                            {% include 'dashboard/partials/form_group_input_addon.html' with field=placenta_form.liquido_amniotico_cantidad addon='g' %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.liquido_amniotico_color %}
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placenta_form.liquido_amniotico_olor %}
+                                            {% include 'dashboard/partials/form_group_textarea.html' with field=placenta_form.liquido_amniotico_otras_caracteristicas %}
+                                            Anexo
+                                            {% include 'dashboard/partials/form_group_textarea.html' with field=placenta_form.otras_caracteristicas %}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div>
+                                    <button id="btn-add-newplacenta" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                                    (agregar datos de placenta)
+                                    </div>
+                                    <div class="row hidden" id="empty-placenta-form" style="margin-left:0; margin-right:0;" >
+                                        {% if not forloop.first %}
+                                            <hr>
+                                        {% endif %}
+                                        {{ placentasM.empty_form.id }}
+                                        Placenta
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.placenta_desprendimiento %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.placenta_tipo %}
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=placentasM.empty_form.placenta_peso addon='g' %}
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=placentasM.empty_form.placenta_tamanio_ancho addon='cm' %}
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=placentasM.empty_form.placenta_tamanio_longitud addon='cm' %}
+                                        {% include 'dashboard/partials/form_group_textarea.html' with field=placentasM.empty_form.placenta_otras_caracteristicas %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.membranas %}
+                                        Cordón Umbilical
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=placentasM.empty_form.cordon_umbilical_longitud addon='cm' %}
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=placentasM.empty_form.cordon_umbilical_diametro addon='cm' %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.cordon_umbilical_insercion %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.cordon_umbilical_vasos %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.cordon_umbilical_circular %}
+                                        <div id="circular_tipo" style="display: none">
+                                            {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.cordon_umbilical_circular_tipo %}
+                                        </div>
+                                        {% include 'dashboard/partials/form_group_textarea.html' with field=placentasM.empty_form.cordon_umbilical_otras_caracteristicas %}
+                                        Líquido Amniótico
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=placentasM.empty_form.liquido_amniotico_cantidad addon='g' %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.liquido_amniotico_color %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=placentasM.empty_form.liquido_amniotico_olor %}
+                                        {% include 'dashboard/partials/form_group_textarea.html' with field=placentasM.empty_form.liquido_amniotico_otras_caracteristicas %}
+                                        Anexo
+                                        {% include 'dashboard/partials/form_group_textarea.html' with field=placentasM.empty_form.otras_caracteristicas %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input name="{{ terminacionembarazo_form.prefix }}-submit" class="btn btn-green" style="float: right" type="submit" value="Guardar" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ {% endif %}
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/vendor/raphael.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            {% if not update_medicion %}
+            $('#id_atem_modal-fecha').on('keydown', function () {
+                return false;
+            }).datepicker();
+            $('#id_atem_modal-fecha_referido').on('keydown', function () {
+                return false;
+            }).datepicker();
+
+            $('#id_atem_modal-hora').timepicker({
+                defaultTime: 'current',
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            {% endif %}
+            var $panelNewMeasurement = $('#panel-measurement'),
+                    $btnNewMeasurement = $('#btn-new-measurement'),
+                    $fecha = $('#id_fecha'),
+                    $hora = $('#id_hora'),
+                    $presionSistolica = $('#id_presion_sistolica'),
+                    $presionDiastolica = $('#id_presion_diastolica'),
+                    $frecuenciaRespiratoria = $('#id_frecuencia_respiratoria'),
+                    $temperatura = $('#id_temperatura'),
+                    $pulso = $('#id_pulso'),
+                    $liquidoAmniotico = $('#id_tv_liquido_amniotico'),
+                    $alturaUterina = $('#id_altura_uterina'),
+                    $membranas = $('#id_tv_membranas'),
+                    $membranasRotasTipo = $('#id_tv_membranas_rotas_tipo'),
+                    $membranasRotasTiempo = $('#id_tv_membranas_rotas_tiempo'),
+                    $fcf = $('#id_fcf'),
+                    $btnToggleOptionalPanel = $('#btn-toggle-optional-panel'),
+                    $optionalPanel = $('.optional-panel'),
+                    $soluciones = $('input[name="soluciones"]'),
+                    $orinaVolumen = $('#id_orina_volumen'),
+                    $btnAddBaby = $('#btn-add-baby'),
+                    $tipoParto = $('#id_atem_modal-tipo'),
+                    $desgarro = $('#id_atem_modal-desgarro'),
+                    $grado = $('#id_atem_modal-desgarro_grado'),
+                    $btnAddNewPlacenta = $('#btn-add-newplacenta'),
+                    $btnAddNewHora = $('#btn-add-newhora'),
+                    $episiotomia = $('#id_atem_modal-episiotomia'),
+                    $cetona = $('#id_orina_cetona'),
+                    $referido = $('#id_atem_modal-referido');
+
+            $btnNewMeasurement.on('click', function () {
+                $panelNewMeasurement.show();
+                $btnNewMeasurement.hide();
+                $('#btn-close-measurement').hide();
+            });
+            $('#id_atem_modal-hora_1_parto_periodo_2').timepicker({
+                defaultTime: 'current',
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $('#id_atem_modal-hora_2_parto_periodo_2').timepicker({
+                defaultTime: "",
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $('#id_atem_modal-hora_3_parto_periodo_2').timepicker({
+                defaultTime: "",
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $('#id_atem_modal-hora_4_parto_periodo_2').timepicker({
+                defaultTime: "",
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $('#id_atem_modal-hora_5_parto_periodo_2').timepicker({
+                defaultTime: "",
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $('#id_atem_modal-hora_parto_periodo_3').timepicker({
+                defaultTime: '',
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $('#btn-close-add-panel').on('click', function () {
+                $panelNewMeasurement.hide();
+                $('form')[0].reset();
+                $btnNewMeasurement.show();
+                $('#btn-close-measurement').show();
+            });
+            $fecha.datepicker();
+            $fecha.on('keydown', function () {
+                return false;
+            });
+            $hora.timepicker({
+                defaultTime: 'current',
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            $cetona.prop('disabled', true);
+
+            function checkDesgarro (value) {
+                if (value === 's') {
+                    $grado.parents('.form-group').show();
+                } else {
+                    $grado.parents('.form-group').hide();
+                    $grado.prop('selectedIndex',0);
+                }
+            }
+            $desgarro.on('change', function () {
+                checkDesgarro(this.value);
+            });
+            checkDesgarro($desgarro.val());
+
+            if ($tipoParto.val() === 'unico') {
+                $btnAddNewHora.attr('disabled', true);
+            }
+
+            $tipoParto.on('change', function () {
+                if (this.value === 'multiple') { // multiple
+                    $btnAddNewHora.attr('disabled', false);
+                } else {
+                    $btnAddNewHora.attr('disabled', true);
+                }
+            });
+            var $countForms = 1;
+            $btnAddNewHora.on('click', function () {
+                $('#id_atem_modal-hora_'+String($countForms+1)+'_parto_periodo_2').parent().parent().parent().show()
+                $countForms += 1;
+            });
+
+            $episiotomia.on('change', function () {
+                if (this.value === 's') {
+                    $('#episiotomia_tipo_div').show();
+                } else {
+                    $('#episiotomia_tipo_div').hide();
+                    $('#id_atem_modal-tipo_episiotomia').prop('selectedIndex',0);
+                }
+            });
+
+            $('body').on( 'change', 'select[name$=cordon_umbilical_circular]', function() {
+                var id = event.target.id;
+                if (event.target.value === 's') {
+                    $('#'+id+'_tipo').parent().parent().parent().show();
+                } else {
+                    $('#'+id+'_tipo').parent().parent().parent().hide();
+                }
+            });
+
+            var $totalForms = $('#id_examenfisicofetal_set-TOTAL_FORMS');
+            var $fcfMsForms = $('#fcfMs-form-container');
+
+            $btnAddBaby.on('click', function () {
+                var count = $fcfMsForms.children().length;
+                var template = $('#empty-form').html();
+                var compiled = template.replace(/__prefix__/g, count);
+                $fcfMsForms.append('<div class="row" style="margin-left:0; margin-right:0;">' + compiled + '</div>');
+                $totalForms.val(count + 1);
+                $("label[for='id_examenfisicofetal_set-" + String(count) + "-fcf']").text("FCF "+String(count+1));
+            });
+
+            var $totalPlacentasForms = $('#id_placentas-TOTAL_FORMS');
+            var $placentasForms = $('#placentas-form-container');
+
+            $btnAddNewPlacenta.on('click', function () {
+                var count = $placentasForms.children().length;
+                var templatePlacenta = $('#empty-placenta-form').html();
+                var compiledPlacenta = templatePlacenta.replace(/__prefix__/g, count);
+                $placentasForms.append('<div class="row" style="margin-left:0; margin-right:0;">' + compiledPlacenta + '</div>');
+                $totalPlacentasForms.val(count + 1);
+            });
+
+            var arrowKeys = [37, 38, 39, 40];
+            function validateOnlyNumber (event) {
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    this.value = this.value.replace(/[^0-9\.]/g, '');
+                    if (this.value.indexOf('.') !== -1) {
+                        this.value = this.value.substring(0, 4);
+                    } else {
+                        this.value = this.value.substring(0, 3);
+                    }
+                }
+            }
+
+            $presionSistolica.on('keyup', validateOnlyNumber);
+            $presionDiastolica.on('keyup', validateOnlyNumber);
+            $frecuenciaRespiratoria.on('keyup', validateOnlyNumber);
+            $pulso.on('keyup', validateOnlyNumber);
+            $alturaUterina.on('keyup', validateOnlyNumber);
+            $fcf.on('keyup', validateOnlyNumber);
+
+            function addMessageToInput (elem, message) {
+                var $this = $(elem);
+                var htmlMessage = '<div class="alert alert-danger">' + message + '</div>';
+                if ($this.parents('.col-sm-7').html().indexOf(message) === -1) {
+                    $this.parents('.col-sm-7').append(htmlMessage);
+                }
+            }
+
+            function removeMessageFromInput (elem) {
+                $(elem).parents('.col-sm-7').find('.alert').remove();
+            }
+
+            function validateRange (begin, end, message, elem) {
+                var _value = parseFloat(elem.value);
+                if (!(_value >= begin && _value <= end)) {
+                    addMessageToInput(elem, message);
+                } else {
+                    removeMessageFromInput(elem);
+                }
+            }
+
+            function validateDecimal (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                _value = this.value;
+                if (isNaN(_value)) {
+                    return;
+                }
+                if(!(_value+"").match(/^\d{1,3}(\.\d{1,2})?$/g))
+                {
+                    this.value = this.value.replace(/^\d{1,3}(\.\d{1,2})?$/g, '');
+
+                    return false;
+                }
+            }
+            }
+
+            $temperatura.on('change', function () {
+                this.value = parseFloat(this.value).toFixed(1);
+                validateRange(36, 37.5, 'Los rangos normales se encuentra entre 36°C y 37.5°C, por favor verificar la información', this);
+            });
+            $presionSistolica.on('keyup', function () {
+                validateRange(90, 120, 'Los rangos normales se encuentra entre 90 mmHg y 120 mmHg, por favor verifique la información', this);
+            });
+            $presionDiastolica.on('keyup', function () {
+                validateRange(60, 80, 'Los rangos normales se encuentra entre 60 mmHg y 80 mmHg, por favor verifique la información', this);
+            });
+            $pulso.on('keyup', function () {
+                validateRange(60, 100, 'Los rangos normales se encuentra entre 60  a 100 latidos por minuto, por favor verifique la información', this);
+            });
+            $frecuenciaRespiratoria.on('keyup', function () {
+                validateRange(12, 20, 'Los rangos normales se encuentran entre 12  a 20 respiraciones por minuto, por favor verifique la información', this);
+            });
+
+            $fcf.on('change', function () {
+                var $this = $(this);
+                function removeMessage () {
+                    $this.parents('.col-sm-7').find('div.alert').remove();
+                }
+                function setMessage (message) {
+                    if ($this.parents('.col-sm-7').find('div.alert').length) {
+                        $this.parents('.col-sm-7').find('div.alert').text(message);
+                    } else {
+                        $this.parents('.col-sm-7').append('<div class="alert alert-danger">' + message + '</div>');
+                    }
+                }
+                var value = parseInt(this.value);
+                if (isNaN(value)) {
+                    removeMessage();
+                } else if (value < 140) {
+                    setMessage('El bebé puede estar con BRADICARDIA');
+                } else if (value > 160) {
+                    setMessage('El bebé puede estar con TAQUICARDIA');
+                } else {
+                    removeMessage();
+                }
+            });
+            $fcf.trigger('change');
+            function checkMembranas (value) {
+                if (value === 'rotas') {
+                    $liquidoAmniotico.parents('.form-group').show();
+                    $membranasRotasTipo.parents('.form-group').show();
+                    $membranasRotasTiempo.parents('.form-group').show();
+                } else {
+                    $liquidoAmniotico.parents('.form-group').hide();
+                    $liquidoAmniotico.prop('selectedIndex',0);
+                    $membranasRotasTipo.parents('.form-group').hide();
+                    $membranasRotasTipo.prop('selectedIndex',0);
+                    $membranasRotasTiempo.parents('.form-group').hide();
+                    $membranasRotasTiempo.val('');
+                }
+            }
+            $membranas.on('change', function () {
+                checkMembranas(this.value);
+            });
+            checkMembranas($membranas.val());
+            $optionalPanel.hide();
+            var flag = true;
+            $btnToggleOptionalPanel.on('click', function () {
+                if (flag) {
+                    $optionalPanel.show();
+                    $btnToggleOptionalPanel.text('<');
+                } else {
+                    $optionalPanel.hide();
+                    $btnToggleOptionalPanel.text('>');
+                }
+                flag = !flag;
+            });
+            $soluciones.on('change', function () {
+                if (this.value === 'True') {
+                    $('#soluciones-panel').show();
+                } else {
+                    $('#soluciones-panel').hide();
+                }
+            });
+            var rectWidth = 30, leftPanelWidth = 250;
+            Raphael.fn.line = function (x1, y1, x2, y2) {
+                return this.path('M' + x1 + ' ' + y1 + ' L' + x2 + ' ' + y2);
+            };
+            var startX = rectWidth * 3; //  usado como posición base para las mediciones
+            function fcfsList(fcfs){
+                lista = []
+                for (i = 0; i < fcfs.length-1; i++){
+                    lista.push(fcfs[i]);
+                }
+                return lista;
+            }
+            function drawFCFChart (values) {
+                var paper = new Raphael('fcf-chart', 1000, 400);
+                var i, j, rectHeight = rectWidth * 0.7, limitY = 200, yDecrease = 10;
+                var linePoints = [];
+                var fcfLineAttrs = {stroke: 'red', 'stroke-width': 2};
+                var strokes = ['red','blue','green','black'];
+                var filles = ['red','blue','green','black'];
+                for (i = 1; i <= 13; i++) {
+                    paper.text(leftPanelWidth + rectWidth - 20, i * rectHeight + 20, limitY);
+                    limitY -= yDecrease;
+                }
+
+                var x, y;
+
+                for (i = 1; i <= 24; i++) {
+                    x = leftPanelWidth + i * rectWidth;
+
+                    var medicion = values[i];
+                    if (medicion['fcf']) {
+                        var fcfs = medicion['fcf'].split(' ');
+                        fcfs = fcfsList(fcfs);
+                        var datos = []
+                        for (j = 0; j < fcfs.length; j++){
+                            datos.push({
+                                x: leftPanelWidth + i * rectWidth + startX, //-60,
+                                y: 14 * rectHeight - (fcfs[j] - 80) * (rectHeight / 10)
+                            })
+                        }
+                        linePoints.push(datos);
+                    }
+
+                    for (j = 1; j <= 13; j++) {
+                        y = j * rectHeight;
+                        paper.rect(x, y, rectWidth, rectHeight);
+                    }
+                }
+
+                for (i = 1; i <= 24; i++) {
+                    for (j = 1; j <= 2; j++) {
+                        if (j === 1 && values[i]['liquido_amniotico']) {
+                            paper.text(leftPanelWidth + i * rectWidth + 15 + startX, j * rectHeight + 13 * rectHeight + 30, values[i]['liquido_amniotico']).scale(1.2);
+                        }
+                        if (j === 2 && values[i]['moldeaminetos']) {
+                            paper.text(leftPanelWidth + i * rectWidth + 15 + startX, j * rectHeight + 13 * rectHeight + 30, values[i]['moldeaminetos']).scale(1.2);
+                        }
+                        paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight + 13 * rectHeight + 20, rectWidth, rectHeight);
+                    }
+                }
+                for (i = 0; i < linePoints.length; i++) {
+                    for (j = 0; j < linePoints[i].length; j++) {
+                        paper.circle(linePoints[i][j].x, linePoints[i][j].y, 5).attr({
+                            stroke: strokes[j],
+                            fill: filles[j]
+                        });
+                    }
+                }
+                for (i = 0; i < linePoints.length-1 ; i++) {
+                    for (j = 0; j < linePoints[i].length; j++) {
+                        var p1 = linePoints[i][j], p2 = linePoints[i+1][j];
+                        paper.line(p1.x, p1.y, p2.x, p2.y).attr({stroke: strokes[j], 'stroke-width': 2});
+                    }
+                }
+                paper.text(leftPanelWidth + rectWidth - 120, rectHeight * 5 + 10, 'FRECUENCIA\nCARDIACA\nFETAL').scale(1.3);
+                paper.text(leftPanelWidth + rectWidth - 60, rectHeight * 15 + 10, 'Líquido Amniótico');
+                paper.text(leftPanelWidth + rectWidth - 60, rectHeight * 16 + 10, 'Moldeaminetos');
+                paper.text(leftPanelWidth - 180, rectHeight * 13, 'INTEGRAS: I');
+                paper.text(leftPanelWidth - 180, rectHeight * 14, 'ROTAS: R');
+                paper.text(leftPanelWidth - 180, rectHeight * 15, 'LIQ. CLARO: C');
+                paper.text(leftPanelWidth - 180, rectHeight * 16, 'LIQ. MECONIAL: M');
+                paper.text(leftPanelWidth - 180, rectHeight * 17, 'LIQ. SANGUINOLENTO: S');
+            }
+            function drawMedicionChart (values) {
+                var paper = new Raphael('medicion-chart', 1000, 500);
+
+                function printX(x, y) {
+                    var d = 5;
+                    paper.line(x - d, y + d, x + d, y - d).attr({'stroke-width': 2});
+                    paper.line(x - d, y - d, x + d, y + d).attr({'stroke-width': 2});
+                }
+
+                var i, j, rectHeight = rectWidth * 1.1, limitY = 10;//9;
+                for (i = 1; i <= 11; i++) {
+                    paper.text(leftPanelWidth + rectWidth / 2, i * rectHeight , limitY);
+                    limitY--;
+                }
+                var dilatacionPoints = [];
+                var descensoCefalicoPoints = [];
+                var posX = 11;
+                for (i = 1; i <= 24; i++) {
+                    for (j = 1; j <= 10; j++) {
+                        paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight, rectWidth, rectHeight);
+                    }
+                    if (values[i]['dilatacion']) {
+                        printX(leftPanelWidth + i * rectWidth + startX, 11 * rectHeight - values[i]['dilatacion'] * rectHeight);
+                        dilatacionPoints.push({
+                            x: leftPanelWidth + i * rectWidth + startX,
+                            y: 11 * rectHeight - values[i]['dilatacion'] * rectHeight
+                        });
+                    }
+
+                    if (values[i]['descenso_cefalico'] === 0){
+                          values[i]['descenso_cefalico'] = 1;
+                          posX = 12
+                    }
+                    if (values[i]['descenso_cefalico']) {
+                        paper.circle(leftPanelWidth + i * rectWidth + startX, posX * rectHeight - values[i]['descenso_cefalico'] * rectHeight, 5).attr({stroke: 'blue', 'stroke-width': 2});
+                        descensoCefalicoPoints.push({
+                            x: leftPanelWidth + i * rectWidth + startX,
+                            y: posX * rectHeight - values[i]['descenso_cefalico'] * rectHeight
+                        });
+                    }
+                }
+
+
+                paper.line(leftPanelWidth + rectWidth, rectHeight * 7, leftPanelWidth + rectWidth * 13, rectHeight);
+                paper.text(leftPanelWidth + rectWidth * 6, rectHeight * 3.8, 'ALERTA').rotate(-29).scale(3, 5).attr({ fill: "#D8D8D8" });
+                paper.line(leftPanelWidth + rectWidth * 9, rectHeight * 7, leftPanelWidth + rectWidth * 21, rectHeight);
+                paper.text(leftPanelWidth + rectWidth * 17, rectHeight * 3.8, 'ACCION').rotate(-29).scale(3, 5).attr({ fill: "#D8D8D8" });
+
+                var hourNumber = 1;
+
+                for (i = 1; i <= 24; i+=2) {
+
+                    for (j = 1; j <= 2; j++) {
+                        paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight + 10 * rectHeight + 20, rectWidth * 2, rectHeight);
+                        if (Object.keys(values[i]).length === 0) {
+                            continue;
+                        }
+                        if (j === 1) {
+                            paper.text(leftPanelWidth + i * rectWidth + 30, j * rectHeight + 10 * rectHeight + 40, hourNumber).scale(2);
+                            hourNumber++;
+                        } else if (j === 2) {
+                            paper.text(leftPanelWidth + i * rectWidth + 30 + startX, j * rectHeight + 10 * rectHeight + 40, values[i]['hora'] || '').scale(1.8);
+                        }
+                    }
+                }
+
+                for (i = 0; i < dilatacionPoints.length - 1; i++) {
+                    var p1 = dilatacionPoints[i], p2 = dilatacionPoints[i + 1];
+                    paper.line(p1.x, p1.y, p2.x, p2.y).attr({'stroke-width': 2, stroke: 'red'});
+                }
+
+                for (i = 0; i < descensoCefalicoPoints.length - 1; i++) {
+                    var p1 = descensoCefalicoPoints[i], p2 = descensoCefalicoPoints[i + 1];
+                    paper.line(p1.x, p1.y, p2.x, p2.y).attr({'stroke-width': 2, stroke: 'blue'});
+                }
+
+                paper.text(leftPanelWidth + rectWidth - 30, rectHeight * 12, 'N horas');
+                paper.text(leftPanelWidth + rectWidth - 30, rectHeight * 13, 'Hora');
+
+                var pipe1X = 20;
+
+                paper.line(pipe1X + 20, rectHeight, pipe1X + 50, rectHeight);
+                paper.line(pipe1X + 35, rectHeight, pipe1X + 35, rectHeight * 5);
+                paper.text(pipe1X + 35, rectHeight * 5.5, 'CUELLO UTERINO(cm)\n(trazo X)');
+                paper.line(pipe1X + 35, rectHeight * 6, pipe1X + 35, rectHeight * 11);
+                paper.line(pipe1X + 20, rectHeight * 11, pipe1X + 50, rectHeight * 11);
+
+                var pipe2X = 120;
+
+                paper.line(pipe2X + 20, rectHeight * 6, pipe2X + 50, rectHeight * 6);
+                paper.line(pipe2X + 35, rectHeight * 6, pipe2X + 35, rectHeight * 8);
+                paper.text(pipe2X + 35, rectHeight * 8.5, 'DESCENSO CEFALICO\n(trazo O)');
+                paper.line(pipe2X + 35, rectHeight * 9, pipe2X + 35, rectHeight * 11);
+                paper.line(pipe2X + 20, rectHeight * 11, pipe2X + 50, rectHeight * 11);
+            }
+
+            function drawContraccionesChart (values) {
+                var paper = new Raphael('contracciones-chart', 1000, 200);
+                var i, j, rectHeight = rectWidth * 0.7, limitY = 5;
+
+                var menor20Fill = {fill: 'url("{% static 'img/patterns/square-20x20.jpg' %}")'};
+                var entre20y40Fill = {fill: 'url("{% static 'img/stripes.jpg' %}")'};
+                var mayor40Fill = {fill: 'black'};
+
+                for (i = 1; i <= 5; i++) {
+                    paper.text(leftPanelWidth + rectWidth - 20, i * rectHeight + 10, limitY);
+                    limitY--;
+                }
+                for (i = 1; i <= 24; i++) {
+                    var attr = {}, frecuencia = 0;
+                        if (values[i]['frecuencia'] && values[i]['duracion']) {
+                            frecuencia = parseInt(values[i]['frecuencia'].split('/')[0]);
+                            var duracion = values[i]['duracion'];
+                            if (duracion === '-20') {
+                                attr = menor20Fill;
+                            } else if (duracion === '40+') {
+                                attr = mayor40Fill;
+                            } else {
+                                attr = entre20y40Fill;
+                            }
+                        }
+                    for (j = 1; j <= 5; j++) {
+                        if (5 - j < frecuencia) {
+                            paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight, rectWidth, rectHeight);
+                            paper.rect(leftPanelWidth + i * rectWidth + startX, j * rectHeight, rectWidth, rectHeight).attr(attr);
+                        } else {
+                            paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight, rectWidth, rectHeight);
+                        }
+                    }
+                }
+
+                for (i = 1; i <= 24; i++) {
+                    if (values[i]['oxitocina']) {
+                        paper.text(leftPanelWidth + i * rectWidth + 15 + startX, rectHeight + 5 * rectHeight + 30, values[i]['oxitocina']).scale(1.2);
+                    }
+                    if (values[i]['goteo']) {
+                        paper.text(leftPanelWidth + i * rectWidth + 15 + startX, 2 * rectHeight + 5 * rectHeight + 30, values[i]['goteo']).scale(1.2);
+                    }
+                    for (j = 1; j <= 2; j++) {
+                        paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight + 5 * rectHeight + 20, rectWidth, rectHeight);
+                    }
+                }
+
+                paper.text(leftPanelWidth + rectWidth - 50, rectHeight * 7 + 10, 'OXITOCINA U/L');
+                paper.text(leftPanelWidth + rectWidth - 50, rectHeight * 8 + 10, 'GOTAS/MIN');
+
+                var legendX = 50;
+
+                paper.text(legendX, 50, 'MENOR 20"');
+                paper.rect(legendX + 50, 43, 15, 15).attr(menor20Fill);
+                paper.text(legendX, 70, 'ENTRE 20" Y 40"');
+                paper.rect(legendX + 50, 63, 15, 15).attr(entre20y40Fill);
+                paper.text(legendX + 120, 70, 'CONTRACCIONES POR\nCADA 10 MINUTOS').scale(0.8);
+                paper.text(legendX, 90, 'MAYOR DE 40"');
+                paper.rect(legendX + 50, 83, 15, 15).attr(mayor40Fill);
+            }
+
+            function drawPresionChart (values) {
+                var paper = new Raphael('presion-chart', 1000, 300);
+                var pulsoLineAttrs = {stroke: 'red', 'stroke-width': 2};
+                var i, j, rectHeight = rectWidth * 0.7, limitY = 180, yDecrease = 10;
+                for (i = 1; i <= 13; i++) {
+                    paper.text(leftPanelWidth + rectWidth - 20, i * rectHeight + 20, limitY);
+                    limitY -= yDecrease;
+                }
+                limitY = 180;
+                var linePoints = [], presionPoints = [];
+
+                var x, y;
+
+                function drawArrow (x0, y0, x1, y1) {
+                    var d = rectWidth / 3;
+                    var _attr = {
+                        stroke: 'blue',
+                        'stroke-width': 2,
+                        'stroke-dasharray': '-'
+                    };
+                    paper.line(x0, y0, x1, y1).attr(_attr);
+                    paper.line(x0, y0, x0 - d, y0 + d).attr(_attr);
+                    paper.line(x0, y0, x0 + d, y0 + d).attr(_attr);
+                    paper.line(x1, y1, x1 - d, y1 - d).attr(_attr);
+                    paper.line(x1, y1, x1 + d, y1 - d).attr(_attr);
+                }
+
+                for (i = 1; i <= 24; i++) {
+                    x = leftPanelWidth + i * rectWidth;
+                    var medicion = values[i];
+                    limitY = 180;
+                    if (medicion.pulso) {
+                        linePoints.push({
+                            x: leftPanelWidth + i * rectWidth + startX,
+                            y: 14 * rectHeight - (medicion.pulso - 60) * (rectHeight / 10)
+                        });
+                    }
+                    for (j = 1; j <= 13; j++) {
+                        y = j * rectHeight;
+                        paper.rect(x, y, rectWidth, rectHeight);
+                        limitY -= 10;
+                    }
+                    var sistolica = parseInt(medicion.sistolica);
+                    var diastolica = parseInt(medicion.diastolica);
+                    if (!isNaN(sistolica) && !isNaN(diastolica)) {
+                        presionPoints.push({
+                            x0: leftPanelWidth + i * rectWidth + startX,
+                            y0: 14 * rectHeight - (sistolica - 60) * (rectHeight / 10),
+                            x1: leftPanelWidth + i * rectWidth + startX,
+                            y1: 14 * rectHeight - (diastolica - 60) * (rectHeight / 10)
+                        });
+                    }
+                }
+                for (i = 0; i < linePoints.length; i++) {
+                    paper.circle(linePoints[i].x, linePoints[i].y, 5).attr({
+                        stroke: 'red',
+                        fill: 'red'
+                    });
+                }
+                for (i = 0; i < linePoints.length - 1; i++) {
+                    var p1 = linePoints[i], p2 = linePoints[i + 1];
+                    paper.line(p1.x, p1.y, p2.x, p2.y).attr(pulsoLineAttrs);
+                }
+                for (i = 0; i< presionPoints.length; i++) {
+                    var p = presionPoints[i];
+                    drawArrow(p.x0 + (rectWidth / 2), p.y0, p.x1 + (rectWidth / 2), p.y1);
+                }
+                paper.text(leftPanelWidth - 150, rectHeight + 200, 'Pulso');
+                paper.line(leftPanelWidth - 170, rectHeight + 210, leftPanelWidth - 130, rectHeight + 210).attr(pulsoLineAttrs);
+                paper.text(leftPanelWidth - 150, rectHeight + 230, 'Presión arterial');
+                paper.line(leftPanelWidth - 180, rectHeight + 240, leftPanelWidth - 120, rectHeight + 240).attr({
+                    stroke: 'blue',
+                    'stroke-width': 2,
+                    'stroke-dasharray': '-'
+                });
+            }
+
+            function drawTemperaturaChart (values) {
+                var paper = new Raphael('temperatura-chart', 1000, 100);
+                var i, rectHeight = rectWidth * 0.7;
+                for (i = 1; i <= 24; i++) {
+                    paper.rect(leftPanelWidth + i * rectWidth, rectHeight, rectWidth, rectHeight);
+                    if (values[i]['temperatura']) {
+                        paper.text(leftPanelWidth + i * rectWidth + 15 + startX, rectHeight * 1.5, values[i]['temperatura']).scale(1.2);
+                    }
+                }
+                paper.text(leftPanelWidth - 30, rectHeight + 10, 'TEMPERATURA C');
+            }
+
+            function drawOrinaChart (values) {
+                var paper = new Raphael('orina-chart', 1000, 200);
+                var i, j, rectHeight = rectWidth * 0.7;
+                for (i = 1; i <= 24; i++) {
+                    for (j = 1; j <= 3; j++) {
+                        paper.rect(leftPanelWidth + i * rectWidth, j * rectHeight, rectWidth, rectHeight);
+                    }
+                    if (values[i]['orina_proteinas']) {
+                        paper.text(leftPanelWidth + i * rectWidth + 15 + startX, rectHeight * 1.5, values[i]['orina_proteinas']).scale(1.2);
+                    }
+                    if (values[i]['orina_cetona']) {
+                        paper.text(leftPanelWidth + i * rectWidth + 15 + startX, rectHeight * 2.5, values[i]['orina_cetona']).scale(1.2);
+                    }
+                    if (values[i]['orina_volumen']) {
+                        paper.text(leftPanelWidth + i * rectWidth + 15 + startX, rectHeight * 3.5, values[i]['orina_volumen']).scale(1.2);
+                    }
+                }
+                paper.text(leftPanelWidth - 30, rectHeight + 10, 'PROTEINA');
+                paper.text(leftPanelWidth - 30, rectHeight * 2 + 10, 'ACETONA');
+                paper.text(leftPanelWidth - 100, rectHeight * 2 + 10, 'ORINA').scale(1.2);
+                paper.text(leftPanelWidth - 30, rectHeight * 3 + 10, 'VOLUMEN');
+            }
+
+            $referido.on('change', function () {
+                if (this.value === 's') {
+                    $('#id_atem_modal-fecha_referido').prop('disabled', false);
+                    $('#id_atem_modal-fecha_referido').datepicker().val(new Date().toLocaleDateString());
+                    $('#id_atem_modal-hora').timepicker().val('');
+                    $('#id_atem_modal-hora').prop('disabled', true);
+                    $('#id_atem_modal-fecha').timepicker().val('');
+                    $('#id_atem_modal-fecha').prop('disabled', true);
+                    $('#id_atem_modal-tipo').prop('disabled', true);
+                    $('#id_atem_modal-tipo option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_atem_modal-duracion_parto_perdiodo_1_horas').prop('disabled', true);
+                    $('#id_atem_modal-duracion_parto_perdiodo_1_horas').val('');
+                    $('#id_atem_modal-duracion_parto_perdiodo_1_minutos').prop('disabled', true);
+                    $('#id_atem_modal-duracion_parto_perdiodo_1_minutos').val('');
+                    $('#id_atem_modal-inicio_parto_periodo_1').prop('disabled', true);
+                    $('#id_atem_modal-inicio_parto_periodo_1 option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_atem_modal-duracion_parto_perdiodo_2_horas').prop('disabled', true);
+                    $('#id_atem_modal-duracion_parto_perdiodo_2_horas').val('');
+                    $('#id_atem_modal-duracion_parto_perdiodo_2_minutos').prop('disabled', true);
+                    $('#id_atem_modal-duracion_parto_perdiodo_2_minutos').val('');
+                    $('#id_atem_modal-inicio_parto_periodo_2').prop('disabled', true);
+                    $('#id_atem_modal-inicio_parto_periodo_2 option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_atem_modal-hora_1_parto_periodo_2').timepicker().val('');
+                    $('#id_atem_modal-hora_1_parto_periodo_2').prop('disabled', true);
+                    $('.hora').hide();
+                    $('.hora').children().timepicker().val('');
+                    $btnAddNewHora.attr('disabled', true);
+                    $countForms = 1;
+                    $('#id_atem_modal-episiotomia').prop('disabled', true);
+                    $('#id_atem_modal-episiotomia option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#episiotomia_tipo_div').hide();
+                    $('#id_atem_modal-tipo_episiotomia option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_atem_modal-desgarro').prop('disabled', true);
+                    $('#id_atem_modal-desgarro option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $grado.parents('.form-group').hide();
+                    $('#id_atem_modal-desgarro_grado option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_atem_modal-duracion_parto_perdiodo_3_horas').prop('disabled', true);
+                    $('#id_atem_modal-duracion_parto_perdiodo_3_horas').val('');
+                    $('#id_atem_modal-duracion_parto_perdiodo_3_minutos').prop('disabled', true);
+                    $('#id_atem_modal-duracion_parto_perdiodo_3_minutos').val('');
+                    $('#id_atem_modal-dirigido_parto_periodo_3').prop('disabled', true);
+                    $('#id_atem_modal-dirigido_parto_periodo_3 option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_atem_modal-sangrado_aproximado').val('');
+                    $('#id_atem_modal-sangrado_aproximado').prop('disabled', true);
+                    $('#id_atem_modal-hora_parto_periodo_3').timepicker().val('');
+                    $('#id_atem_modal-hora_parto_periodo_3').prop('disabled', true);
+                    var $totalPlacentasForms = $('#id_placentas-TOTAL_FORMS');
+                    var $placentasForms = $('#placentas-form-container');
+                    $placentasForms.children("div").remove();
+                    $totalPlacentasForms.val(1);
+                    var templatePlacenta = $('#empty-placenta-form').html();
+                    var compiledPlacenta = templatePlacenta.replace(/__prefix__/g, 0);
+                    $placentasForms.append('<div class="row" style="margin-left:0; margin-right:0;">' + compiledPlacenta + '</div>');
+                    $('#id_placentas-0-placenta_desprendimiento').prop('disabled', true);
+                    $('#id_placentas-0-placenta_desprendimiento option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-placenta_tipo').prop('disabled', true);
+                    $('#id_placentas-0-placenta_tipo option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-placenta_peso').prop('disabled', true);
+                    $('#id_placentas-0-placenta_peso').val('');
+                    $('#id_placentas-0-placenta_tamanio_longitud').prop('disabled', true);
+                    $('#id_placentas-0-placenta_tamanio_longitud').val('');
+                    $('#id_placentas-0-placenta_tamanio_ancho').prop('disabled', true);
+                    $('#id_placentas-0-placenta_tamanio_ancho').val('');
+                    $('#id_placentas-0-placenta_otras_caracteristicas').prop('disabled', true);
+                    $('#id_placentas-0-placenta_otras_caracteristicas').val('');
+                    $('#id_placentas-0-membranas').prop('disabled', true);
+                    $('#id_placentas-0-membranas option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-cordon_umbilical_longitud').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_longitud').val('');
+                    $('#id_placentas-0-cordon_umbilical_diametro').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_diametro').val('');
+                    $('#id_placentas-0-cordon_umbilical_insercion').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_insercion option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-cordon_umbilical_vasos').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_vasos option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-cordon_umbilical_circular').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_circular option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+
+                    $('#id_placentas-0-cordon_umbilical_circular_tipo').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_circular_tipo option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#circular_tipo').hide();
+                    $('#id_placentas-0-cordon_umbilical_otras_caracteristicas').prop('disabled', true);
+                    $('#id_placentas-0-cordon_umbilical_otras_caracteristicas').val('');
+                    $('#id_placentas-0-liquido_amniotico_cantidad').prop('disabled', true);
+                    $('#id_placentas-0-liquido_amniotico_cantidad').val('');
+                    $('#id_placentas-0-liquido_amniotico_color').prop('disabled', true);
+                    $('#id_placentas-0-liquido_amniotico_color option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-liquido_amniotico_olor').prop('disabled', true);
+                    $('#id_placentas-0-liquido_amniotico_olor option').prop('selected', function() {
+                        return this.defaultSelected;
+                    });
+                    $('#id_placentas-0-liquido_amniotico_otras_caracteristicas').prop('disabled', true);
+                    $('#id_placentas-0-liquido_amniotico_otras_caracteristicas').val('');
+                    $('#id_placentas-0-otras_caracteristicas').prop('disabled', true);
+                    $('#id_placentas-0-otras_caracteristicas').val('');
+                } else {
+                    $('#id_atem_modal-fecha_referido').prop('disabled', true);
+                    $('#id_atem_modal-fecha_referido').datepicker().val('');
+                    $('#id_atem_modal-hora').prop('disabled', false);
+                    $('#id_atem_modal-fecha').prop('disabled', false);
+                    $('#id_atem_modal-fecha').datepicker().val(new Date().toLocaleDateString());
+                    $('#id_atem_modal-tipo').prop('disabled', false);
+                    $('#id_atem_modal-duracion_parto_perdiodo_1_horas').prop('disabled', false);
+                    $('#id_atem_modal-duracion_parto_perdiodo_1_minutos').prop('disabled', false);
+                    $('#id_atem_modal-inicio_parto_periodo_1').prop('disabled', false);
+                    $('#id_atem_modal-duracion_parto_perdiodo_2_horas').prop('disabled', false);
+                    $('#id_atem_modal-duracion_parto_perdiodo_2_minutos').prop('disabled', false);
+                    $('#id_atem_modal-inicio_parto_periodo_2').prop('disabled', false);
+                    $('#id_atem_modal-hora_1_parto_periodo_2').prop('disabled', false);
+                    $('#id_atem_modal-episiotomia').prop('disabled', false);
+                    $('#id_atem_modal-desgarro').prop('disabled', false);
+                    $('#id_atem_modal-duracion_parto_perdiodo_3_horas').prop('disabled', false);
+                    $('#id_atem_modal-duracion_parto_perdiodo_3_minutos').prop('disabled', false);
+                    $('#id_atem_modal-dirigido_parto_periodo_3').prop('disabled', false);
+                    $('#id_atem_modal-sangrado_aproximado').prop('disabled', false);
+                    $('#id_atem_modal-hora_parto_periodo_3').prop('disabled', false);
+                    $('#id_placentas-0-placenta_desprendimiento').prop('disabled', false);
+                    $('#id_placentas-0-placenta_tipo').prop('disabled', false);
+                    $('#id_placentas-0-placenta_peso').prop('disabled', false);
+                    $('#id_placentas-0-placenta_tamanio_longitud').prop('disabled', false);
+                    $('#id_placentas-0-placenta_tamanio_ancho').prop('disabled', false);
+                    $('#id_placentas-0-placenta_otras_caracteristicas').prop('disabled', false);
+                    $('#id_placentas-0-membranas').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_diametro').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_longitud').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_vasos').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_circular').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_circular_tipo').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_insercion').prop('disabled', false);
+                    $('#id_placentas-0-cordon_umbilical_otras_caracteristicas').prop('disabled', false);
+                    $('#id_placentas-0-liquido_amniotico_cantidad').prop('disabled', false);
+                    $('#id_placentas-0-liquido_amniotico_color').prop('disabled', false);
+                    $('#id_placentas-0-liquido_amniotico_olor').prop('disabled', false);
+                    $('#id_placentas-0-liquido_amniotico_otras_caracteristicas').prop('disabled', false);
+                    $('#id_placentas-0-otras_caracteristicas').prop('disabled', false);
+                }
+            });
+
+            $.ajax({
+                url: '{% url 'partos:partograma_chart_data' ingreso.id %}',
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var i, dilatacion;
+                    for (i = 1; i < 25; i++) {
+                        dilatacion = parseInt(data[i]['dilatacion']);
+                        if (!isNaN(dilatacion)) {
+                            startX = (dilatacion - 4) * 2 * rectWidth;
+                            break;
+                        }
+                    }
+                    if(startX>=0)
+                    {
+                        drawMedicionChart(data);
+                        drawPresionChart(data);
+                        drawTemperaturaChart(data);
+                        drawContraccionesChart(data);
+                        drawFCFChart(data);
+                        drawOrinaChart(data);
+                    }
+
+                }
+            });
+        });
+    </script>
+{% endblock %}

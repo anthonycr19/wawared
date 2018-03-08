@@ -1,0 +1,94 @@
+{% extends 'dashboard/base_puerperio.html' %}
+{% load static %}
+{% block title %}Puerperio resumen{% endblock %}
+{% block content %}
+<div class="row">
+        <div class="col-md-12">
+            <div id="data-buscar">
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Registro de recien nacidos</h3>
+                    </div>
+                    {% include 'partos/paciente_header.html' with paciente=paciente %}
+                    {% include 'puerperio/tabs.html' with terminacion_embarazo=terminacion_embarazo %}
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Recién nacidos</h3>
+                    <div class="pull-right">
+                        {% if not update_medicion %}
+                        <a class="btn btn-green" href="{% url 'puerperio:recien_nacido_create' terminacion_embarazo.id %}">Registrar recien nacido</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-default" id="data-buscar-body">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>sexo</th>
+                                    <th>Peso</th>
+                                    <th>Temperatura</th>
+                                    <th>Talla</th>
+                                    <th>Per. Cef</th>
+                                    <th>Edad x EG</th>
+                                    <th>Peso x EG</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody class="panel-body">
+                                {% for rn in recien_nacidos %}
+                                    <tr>
+                                        <td>{{ rn.nombre_completo }}</td>
+                                        <td>{{ rn.sexo|upper }}</td>
+                                        <td>{{ rn.peso|floatformat:'.:2f' }}</td>
+                                        <td>{{ rn.temperatura|floatformat:'.:2f' }}</td>
+                                        <td>{{ rn.talla|stringformat:'d' }}</td>
+                                        <td>{{ rn.perimetro_cefalico|floatformat:'.:2f' }}</td>
+                                        <td>{{ rn.edad_por_examen_fisico|stringformat:'d' }}</td>
+                                        <td>{{ rn.peso_por_edad_gestacional|upper }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-default" href="{% url 'puerperio:recien_nacido_edit' terminacion_embarazo.id rn.id %}">
+                                                    <span class="glyphicon glyphicon-edit"></span> Editar
+                                                </a>
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Reportes RN <span class="caret"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script>
+        $(document).on('ready', function () {
+            var $btnNewRn = $('#btn-nuevo_rn'),
+                    $panelRn = $('#panel-rn');
+            $btnNewRn.on('click', function () {
+                $panelRn.show();
+                $btnNewRn.hide();
+            });
+            $('#btn-close-add-panel').on('click', function () {
+                $panelRn.hide();
+                $('form')[0].reset();
+                $btnNewRn.show();
+            });
+        });
+    </script>
+{% endblock %}

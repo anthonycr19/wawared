@@ -1,0 +1,39 @@
+{% extends 'login_base.html' %}
+{% block container %}
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Iniciar sesión</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row text-center">
+            <h4>Bienvenido {{ user.full_name }}</h4>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <form method="post" class="form-horizontal" id="form_establishment" action="."> {% csrf_token %}
+                <label for="id_establishment">Elija el establecimiento donde inicia sesión:</label>
+                <select name="establishment" id="id_establishment" class="form-control" required>
+                  {% for establishment in establishments %}
+                    <option value="{{ establishment.renaes_code }}">{{ establishment.name }}</option>
+                  {% endfor %}
+                </select>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button class="btn btn-primary" type="submit" form="form_establishment">
+                Continuar
+              </button>
+              <a href="{% url "minsalogin:logout" %}" class="btn btn-danger">Salir</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

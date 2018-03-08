@@ -1,0 +1,320 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Agregar antecedente familiar{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <div class="panel panel-default" id="data-buscar-body">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Agregar antecedente familiar</h3>
+                </div>
+                {% include 'embarazos/partials/paciente_resume_header.html' with paciente=paciente %}
+                <div class="panel-body">
+                    <div id="data-gestante" class="panel panel-default">
+                        <div class="panel-heading">
+                            Buscar CIE
+                        </div>
+                        <div class="panel-body">
+                            <form role="search" method="get" action="">
+                                <input id="input-search" type="text" name="q" autofocus style="width: 100%">
+                            </form>
+                        </div>
+                        <div class="panel-body" style="padding: 0 15px">
+                             
+                            <input type="checkbox" id="niega" name="niega" {% if paciente.antecedentes_familiares_niega %}checked{% endif %}/>
+                            <label for="niega">Niega</label>
+                            <p id="niega-help" style="display: {% if paciente.antecedentes_familiares_niega %}block{% else %}none{% endif %}">Cuando se selecciona niega no se podrá agregar nuevos antecedentes y los que ya esten agregados se borrarán</p>
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <table id="js-antecedentes-table" class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="check-all"/></th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Relacion de parentesco</th>
+                                        <th>Observación</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for antecedente_familiar in paciente.antecedentes_familiares.all %}
+                                    <tr class="success">
+                                        <td>
+                                            <input type="checkbox" class="checkbox-cie" checked="" data-cie="{{ antecedente_familiar.cie.codigo }}" disabled/>
+                                        </td>
+                                        <td>{{ antecedente_familiar.cie.codigo }}</td>
+                                        <td>{{ antecedente_familiar.cie.nombre_display|title }}</td>
+                                        <td>
+                                            <select class="relacion-select"  multiple>
+                                            {% if antecedente_familiar.cie in cies_solo_fem %}
+                                                {% for relacion in fem_relaciones %}
+                                                <option value="{{ relacion.id }}" {% if relacion in antecedente_familiar.relaciones.all %}selected{% endif %}>{{ relacion.nombre }}</option>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for relacion in relaciones %}
+                                                <option value="{{ relacion.id }}" {% if relacion in antecedente_familiar.relaciones.all %}selected{% endif %}>{{ relacion.nombre }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control observacion"  rows="1">{{ antecedente_familiar.observacion }}</textarea>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="checkbox-delete hidden"/>
+                                            <button class="btn btn-danger btn-delete">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% for cie in cies %}
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" class="checkbox-cie" data-cie="{{ cie.codigo }}"/>
+                                        </td>
+                                        <td>{{ cie.codigo }}</td>
+                                        <td>{{ cie.nombre_display|title }}</td>
+                                        <td>
+                                            <select class="relacion-select" data-validate="antecedentes" disabled multiple>
+                                            {% if cie in cies_solo_fem %}
+                                                {% for relacion in fem_relaciones %}
+                                                <option value="{{ relacion.id }}">{{ relacion.nombre }}</option>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for relacion in relaciones %}
+                                                <option value="{{ relacion.id }}">{{ relacion.nombre }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control observacion" data-validate="antecedentes"  disabled rows="1"></textarea>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="pull-left">
+                        <a class="btn btn-default" href="{% url 'paciente:antecedentes' paciente.id %}">Regresar a los antecedentes</a>
+                    </div>
+
+                    <div class="text-right">
+                        <input class="btn btn-green" type="submit" value="Guardar" id="btn-save"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/vendor/select2.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){ 
+            var $checkAll = $('#check-all');
+            var $checkBoxIce = $('.checkbox-cie:not(:disabled)');
+            var $niega = $('#niega');
+            var $niegaHelp = $('#niega-help');
+            var $antecedentesTable = $('#js-antecedentes-table');
+            $niega.on('change', function () {
+                if ($(this).is(':checked')) {
+                    $niegaHelp.show();
+                    $antecedentesTable.find('input, textarea, button').prop('disabled', true);
+                    $('#input-search').select2('enable', false);
+                    $('.relacion-select').select2('enable', false);
+                } else {
+                    $niegaHelp.hide();
+                    $antecedentesTable.find('input, textarea, button').prop('disabled', false);
+                    $('#input-search').select2('enable', true);
+                    $('.relacion-select').select2('enable', true);
+                }
+            });
+            $checkAll.on('change', function () {
+                if ($('#check-all').is(':checked')) {
+                    $checkBoxIce.prop('checked', true).trigger('change');
+                } else {
+                    $checkBoxIce.prop('checked', false).trigger('change');
+                }
+            });
+
+            var addObserverChangeCheckbox = function(){
+                $.each($("input[type='checkbox'].checkbox-cie"),function(index,elem){
+                    $(elem).on("click",function(){
+                        $list_elem = $(this).parent().parent().find('[data-validate=antecedentes]')
+                        if(this.checked){
+                           $.each($list_elem,function(index,el){
+                                $(el).attr('disabled',false);
+                           });
+                        }else{
+                            $.each($list_elem,function(index,el){
+                                $(el).attr('disabled',true);
+                                if($(el).is( "select" )){
+                                   $(el).select2("val","");
+                                }else{
+                                   $(el).val(""); 
+                                }  
+                           });
+                    }});
+                });
+            }
+            addObserverChangeCheckbox();
+        
+            $('.relacion-select').select2({
+                width: '200px'
+            });
+            $('.btn-delete').on('click', function (event) {
+                event.preventDefault();
+                var $this = $(this);
+                var $checkbox =  $this.parent().find('.checkbox-delete');
+                var currentValue = $checkbox.is(':checked');
+                $checkbox.prop('checked', !currentValue);
+                if (!currentValue) {
+                    $this.parents('tr').addClass('danger');
+                } else {
+                    $this.parents('tr').removeClass('danger');
+                }
+            });
+            $checkBoxIce.on('change', function () {
+                var $this = $(this);
+                if ($this.is(':checked')) {
+                    $this.parents('tr').addClass('success');
+                } else {
+                    $this.parents('tr').removeClass('success');
+                }
+            });
+
+            var relaciones = [];
+            {% for relacion in relaciones %}
+            relaciones.push({
+                id: {{ relacion.id }},
+                nombre: '{{ relacion.nombre }}'
+            });
+            {% endfor %}
+
+            function getRelacionesOptions () {
+                var html = '', i, len = relaciones.length, relacion;
+                for (i=0; i<len; i++) {
+                    relacion = relaciones[i];
+                    html += '<option value=' + relacion.id + '>' + relacion.nombre + '</option>';
+                }
+                return html;
+            }
+            var $tbody = $('table').find('tbody');
+
+            $('#input-search').select2({
+                placeholder: 'Ingrese el nombre o codigo del cie',
+                minimumInputLength: 3,
+                ajax: {
+                    url: '{% url 'cie:api_search' %}',
+                    dataType: 'json',
+                    type: 'get',
+                    data: function (term, page) {
+                        return {
+                            q: term
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                formatSelection: function (cie) {
+                    if ($tbody.html().indexOf(cie.codigo) === -1) {
+                        var html = '<tr>\
+                                        <td>\
+                                            <input type="checkbox" class="checkbox-cie" data-cie="#codigo" checked/>\
+                                        </td>\
+                                        <td>#codigo</td>\
+                                        <td>#nombre</td>\
+                                        <td>\
+                                            <select class="relacion-select" data-validate=antecedentes multiple>#relaciones</select>\
+                                        </td>\
+                                        <td>\
+                                            <textarea class="form-control observacion"  data-validate=antecedentes rows="1"></textarea>\
+                                        </td>\
+                                        <td></td>\
+                                    </tr>';
+                        var compiled = html.replace(/#codigo/g, cie.codigo).replace(/#nombre/g, cie.nombre).replace(/#relaciones/g, getRelacionesOptions());
+                        $tbody.prepend(compiled);
+                        $tbody.children().eq(0).find('.relacion-select').select2({
+                            width: '200px'
+                        });
+                    }
+                    return this.placeholder;
+                },
+                formatResult: function (cie) {
+                    return '<p>' + cie.nombre + '</p>';
+                },
+                formatNoMatches: function (term) {
+                    return 'No se encontraron resultados';
+                },
+            }).on("change", function(e) { 
+                addObserverChangeCheckbox();
+            });
+
+            $('#btn-save').on('click', function (event) {
+                event.preventDefault();
+                var antecedentes = [];
+                $('.checkbox-cie:checked').each(function () {
+                    var relaciones = [];
+                    $(this).parents('tr').find('option:selected').each(function () {
+                        relaciones.push(this.value);
+                    });
+                    var $tr = $(this).parents('tr');
+                    antecedentes.push({
+                        codigo: $(this).data('cie'),
+                        relaciones: relaciones,
+                        observacion: $tr.find('.observacion').val(),
+                        delete: $tr.find('.checkbox-delete').is(':checked')
+                    });
+                });
+                var messages = [];
+                antecedentes.forEach(function (antecedente) {
+                    if (!antecedente.relaciones.length) {
+                        messages.push('CIE: ' + antecedente.codigo + ' debe elegirse al menos una relacion de parentesco');
+                    }
+                });
+                if (messages.length) {
+                    alert(messages.join('\n'));
+                } else {
+                    $.ajax({
+                        method: 'post',
+                        url: '{% url 'paciente:antecedentes_familiares_edit' paciente.id %}',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            niega: $niega.is(':checked'),
+                            antecedentes: antecedentes
+                        }),
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.status === 'success') {
+                                document.location.href = '{% url 'paciente:antecedentes_edit' paciente.id %}';
+                            } else {
+                                alert('Ocurrio un error vuelva a intentar');
+                            }
+                        }
+                    });
+                }
+            });
+            if ($niega.is(':checked')) {
+                $niegaHelp.show();
+                $antecedentesTable.find('input, textarea, button').prop('disabled', true);
+                $('#input-search').select2('enable', false);
+                $('.relacion-select').select2('enable', false);
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% load static %}
+{% load form_filter %}
+
+{% include 'session_security/all.html' %}
+<div class="form-group">
+    <div class="col-sm-12">
+        {{ field }}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div>

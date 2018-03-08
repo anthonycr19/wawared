@@ -1,0 +1,17 @@
+.contenedor-tabla {
+    width: 70%;
+    overflow-x:scroll;
+    margin-left:16.5em;
+    overflow-y:visible;
+    padding-bottom:1px;
+}
+
+.headcol {
+    position:absolute;
+    width:13em;
+    padding-right: 2em;
+    left:6em;
+    top:auto;
+    border-top-width:3px; /*only relevant for first row*/
+    margin-top:-1px; /*compensate for top border*/
+}

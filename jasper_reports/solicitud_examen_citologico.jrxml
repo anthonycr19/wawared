@@ -1,0 +1,3329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2015-11-02T11:57:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitud_examen_citologico" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="744baa1e-1466-49d7-b71c-6cb1518a5358">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="351"/>
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="wawared"/>
+	<property name="ireport.jasperserver.url" value="http://69.164.195.221:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin|Wawared"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/wawared/solicitud_examen_citologico_files/solicitud_examen_citologico_"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/wawared/solicitud_examen_citologico"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="control_id" class="java.lang.Integer"/>
+	<parameter name="diresa_logo" class="java.lang.String"/>
+	<parameter name="establecimiento_logo" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select upper(paciente.apellido_paterno || ' ' || paciente.apellido_materno || ' ' || paciente.nombres) as nombre_completo,
+extract(YEAR from age(now(), paciente.fecha_nacimiento))::int as edad,
+paciente.direccion, paciente.telefono, paciente.urbanizacion, paciente.fecha_nacimiento,
+paciente.numero_documento,
+array_to_string(array[cast(paciente.telefono as varchar),  cast(paciente.celular as varchar), cast(paciente.celular2 as varchar)], ', ') as telefonos,
+ag.condon, ag.ovulos, ag.diu, ag.inyectable, ag.pastilla, ag.natural, ag.inyectable_2,
+ag.edad_menarquia, ag.edad_primera_relacion_sexual, ag.andria, ag.fecha_ultimo_papanicolaou,
+historia_clinica.numero as hc,
+ag.lugar_papanicolaou, upper(ag.resultado_papanicolaou) as resultado_papanicolaou,
+ag.tiene_papanicolaou, ag.regimen_regular, ag.duracion_menstruacion, ag.ciclo_menstruacion,
+ao.gestaciones, ao.nacidos_menor_37sem, (ao.nacidos_vivos - ao.nacidos_menor_37sem) as nacidos_mayor_37sem, ao.abortos, ao.nacidos_vivos,
+embarazo.fum, establecimiento.nombre as establecimiento_nombre,
+
+control.edad_gestacional_semanas, control.eg_elegida
+
+from controles_control as control
+left join embarazos_embarazo as embarazo on control.embarazo_id = embarazo.id
+left join pacientes_paciente as paciente on control.paciente_id = paciente.id
+left join pacientes_antecedenteginecologico as ag on paciente.id = ag.paciente_id
+left join pacientes_antecedenteobstetrico as ao on ao.paciente_id = paciente.id
+left join pacientes_historiaclinica as historia_clinica on historia_clinica.paciente_id = paciente.id and historia_clinica.establecimiento_id = control.establecimiento_id
+left join establecimientos_establecimiento as establecimiento on control.establecimiento_id = establecimiento.id
+where control.id = $P{control_id}::int]]>
+	</queryString>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="edad" class="java.lang.Integer"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.Integer"/>
+	<field name="urbanizacion" class="java.lang.String"/>
+	<field name="fecha_nacimiento" class="java.sql.Date"/>
+	<field name="numero_documento" class="java.lang.String"/>
+	<field name="telefonos" class="java.lang.String"/>
+	<field name="condon" class="java.lang.Boolean"/>
+	<field name="ovulos" class="java.lang.Boolean"/>
+	<field name="diu" class="java.lang.Boolean"/>
+	<field name="inyectable" class="java.lang.Boolean"/>
+	<field name="pastilla" class="java.lang.Boolean"/>
+	<field name="natural" class="java.lang.Boolean"/>
+	<field name="inyectable_2" class="java.lang.Boolean"/>
+	<field name="edad_menarquia" class="java.lang.Integer"/>
+	<field name="edad_primera_relacion_sexual" class="java.lang.Integer"/>
+	<field name="andria" class="java.lang.Integer"/>
+	<field name="fecha_ultimo_papanicolaou" class="java.sql.Date"/>
+	<field name="hc" class="java.lang.String"/>
+	<field name="lugar_papanicolaou" class="java.lang.String"/>
+	<field name="resultado_papanicolaou" class="java.lang.String"/>
+	<field name="tiene_papanicolaou" class="java.lang.Boolean"/>
+	<field name="regimen_regular" class="java.lang.Boolean"/>
+	<field name="duracion_menstruacion" class="java.lang.Integer"/>
+	<field name="ciclo_menstruacion" class="java.lang.Integer"/>
+	<field name="gestaciones" class="java.lang.Integer"/>
+	<field name="nacidos_menor_37sem" class="java.lang.Integer"/>
+	<field name="nacidos_mayor_37sem" class="java.lang.Integer"/>
+	<field name="abortos" class="java.lang.Integer"/>
+	<field name="nacidos_vivos" class="java.lang.Integer"/>
+	<field name="fum" class="java.sql.Date"/>
+	<field name="establecimiento_nombre" class="java.lang.String"/>
+	<field name="edad_gestacional_semanas" class="java.lang.String"/>
+	<field name="eg_elegida" class="java.lang.String"/>
+	<detail>
+		<band height="554" splitType="Stretch">
+			<rectangle>
+				<reportElement x="420" y="32" width="379" height="40" uuid="4a069c3b-32a4-4d51-a52c-da15b5516aa4">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="426" width="379" height="111" uuid="5763c777-fc3b-4eec-9cce-c8ac903f0201"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="87" width="379" height="45" uuid="dcb00f54-d49a-4d9d-86b5-217f5785fb46">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="147" width="379" height="45" uuid="fddb82a0-2508-463f-9480-c21d659f1e4b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="192" width="379" height="15" uuid="8b7a95ae-fec4-49b2-a486-ba2faa069af2">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="207" width="379" height="205" uuid="4e107807-802f-4dd9-b629-684002eaaa57"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="2" width="379" height="15" uuid="c0cb94d2-449d-498a-a91c-cbb120174bcb">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="340" width="379" height="15" uuid="81f66743-c71d-43dd-b33d-e6cae55f2fdd">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="205" width="379" height="74" uuid="9362018e-28d9-4e34-81b2-1054183bee61"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="352" y="206" width="15" height="10" uuid="50a90337-fe0b-426f-bd51-8a35d9349c38">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="329" y="206" width="15" height="10" uuid="c9113a9e-2b0b-4103-9705-7e9f11a44112">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="305" y="206" width="15" height="10" uuid="68679300-7c57-47fc-822d-e5bd33945b0c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="354" width="379" height="182" uuid="303ec538-cf6b-43ba-953c-0cb143addf54">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="293" width="379" height="47" uuid="c71a237c-6fcf-4ece-8ee0-faa2ef279283"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="278" width="379" height="15" uuid="447db44f-b5b7-4a21-8fad-e251edafa168">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="190" width="379" height="15" uuid="50a2a62f-5d8c-4099-9bb4-498e7f578cd9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="113" width="379" height="77" uuid="fc6c17f7-1892-45f7-9f87-cfe3c451f66c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="98" width="379" height="15" uuid="c1d7d4c5-d6e4-4edb-918a-d3e258ea5a5d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="66" width="379" height="32" uuid="2abfab9a-c1c2-4d1f-bfc9-5fbe9afba574">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="51" width="379" height="15" uuid="ba9ecc30-f1c3-4acc-b0ea-5cc28a0cf6de">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="4" width="379" height="14" uuid="0c774fe4-1fd7-4e4a-a330-25c49cb26d46">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATENCION INTEGRAL DE SALUD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="16" width="379" height="11" uuid="6627ad5e-97ee-4d62-a87f-da397958d145">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ESTRATEGIA SANITARIA DE SALUD SEXUAL Y REPRODUCTIVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="27" width="378" height="10" uuid="b6a9be4d-e996-4069-aed8-2606108f4ea5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DETECCION PRECOZ DE CANCER GINECOLOGICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="50" width="176" height="14" uuid="fece0d36-6a88-46ba-a5bc-52c72358b30a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE EXAMEN CITOLOGICO CERVICO VAGINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="113" width="121" height="15" uuid="5b2c0a22-36a0-4bb3-af50-28b6a5950dc5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Número de Historia Clínica:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="66" width="131" height="14" uuid="d2e7bee2-0b00-4d0e-ba60-3b7e6d4cf018"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Establecimiento de salud]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="80" width="31" height="10" uuid="8547718c-98a5-448e-a402-3662dfe191be"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nueva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="241" y="111" width="28" height="15" uuid="c3e52f09-2e1b-4963-b9ec-53336336c7a9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Edad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="98" width="287" height="15" uuid="4ac5049f-c757-4633-a558-e0cbc598626f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DATOS DE LA PACIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="130" width="110" height="15" uuid="a67c8142-f9f5-4f8d-bf53-79d169649eda">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Apellidos y nombres:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="150" width="40" height="15" uuid="91ddb593-2868-4c43-b052-c270679f07d2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="149" width="56" height="15" uuid="e0107e47-6938-4957-9180-370ff1cd49fb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Urbanización:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="167" width="88" height="15" uuid="65a36ff9-2c9b-42de-9c2c-c03addcf161c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de nacimiento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="167" width="20" height="15" uuid="4bd0065a-116f-454c-b070-25a504fc4d76">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DNI:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="167" width="41" height="15" uuid="864d2958-362d-4c3e-bafc-61e6d1c05657">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="190" width="122" height="15" uuid="48db18ee-6a06-46f3-adf3-b13cba7a083b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HISTORIA GINECOLOGICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="206" width="23" height="10" uuid="e1fbf580-946e-4703-94a3-87e76a26e5c1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FUR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="217" width="45" height="10" uuid="83f0d7f4-07b3-4d37-a298-41638d865303">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Menarquia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="229" width="47" height="10" uuid="baeb8b22-d2ea-4178-b754-134deddda9c1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lactancia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="259" width="98" height="20" uuid="943eeda4-7d09-4c1a-a3e6-3ac2da5af43a"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Antecedente ITS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="229" width="32" height="10" uuid="1c28c417-e1fc-43b2-aa57-c730a53e9615">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Meses:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="229" width="40" height="10" uuid="76753d76-109f-4037-8da0-db311245f663">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Gestante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="206" width="20" height="10" uuid="1095d712-aa47-4f5d-ad8e-bb94e99f4a1e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[R/C:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="229" width="49" height="10" uuid="ef9e0471-2362-48f0-9b8e-ddbd3df42f96">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[N Semana:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="206" width="19" height="10" uuid="2dee15db-6c02-4ec5-abce-ed552f802a47">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[G:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="206" width="13" height="10" uuid="0515ae5a-6237-4a44-9a3b-827de0d9e432">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[P:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="67" y="217" width="28" height="10" uuid="20853564-722a-408c-8980-4749a9d47944">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1º RS: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="217" width="22" height="10" uuid="a973f40c-5062-4ac6-afd8-63ff70a81ee4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MAC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="130" width="234" height="15" uuid="ae5d2483-fa09-46bc-b863-4d4b94d022c3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="131" y="111" width="91" height="15" uuid="1d1a7a94-5c8d-414b-8a91-878b8ec2dc90">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="113" width="58" height="15" uuid="23c5c243-752e-40b5-8ee3-125ab2372b81">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="145" width="161" height="22" uuid="557021bd-f0a5-4eab-bae4-b1ba9bd5a3f6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="145" width="119" height="22" uuid="2701f7f4-8775-41b5-b18e-95d3c95ecd72">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{urbanizacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="89" y="167" width="84" height="15" uuid="06cd1fa8-7c78-4eaa-9c22-549932e67568">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_nacimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="167" width="52" height="15" uuid="9a503043-2daf-4368-9b0e-c589ae63cfc9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_documento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="288" y="167" width="93" height="23" uuid="d5d3babb-4484-4758-bca7-688cd656eaf6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefonos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="217" width="20" height="10" uuid="18786425-d7a3-4488-b7e5-df8a9985d78f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_menarquia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="97" y="217" width="21" height="10" uuid="af6f91e9-b2e3-4814-9ce6-4441b6de983d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_primera_relacion_sexual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="278" width="287" height="15" uuid="6d787f32-7442-4bb4-b0a8-e3af4632d12a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DE ULTIMO PAP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="296" width="40" height="15" uuid="13d9c755-500e-44e7-9c0d-da1443f5587f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="311" width="46" height="15" uuid="23c9d074-7aee-4827-90f8-7773671fe8f7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Resultado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="296" width="39" height="15" uuid="ea0ffbc9-9e26-470a-b21f-34c2d9580a30">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lugar:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="311" width="59" height="15" uuid="11bd199a-a9ec-4afc-a31e-9f2f1752a0c6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[N Registro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="326" width="98" height="15" uuid="2eea4bc8-b2ae-43a4-a785-691aec24b516">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Motivo de estudio actual:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="340" width="378" height="15" uuid="5f3bcc87-d55b-4527-84a8-c10c446badfe">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS CLINICOS DE SIGNIFICACION Y/O ANTECEDENTES DE IMPORTANCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="370" width="59" height="15" uuid="167ad12a-671c-4511-89c9-f37587e59a0b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Flujo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="397" width="59" height="20" uuid="4e3f6ac7-d6e6-4cb4-afa7-4f490bae1c4d"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dx clinico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="443" width="87" height="15" uuid="e23813b2-fdd3-4ae7-85e1-039ab76fc183">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de toma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="499" width="57" height="15" uuid="5b6773ae-9614-4f26-abb1-0d6a887db379">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Firma y sello:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="42" y="296" width="90" height="15" uuid="cbfe1856-8d37-44f3-8c18-d5ce74847b84">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_ultimo_papanicolaou}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="48" y="311" width="84" height="15" uuid="92ac2b7f-575c-48f1-9243-872f579b3866">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resultado_papanicolaou}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="296" width="198" height="15" uuid="00aee421-0205-4058-9df8-262d52d3acba">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lugar_papanicolaou}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="101" y="80" width="21" height="13" uuid="74456813-59ba-406c-8b69-c23ac7279cb4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="80" width="23" height="12" uuid="721e54ff-c9c5-4ad1-8538-992f09c85774">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="90" y="443" width="99" height="15" uuid="ced69a06-68d0-419c-b77a-11bb0cafe954">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="101" y="80" width="21" height="12" uuid="ce496bb7-b9c9-43d7-a40c-6801b64e0074">
+					<printWhenExpression><![CDATA[!$F{tiene_papanicolaou}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="78" width="23" height="14" uuid="8633f3ce-e716-4ec1-bad0-6e5a64c77cef">
+					<printWhenExpression><![CDATA[$F{tiene_papanicolaou}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="259" width="30" height="10" uuid="df39da1a-b9c2-44ef-b7c0-a96b5470794a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[COND]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="229" width="17" height="10" uuid="9d4d9d4c-4136-494b-aa60-d270d3547f08">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[INY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="240" width="31" height="10" uuid="8208d266-d446-4189-b3a8-6ae0f603cfac">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PILDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="250" width="18" height="10" uuid="1484a160-1e1d-4bcb-917c-d968ff2e7d37">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[DIU]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="131" y="206" width="63" height="10" uuid="96135494-54a7-47be-889a-4c78335e886c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regimen_regular} ? $F{duracion_menstruacion}.toString() + "/" + $F{ciclo_menstruacion}.toString() : "IRREGULAR"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="217" y="206" width="38" height="10" uuid="34a153a9-c536-4be9-867c-486db39d211f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gestaciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="206" width="15" height="10" uuid="79250ef8-8a03-49ca-94fc-3079019ee848">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abortos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="352" y="206" width="15" height="10" uuid="215476a7-de04-46d5-a865-f543971379c4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nacidos_vivos}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="279" y="206" width="15" height="10" uuid="f77392ff-d243-432c-b46b-21ba3e1c693b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="305" y="206" width="15" height="10" uuid="9cb706e1-6db6-42bc-ae30-91770ed1c819">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nacidos_menor_37sem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="206" width="15" height="10" uuid="91a83f36-7bff-4864-877d-a527da783c6a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nacidos_mayor_37sem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="29" y="206" width="82" height="10" uuid="91cc6814-b2e8-4e6f-8eda-bdcbffce358f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fum}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="162" y="83" width="78" height="10" uuid="34e42720-c3d4-4554-b730-70557306ede9"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Continuadora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="2" width="224" height="15" uuid="3f0a7e01-f124-4f04-8dde-6d65877799ea">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DE DIAGNOSTICO CITOLOGICO CERVICAL VAGINAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="203" y="499" width="101" height="1" uuid="205585c1-1e53-4017-b7ff-1273ca2c7a3d"/>
+			</line>
+			<rectangle>
+				<reportElement x="587" y="92" width="25" height="15" uuid="25f99ffc-adbc-4c64-bc55-702cefb13961">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="534" y="112" width="53" height="15" uuid="15c2bfef-d09a-455b-a463-303a5eae38a4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gardnerella]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="587" y="112" width="25" height="15" uuid="b3ecdae1-dd46-4541-b074-b2105416925c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="422" y="192" width="334" height="15" uuid="63227939-1d5e-42fa-b3eb-6e23094976c0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANOMALIAS CELULARES EPITELIALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="727" y="172" width="49" height="15" uuid="0d8a0071-c465-41eb-87bf-ccfc9d90537c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="507" y="91" width="25" height="15" uuid="0be11e40-e9f8-49a3-8f97-dae875feedcd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="426" y="152" width="25" height="15" uuid="9de94a63-ea61-4281-90e7-ae014e8fc712">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="635" y="33" width="121" height="10" uuid="245d417b-18ad-4954-b2bb-865dbb201e95">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Con celulas endocervicales]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="171" width="25" height="15" uuid="5040735e-bc68-4049-875c-66840ec1f727">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="507" y="172" width="25" height="15" uuid="83dd4490-8491-4a3e-9f88-1e36e3c64ea3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="455" y="91" width="35" height="15" uuid="ff445fa8-2ea9-4466-9dde-0cade0356264">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninguno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="727" y="92" width="73" height="15" uuid="e0ca4871-8e8c-4d8c-b862-14fb9cb35646">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Trichonomas vag]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="534" y="171" width="43" height="15" uuid="0ff50aae-0e12-4e6a-85c8-ee87df099275">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Atrofia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="34" width="129" height="10" uuid="62131c19-c07f-4fa9-b295-fe83062678f2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Adecuada para la evaluación]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="507" y="152" width="25" height="15" uuid="014881ac-0b5a-4e0d-a7ec-9ce834a68d9e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="17" width="379" height="15" uuid="7a58f13d-d74e-48fe-8023-7eeb31fbe1d3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="534" y="92" width="53" height="15" uuid="aa7eafb6-044c-4728-b4c7-93d9b4b3810a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cocobacilos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="587" y="152" width="25" height="15" uuid="5f91bf80-0160-489a-b7b2-3dfec926b23e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="614" y="152" width="60" height="15" uuid="07e8d7d1-b80d-4558-9fdf-7046b1d66b7d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reparación]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="598" y="34" width="25" height="10" uuid="b97efd63-3258-456b-b6d9-7e8feea29a2f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="427" y="59" width="25" height="10" uuid="50ea2efd-2919-475d-b0d1-73c2f3c375de">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="618" y="92" width="54" height="15" uuid="d0eb75b7-c061-434a-9823-32a7d9b6736a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cándida]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="427" y="91" width="25" height="15" uuid="ebe52f10-147c-4cd4-aa11-fea9bf7eb27f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="700" y="152" width="25" height="15" uuid="084896a9-771d-4fb2-a6d8-99f2b94c3188">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="427" y="34" width="25" height="10" uuid="bc9acd78-3791-4f94-ba1b-0f2609b6b183">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="72" width="379" height="15" uuid="02ac4d1c-635e-46c6-9a82-45dfc54b1580">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="422" y="17" width="334" height="15" uuid="ef685f3f-e5a3-4307-badf-441ce29e9187">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CALIDAD DE LA MUESTRA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="617" y="112" width="84" height="15" uuid="43e76e7f-dff0-4dd6-bd7f-a78990de6d88">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Virus herpes simple]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="598" y="46" width="25" height="10" uuid="c6883b5b-646c-4ba5-a2e0-253f4e04c525">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="454" y="112" width="50" height="15" uuid="7a294b84-4f9f-4ecb-b134-6b08d1a434d7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Actinomices]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="427" y="112" width="25" height="15" uuid="41766d67-a396-446b-bb15-351b079d632a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="132" width="379" height="15" uuid="bdf89eb0-78ae-4d79-a86b-f8bfeeda42dd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="614" y="171" width="90" height="15" uuid="2aac1e99-ac64-4481-b9e1-4d0007245f81">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Inflamación (L (M) (S))]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="700" y="171" width="25" height="15" uuid="de0ae80b-e73e-4c36-9212-9b4c6c817fd7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="724" y="152" width="52" height="15" uuid="fe1e4746-e0cb-48b0-a770-95da72ef1fd1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reactivos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="534" y="152" width="48" height="15" uuid="15fa4a7b-b9e7-444f-9045-75ef4db68465">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Metaplasia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="59" width="136" height="10" uuid="567aa60a-bf82-423e-9ef4-635e07d4da14">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Inadecuada para la evaluación por:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="152" width="48" height="15" uuid="9cad4200-a53e-46e2-9cc8-a55ef434ae40">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninguno]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="700" y="92" width="25" height="15" uuid="a8ec7e0f-41fe-4425-9512-d89f06d83dbc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="635" y="45" width="129" height="10" uuid="53ebbfa5-b72c-4fe1-b52c-cac44b877995">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sin celulas endocervicales]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="700" y="112" width="25" height="15" uuid="3360ff7d-0902-46cf-b689-19300d6d721e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="587" y="171" width="25" height="15" uuid="1617b5fd-3068-40d0-b0b5-ca7c34e18f09">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="422" y="72" width="334" height="15" uuid="562a186f-9950-47ef-b308-12e9979ce670">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAMBIOS CAUSADOS POR INFECCION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="727" y="112" width="53" height="15" uuid="810a145c-475c-4184-9c48-b7c747029a72">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="507" y="112" width="25" height="15" uuid="605d1835-6d20-4296-ace7-2cfc0741d0a7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="453" y="171" width="26" height="15" uuid="90b5fec9-f3d0-4232-a11f-63b643e84583">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[DIU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="212" width="244" height="15" uuid="e63ded91-1e5b-4028-ad82-e9d4d7cdabb0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninguno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="132" width="334" height="15" uuid="1f113f7d-bcba-4c2e-87ac-50ae0b22c3fa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAMBIOS ASOCIADOS A:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="212" width="25" height="15" uuid="46591572-1b37-4551-a708-d7cf61311c5b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="273" width="276" height="15" uuid="3426df7c-a9cd-4f74-a981-fd280f318b68">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de bajo grado: Displasia leve (NIC I)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="332" width="25" height="15" uuid="576f9930-05cb-44fb-8ac1-46c4a0d11a3d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="426" y="313" width="25" height="15" uuid="a9fc335c-d05c-4b63-adb1-d8c27055ee3f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="426" y="253" width="25" height="15" uuid="dc78e040-cf02-495d-b4b3-bd125b8c45da">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="426" y="393" width="25" height="15" uuid="43bbbd5b-de59-4683-978c-8cf91936221f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="353" width="104" height="15" uuid="a6580351-47ea-4553-b1a3-724decf46c5f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Carcinoma epidermoide]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="393" width="84" height="15" uuid="fc1ec9c0-7c11-4026-8925-b8ba0f91d35f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Adenocarcinoma]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="353" width="25" height="15" uuid="1b17c29d-6370-4a3e-8a93-7dda79c38116">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="233" width="280" height="15" uuid="d17b534d-2b9c-4145-b24c-bf79383b0203">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Celulas escamosas atipicas de significado no determinado (ASCUS)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="373" width="265" height="15" uuid="3a2b57a0-37a0-41e2-abb0-ca76961fd6d5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Celulas grandulares atipicas de significado no determinado (ACUS)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="373" width="25" height="15" uuid="2c8780f7-bc06-48a9-b0b5-5374926bcda5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="293" width="296" height="15" uuid="62976072-44f7-4d74-ae32-853a6d473587">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de alto grado: Displasia moderada (NIC II)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="273" width="25" height="15" uuid="5f1cf87a-a43d-415c-b451-9770bb17b7e9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="313" width="289" height="15" uuid="2e348ab4-8b2f-457e-9be6-915f706576f7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de alto grado: Displasia severa (NIC III)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="233" width="25" height="15" uuid="86ddf51c-d33e-4905-9dbe-a63a79a2eb3c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="426" y="293" width="25" height="15" uuid="7ed83a98-7a40-485d-9851-fb22a354bb57">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="253" width="276" height="15" uuid="16ef37ab-2cd6-4a54-9656-181aadd8b1da">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de bajo grado: Infeccion por PVH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="332" width="296" height="15" uuid="3a8410ff-9833-45b0-b768-f95e8280aea3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de alto grado: Carcinoma in situ (NIC III)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="420" y="412" width="379" height="15" uuid="4f7e9c49-90a4-49fd-b15b-50a7af6b10a8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="422" y="412" width="376" height="14" uuid="c9210fd1-ebd4-4ee9-bc4f-f1a00d22a4dd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OTROS                                                                OBSERVACIONES Y SUGERENCIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="430" width="73" height="10" uuid="6d2d662c-cf6f-4692-95f0-9253ce475757">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[B Doderlein]]></text>
+			</staticText>
+			<line>
+				<reportElement x="566" y="519" width="101" height="1" uuid="55e32384-4413-4d5d-8b70-d4a8ae9a6581"/>
+			</line>
+			<rectangle>
+				<reportElement x="426" y="457" width="25" height="10" uuid="6850d222-c731-48cf-aadd-6f0dd94fdcd1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="571" y="525" width="87" height="10" uuid="50dd894e-3ec3-4216-93ec-1849d7d1c42d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Firma y sello:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="443" width="62" height="10" uuid="b46e1da7-7ad7-4ad7-b50c-ecd98f82935a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Leucocitos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="443" width="25" height="10" uuid="58fa7efc-a791-42a5-aa44-44637ccd93bc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="426" y="430" width="25" height="10" uuid="574d51f3-c72a-46ff-93ff-28fea67c8f1a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="459" y="485" width="51" height="10" uuid="9348a029-bb65-4740-86ab-90dab3b522fe">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Citólisis]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="485" width="25" height="10" uuid="eaf324fa-9693-4d1f-abd2-3ae0ab422246">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="459" y="457" width="56" height="10" uuid="4ba2f2a3-06d2-4e08-b1ee-115e1fcb3e98">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Histiocitos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="426" y="471" width="25" height="10" uuid="c8f27e2e-1c48-4004-84b2-d7d53260149a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="459" y="471" width="52" height="10" uuid="f6286ecd-852b-4a0a-a7b0-d35a06e917be">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hematies]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="17" y="372" width="133" height="57" uuid="431b29d0-ce15-4301-aac7-284494ce323c"/>
+			</rectangle>
+			<ellipse>
+				<reportElement x="53" y="382" width="63" height="37" uuid="155f097d-f3b8-4805-86fa-e30f9f445470"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="81" y="398" width="5" height="5" backcolor="#000000" uuid="0ea2fbac-6ce8-463b-b39a-50afecd753fc">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</ellipse>
+			<textField isBlankWhenNull="true">
+				<reportElement x="131" y="67" width="247" height="13" uuid="a609dc28-3bfc-4f50-8f97-060803c36f5b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento_nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="233" y="36" width="46" height="14" uuid="7ac0233a-0246-4824-bd53-5f757d753045"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reg. Nº]]></text>
+			</staticText>
+			<line>
+				<reportElement x="262" y="48" width="70" height="1" uuid="4f3b0564-c25e-4f48-aedd-cad1bd6f1c2b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="218" y="240" width="61" height="10" uuid="7123e6f4-ac7c-45bb-8f57-b6f98ae69965">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_gestacional_semanas} + " x " + $F{eg_elegida}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="0" width="50" height="50" uuid="be0833b8-be2a-4bd7-bd44-f79945e9468a"/>
+				<imageExpression><![CDATA[$P{diresa_logo}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement x="331" y="-1" width="50" height="50" uuid="51a4b067-a258-4417-a8be-bc19a9c61876"/>
+				<imageExpression><![CDATA[$P{establecimiento_logo}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="199" y="229" width="15" height="10" uuid="d2a91778-2ba8-4c8e-adb9-9483a9571b94">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="184" y="229" width="15" height="10" uuid="f61253f7-35a5-46a0-a1d8-74d8152b2370">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="240" width="15" height="10" uuid="2eb78a00-2804-4d85-b15e-4b417dd84946">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="199" y="240" width="15" height="10" uuid="e9b6da63-d0a3-45a2-9394-e24c55041714">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="357" y="229" width="15" height="10" uuid="3ad06847-47bb-45b8-963a-3c8102492ed2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="357" y="240" width="15" height="10" uuid="8e02f0e7-ef00-4968-91ae-8e79dae2914f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="357" y="250" width="15" height="10" uuid="d2d5523e-51a6-43dc-9c56-f66c731b84d7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="357" y="260" width="15" height="10" uuid="6bab1ca3-6839-478c-810f-f557614b8c6d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="358" y="229" width="14" height="10" uuid="d41c8085-c9a9-43b6-b45e-1ecb815f686f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{inyectable} || $F{inyectable_2}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="240" width="14" height="10" uuid="97cdb021-e3a5-4d72-937d-3e6794ac5536">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{pastilla}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="250" width="14" height="10" uuid="5ae157cb-e51e-4deb-adc9-c506e4834a10">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{diu}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="259" width="14" height="10" uuid="4c9b5c18-d2a9-4a20-9926-799f7d4a85f8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{condon}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="426" y="505" width="64" height="15" uuid="a4d9cc8a-7a9a-4c22-9f2c-d9c7763cf7ce"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[      /        /]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="518" width="64" height="15" uuid="84f07c35-e1b7-4d2c-a619-f9e5cd985a54"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[DIA     MES      AÑO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="426" y="520" width="65" height="1" uuid="181701e3-4971-4a73-afc5-3084834eddd3"/>
+			</line>
+			<staticText>
+				<reportElement x="427" y="495" width="64" height="10" uuid="6db778e3-9fa8-4886-a91d-c0d6de99c938">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Fecha de Resultado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="229" width="14" height="10" uuid="e642ad0a-efe0-4d4d-89ee-32e9471517c9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="229" width="15" height="10" uuid="45785b08-a130-43a2-98cf-24e1fe3a4b8a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="240" width="15" height="10" uuid="3e2bd281-46a1-443d-9307-2fc439f14554">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="67" y="240" width="15" height="10" uuid="a4a9a7a1-c0a1-45bd-bb99-099e64fe6f9b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="67" y="229" width="15" height="10" uuid="c4f1f73f-de0c-411d-9d2b-21832cdcbcea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="116" y="326" width="46" height="15" uuid="7d16f657-7dda-4f47-ad76-88804619282e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Detección]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="326" width="40" height="15" uuid="731d27d1-0456-47ca-916c-1f053f5ea5dc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Control]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="178" y="328" width="15" height="10" uuid="b2b4f17a-2c06-4e2f-9536-b92703f9cd8e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="286" y="328" width="15" height="10" uuid="c05d7908-b197-473a-888d-4eb9812e0a78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+		</band>
+		<band height="554">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle>
+				<reportElement x="420" y="201" width="379" height="74" uuid="7ae39374-2255-4edf-9edd-32b6d4020891"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="776" y="258" width="15" height="10" uuid="712e7fcd-763f-4e08-9654-b6e7094856a9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="776" y="238" width="15" height="10" uuid="84a4cebc-14a2-43a0-a021-14c325a4e1f7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="426" width="379" height="111" uuid="0da65c04-7930-4c03-98a8-8bce2f27e3f4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="412" width="379" height="15" uuid="2c60cc1f-62fd-4230-897c-ae7ac321db29">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="207" width="379" height="205" uuid="a413cc82-e43f-4031-8c93-6d116028fa1a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="147" width="379" height="45" uuid="80dfc4c2-4d97-40c9-9d07-9c2c49cde589"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="87" width="379" height="45" uuid="ce52ee37-faee-4587-84d2-0bc2a52fd652">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="72" width="379" height="15" uuid="07d6d370-e719-4c32-a5ad-4d1a6faa2408">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="32" width="379" height="40" uuid="0727f586-94db-4a86-81a9-86a2bfc2ed17">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="336" width="379" height="15" uuid="c64ba633-1c48-4ffb-a136-b3878149a362">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="274" width="379" height="15" uuid="91fb0449-e2bd-45fe-9114-cbb9f1271b23">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="186" width="379" height="15" uuid="db172eee-d0a5-4ff9-9964-1498c5fd2b19">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="289" width="379" height="47" uuid="06f01ff1-e4b2-455d-9aea-02a7c794eb26"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="350" width="379" height="182" uuid="199ad6e3-b75a-4ea5-b0d6-1fae5b7d16b2">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="109" width="379" height="77" uuid="4f2f3707-5821-4682-b78e-116675852675"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="420" y="62" width="379" height="32" uuid="1f0e0795-baba-415c-83c4-c7f2fb609173">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="420" y="23" width="378" height="10" uuid="1032559b-9924-4a28-8cc8-d239feafe4e0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DETECCION PRECOZ DE CANCER GINECOLOGICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="366" width="59" height="15" uuid="a15b6aac-c4d6-406b-996d-6e63b73b4c42">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Flujo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="647" y="495" width="57" height="15" uuid="9f05cf0a-1314-4e31-b161-58ada5bf00ad">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Firma y sello:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="479" y="76" width="31" height="10" uuid="d1911f54-5f6d-4a6a-956e-05cb976d27c3"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nueva]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="509" y="163" width="84" height="15" uuid="f34a458a-a1c6-4f1a-811e-f8a1b9a6e277">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_nacimiento}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="623" y="495" width="101" height="1" uuid="62226d49-2bf6-448b-982b-25cbb2c429da"/>
+			</line>
+			<staticText>
+				<reportElement x="422" y="292" width="40" height="15" uuid="329939b5-ef8b-47b1-8021-60d6bc397550">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="619" y="393" width="59" height="20" uuid="216e4f38-09bd-4a2e-9d09-26d5a1b23731"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dx clinico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="667" y="163" width="41" height="15" uuid="ad579bf7-e070-4b80-948b-dcfc7d7a632c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="274" width="287" height="15" uuid="85404d1a-3130-4790-8d0b-b71fd9d800e2">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DE ULTIMO PAP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="379" height="14" uuid="eed8ddfa-10f5-4ec7-bfcc-e76e8fc07728">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATENCION INTEGRAL DE SALUD]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="462" y="141" width="161" height="22" uuid="c826071c-848d-49bd-8ca7-ec400c6349a8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="422" y="322" width="98" height="15" uuid="4de4aa32-d3ee-4758-a3e8-8b212828b2c8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Motivo de estudio actual:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="544" y="126" width="234" height="15" uuid="b49c68db-afd2-4fcc-9574-3d09870a1971">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="600" y="292" width="198" height="15" uuid="6e5f738a-4137-4cb4-9214-c3bea20c99c2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lugar_papanicolaou}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="423" y="163" width="88" height="15" uuid="75d65a4d-9203-4e01-a01f-f26497032410">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de nacimiento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="681" y="141" width="116" height="22" uuid="be01b8fc-688a-4a12-9538-62f7fa020cea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{urbanizacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="422" y="62" width="131" height="14" uuid="f70b4ab6-e88a-478e-8e2d-79a604972f11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Establecimiento de salud]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="420" y="94" width="379" height="15" uuid="2e3797dd-3de0-4b44-8b79-927c1ab3a26b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="708" y="163" width="93" height="24" uuid="a9a68be7-a949-4099-b62e-70e1023ef1cf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefonos}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="521" y="76" width="21" height="13" uuid="5ae34885-d3a4-40b0-ba1f-34e65f75a2bc"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="521" y="76" width="21" height="12" uuid="c086a915-c67d-460f-99a2-e76619dab27f">
+					<printWhenExpression><![CDATA[!$F{tiene_papanicolaou}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="582" y="79" width="64" height="10" uuid="237d33a0-0683-49ed-83f0-bc5d046c271d"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Continuadora]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="664" y="76" width="23" height="12" uuid="7b30d633-4d95-42a8-9b21-04acb40b6b31">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="664" y="74" width="23" height="14" uuid="bee92824-70c1-44bf-959e-b51ba756fb48">
+					<printWhenExpression><![CDATA[$F{tiene_papanicolaou}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="468" y="307" width="84" height="15" uuid="d6ab9cf8-de10-48cd-b52b-095d8f381000">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resultado_papanicolaou}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="561" y="307" width="59" height="15" uuid="e05eb269-dbd2-410a-a8e1-a83e1346a358">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[N Registro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="94" width="287" height="15" uuid="6361d5b7-64c0-42b4-b79c-1f4360d74b91">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DATOS DE LA PACIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="307" width="46" height="15" uuid="94610f10-377f-472c-bc9a-6ff92628b355">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Resultado:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="420" y="47" width="379" height="15" uuid="7b177931-e92e-47e7-8e00-314a5d8d721f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="420" y="12" width="379" height="11" uuid="8b52c4c4-2f1e-4272-9315-75d8d68074fd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ESTRATEGIA SANITARIA DE SALUD SEXUAL Y REPRODUCTIVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="163" width="20" height="15" uuid="517a09a9-c7f3-4739-821d-8b9c1111f2ba">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DNI:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="109" width="121" height="15" uuid="f71a412f-3b46-4d66-9dbe-09024e7d246f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Número de Historia Clínica:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="46" width="176" height="14" uuid="6e53eb9a-cd7b-497a-ba88-9300741182fb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE EXAMEN CITOLOGICO CERVICO VAGINAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="700" y="109" width="58" height="15" uuid="2b99eb55-4ee1-49de-a5aa-d4ef6c0dab30">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="422" y="146" width="40" height="15" uuid="9a77162e-0b75-4762-9d56-fe4678c056b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="462" y="292" width="90" height="15" uuid="855c2e3a-0b9d-460c-806d-ba1360498e92">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_ultimo_papanicolaou}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="551" y="107" width="91" height="15" uuid="2add6942-e11c-47bf-9e95-1b1358894abf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="615" y="163" width="52" height="15" uuid="93baa03f-1f08-4dcb-8780-8fffb2626216">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_documento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="423" y="126" width="110" height="15" uuid="a8f3855c-3888-4516-ae11-edb99fb6edc0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Apellidos y nombres:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="661" y="107" width="28" height="15" uuid="cbdd189f-49a3-4a69-a232-be5c6c8a7855">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Edad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="336" width="378" height="15" uuid="00acab6f-55b6-4a38-8555-aeb88a382d9a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS CLINICOS DE SIGNIFICACION Y/O ANTECEDENTES DE IMPORTANCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="624" y="145" width="57" height="15" uuid="d954452f-e5a4-4833-a706-7535421dab00">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Urbanización:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="255" width="98" height="20" uuid="12b84b8c-ca53-4883-90e2-b66c5329d991"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Antecedente ITS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="426" y="186" width="122" height="15" uuid="c99ce3f4-e0c2-42e1-990a-ab2e428a9ddf">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HISTORIA GINECOLOGICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="561" y="292" width="39" height="15" uuid="f976ce58-a16c-4639-9141-e04ece2cc176">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lugar:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="7" y="253" width="25" height="15" uuid="202b2cc5-0e81-4e51-b32f-ea8f6331c7a0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="2" width="224" height="15" uuid="935afc8d-ea48-481e-9abc-de78b965eefd">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DE DIAGNOSTICO CITOLOGICO CERVICAL VAGINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="92" width="73" height="15" uuid="21ae29aa-b89e-4455-87a1-3fd9f6c59b0b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Trichonomas vag]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="192" width="379" height="15" uuid="012c20ba-f1ea-4c52-9eed-d018426313f9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="313" width="25" height="15" uuid="5f3d1f27-e968-438f-8816-53df76b480ff">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="88" y="152" width="25" height="15" uuid="c792f2dc-456e-4356-bf8c-4534d5950421">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="152" width="25" height="15" uuid="593204b6-240d-474f-830f-dd900d7015f2">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="393" width="25" height="15" uuid="10e8731b-981a-4ecd-aa3d-b71ea7f067a3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="273" width="25" height="15" uuid="90d28d16-2c8d-4619-9379-7c980ffacbef">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="281" y="152" width="25" height="15" uuid="b5090015-43e1-46e8-ab86-b039a4a3a1b1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="41" y="293" width="296" height="15" uuid="2baa4c83-ca0f-4efc-82ed-14c5326dbbe9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de alto grado: Displasia moderada (NIC II)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="8" y="91" width="25" height="15" uuid="cfef10c6-d1e5-4109-903c-33b1037b5507">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="88" y="91" width="25" height="15" uuid="d5fd70c3-4cdb-4a40-8843-35fb00591fe2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="35" y="112" width="50" height="15" uuid="d1937777-4e0f-4ad1-8d1d-006b5edb89c7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Actinomices]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="17" width="379" height="15" uuid="ba88593b-0162-40e8-ac33-651b06c0a282">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="88" y="172" width="25" height="15" uuid="c0840c35-b258-4f72-a00e-691f0c588430">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="353" width="25" height="15" uuid="7cdd321a-aeee-4788-8e90-ff0af132a540">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="308" y="172" width="49" height="15" uuid="eee61fb7-8948-4fdf-a636-f94c9d8a97c7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="168" y="171" width="25" height="15" uuid="7477002f-2b6f-403a-8768-9f87d5263be0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="33" y="152" width="48" height="15" uuid="a6beb23e-b965-43d6-a4ad-9a4627837085">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninguno]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="7" y="293" width="25" height="15" uuid="522395b6-762f-4d10-bc51-06a381191a75">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="195" y="171" width="90" height="15" uuid="14180c5e-dd9e-4c7b-9fc7-4e95cd4ceee4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Inflamación (L (M) (S))]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="332" width="296" height="15" uuid="a9c18801-230b-4039-8a7e-955032098ead">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de alto grado: Carcinoma in situ (NIC III)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="112" width="53" height="15" uuid="5abd123a-609a-4fbf-8168-c030b3d4285f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gardnerella]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="168" y="112" width="25" height="15" uuid="dafbf2ff-ddf1-402e-9d60-bde01efdfdf5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="41" y="313" width="289" height="15" uuid="29ca67b3-fbfb-4f24-857f-0589a2ae9174">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de alto grado: Displasia severa (NIC III)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="412" width="376" height="14" uuid="abcfa7b8-63e2-4416-9aa3-60b8b1d0e85f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OTROS                                                                OBSERVACIONES Y SUGERENCIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="373" width="265" height="15" uuid="ff0ba48c-61df-4f6c-9fde-e36d4a855083">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Celulas grandulares atipicas de significado no determinado (ACUS)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="253" width="276" height="15" uuid="444d8686-bf67-416a-9a80-9a29f65cfdb9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de bajo grado: Infeccion por PVH]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="2" width="379" height="15" uuid="d381d40d-03a0-4d6b-961f-d90deaf5cc68">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="6" y="5" width="379" height="14" uuid="96596cc8-9b7f-4a84-9efb-45b24641f6d8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATENCION INTEGRAL DE SALUD]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="7" y="212" width="25" height="15" uuid="4e109111-4aa8-4933-800d-e18472d4c389">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="115" y="171" width="43" height="15" uuid="ec09fffc-34e3-4342-b1c9-429d9be897a4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Atrofia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="192" width="334" height="15" uuid="5baa4276-3356-4696-9c09-22e65bd76852">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANOMALIAS CELULARES EPITELIALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="17" width="334" height="15" uuid="be749b3b-6c5a-4176-bcd0-490576b31c6a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CALIDAD DE LA MUESTRA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="112" width="53" height="15" uuid="7bd47515-53d5-4dad-92c0-089f79399724">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="72" width="334" height="15" uuid="d86f6939-ad8e-4991-bfd7-9fcf7bc324e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAMBIOS CAUSADOS POR INFECCION:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="88" y="112" width="25" height="15" uuid="f16892d9-d09a-43cb-9b23-1e9949ecd336">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="199" y="92" width="54" height="15" uuid="8f86364c-e26e-45ef-831e-113ded498b43">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cándida]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="281" y="171" width="25" height="15" uuid="9f35a909-5200-4eeb-9925-7cca0ee1ffeb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="195" y="152" width="60" height="15" uuid="66beca02-ba8a-4d66-a302-d0142d6af99a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reparación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="212" width="244" height="15" uuid="75047c92-983d-4dca-acdc-764e5234a1f2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninguno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="233" width="280" height="15" uuid="549d6841-613f-4d89-8f46-058d5fd52ca6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Celulas escamosas atipicas de significado no determinado (ASCUS)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="281" y="92" width="25" height="15" uuid="998d63dc-2c49-4e92-bf91-05f19ecc725c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="115" y="92" width="53" height="15" uuid="5f33dd62-cf39-4ea4-8038-dbdcd42e0fd2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cocobacilos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="393" width="84" height="15" uuid="59df8751-800b-4941-9ba4-2edd81be64ca">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Adenocarcinoma]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="281" y="112" width="25" height="15" uuid="caf44174-bd50-4b91-b791-ebe5b0426588">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="36" y="91" width="35" height="15" uuid="0420cd90-1aae-4308-9867-bfc37a3b035c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ninguno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="152" width="52" height="15" uuid="9e7f91f6-269f-4021-8e80-880f2a1349ca">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reactivos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="7" y="373" width="25" height="15" uuid="90f33c18-9423-4533-88af-2b05bb6f56fd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="233" width="25" height="15" uuid="77c65a7c-0fb9-4685-adfd-2e0554fc6fea">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="41" y="353" width="104" height="15" uuid="0940006e-c266-44cf-873b-3e3864202824">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Carcinoma epidermoide]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="132" width="379" height="15" uuid="79b3f11c-792f-4435-9629-358b08591b09">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="132" width="334" height="15" uuid="cb48eca5-3a8e-4785-b146-e418f45d0225">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAMBIOS ASOCIADOS A:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="112" width="84" height="15" uuid="68ec159d-03ae-4a33-9b6a-fea32ed9c655">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Virus herpes simple]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="7" y="171" width="25" height="15" uuid="db9ca45f-2adc-477b-b961-8429a0a36bf7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="34" y="171" width="26" height="15" uuid="8d643060-255c-47d9-8fc1-1e1e328a4d2a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[DIU]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="8" y="112" width="25" height="15" uuid="ca92d4c4-5b00-4a93-8f54-d6b7dcc9ac35">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="115" y="152" width="48" height="15" uuid="da3cab3c-0f57-4b02-9fc0-03ee2aa49ed6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Metaplasia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="273" width="276" height="15" uuid="0c0eb7c2-df04-4ebf-9ef2-82dfadd0310d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lesión escamosa intraepitelial de bajo grado: Displasia leve (NIC I)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="168" y="152" width="25" height="15" uuid="9ef0962f-da3b-46cc-8f07-d9a9d1ec5aab">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="168" y="92" width="25" height="15" uuid="2dc85d1b-30ae-4291-b639-65d6434ccf80">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="332" width="25" height="15" uuid="fc843e81-546f-441e-b201-8cf894cc22d4">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="519" y="443" width="99" height="15" uuid="fc5c4c9a-c610-45cf-bd24-0fc34dad8789">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="433" y="443" width="87" height="15" uuid="4ffe5861-74b3-4d3b-8b08-de39f45561d5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha de toma:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="446" y="372" width="133" height="57" uuid="9321713f-b6dd-4e6d-b5b7-361ce52d2015"/>
+			</rectangle>
+			<ellipse>
+				<reportElement x="482" y="382" width="63" height="37" uuid="9f8fd743-8e07-4901-98c0-754bc11302a5"/>
+			</ellipse>
+			<ellipse>
+				<reportElement x="512" y="398" width="5" height="5" backcolor="#000000" uuid="6540dff5-8b27-4457-b382-4c0fb8f9ac74">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</ellipse>
+			<textField isBlankWhenNull="true">
+				<reportElement x="554" y="63" width="247" height="13" uuid="930fd5c9-fe0f-43a4-b3b9-73d0f907f1e4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento_nombre}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="682" y="44" width="70" height="1" uuid="9b176e88-c39d-4da1-b9a9-242958da6d6b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="653" y="32" width="46" height="14" uuid="e2db3999-7b5c-409d-9e7f-194959353d9a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reg. Nº]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="179" y="46" width="25" height="10" uuid="66028b1a-6aa6-4194-afcf-4d295dac2a8a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="8" y="59" width="25" height="10" uuid="222431fd-1fe2-45e0-ba52-b5d7a55ed48a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="216" y="45" width="129" height="10" uuid="b5207939-3cd8-4d81-acb5-f3e79fb2acda">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sin celulas endocervicales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="33" width="121" height="10" uuid="e22df731-b79a-4519-b21e-de411f3bdbf5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Con celulas endocervicales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="59" width="136" height="10" uuid="cfd3ee40-e2b6-4488-94fb-112d1027ba1c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Inadecuada para la evaluación por:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="179" y="34" width="25" height="10" uuid="2d3490fb-6180-4eb0-b520-0d16949ad82d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="36" y="34" width="129" height="10" uuid="4a8984af-d1be-4f4a-96ac-01a6c8f2b1c7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Adecuada para la evaluación]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="8" y="34" width="25" height="10" uuid="df6e2cb7-12fe-4a0d-baf1-d7e8291b7206">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<image>
+				<reportElement x="420" y="-1" width="50" height="50" uuid="6b1dc9e0-43ad-4add-96ed-9db99558be3c"/>
+				<imageExpression><![CDATA[$P{diresa_logo}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement x="752" y="0" width="50" height="50" uuid="f4ef6f28-9fd4-4512-b99a-6200bc466fea"/>
+				<imageExpression><![CDATA[$P{establecimiento_logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="422" y="204" width="23" height="10" uuid="66859d61-f1b8-43b5-9e07-05b8dd57ec96">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FUR:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="618" y="227" width="15" height="10" uuid="1943a130-b344-4a52-af45-501a0f32c44a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="736" y="257" width="30" height="10" uuid="494a4e01-2c46-42cb-99cc-b401c99be9c9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[COND]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="564" y="227" width="40" height="10" uuid="4373b923-2f50-4a75-96e2-50f8bb41036c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Gestante:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="550" y="204" width="63" height="10" uuid="65e06b4d-20e9-429b-9804-ef1a0b16ddba">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regimen_regular} ? $F{duracion_menstruacion}.toString() + "/" + $F{ciclo_menstruacion}.toString() : "IRREGULAR"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="771" y="204" width="15" height="10" uuid="30bf435f-c96c-4e85-8f48-1920a3bb56e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nacidos_vivos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="636" y="204" width="38" height="10" uuid="dcac85d8-052a-475d-a0ac-f8930de82485">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gestaciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="736" y="248" width="18" height="10" uuid="37b05cfd-5f43-4c2f-9126-74769068fa5e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[DIU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="227" width="47" height="10" uuid="73c8de75-9b39-44c3-a39b-f6fbea21d818">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lactancia:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="698" y="204" width="15" height="10" uuid="54740ed1-d9df-4152-903e-dc879822b3e0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="636" y="227" width="49" height="10" uuid="8866ef4f-b2b0-4f8b-85a8-12746111b678">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[N Semana:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="514" y="215" width="16" height="10" uuid="57f8d435-31c6-4633-957c-77868c96351a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_primera_relacion_sexual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="422" y="215" width="45" height="10" uuid="29ceba68-076d-4738-8dec-16b2b712a9a1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Menarquia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="676" y="204" width="13" height="10" uuid="de738dc4-4e18-4953-8718-377a20ec449c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[P:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="776" y="227" width="15" height="10" uuid="a788b8d2-2ae4-42f6-b2de-95643e869c6b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="777" y="257" width="14" height="10" uuid="199a5892-7ddc-481e-b000-6ae633c193d9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{condon}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="204" width="20" height="10" uuid="5e936a0e-4f64-435a-b9b7-b5078329e1f2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[R/C:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="724" y="204" width="15" height="10" uuid="c04cb631-c4a3-48c9-9f10-aede2ddb0675">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="603" y="227" width="15" height="10" uuid="e7222540-4f0d-434e-94dd-904fb4fd73b8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="748" y="204" width="15" height="10" uuid="02ad6c13-1089-4c65-8a63-a930914202a7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="489" y="215" width="25" height="10" uuid="01461f13-c45f-4413-9483-0291f37a87ad">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1º RS: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="698" y="204" width="15" height="10" uuid="d4c24de3-370a-4872-a0c3-5a66d00b4231">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nacidos_mayor_37sem}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="776" y="248" width="15" height="10" uuid="6d788a24-2af9-42f1-89d2-d8a536f0b274">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="736" y="238" width="31" height="10" uuid="263b40ae-205c-42a8-93dd-585b1d7dc06d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PILDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="777" y="227" width="14" height="10" uuid="b7191f1e-5fb1-4ac3-a6c4-2e8e7c3edd7f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{inyectable} || $F{inyectable_2}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="752" y="215" width="22" height="10" uuid="ef71b852-0c07-445a-8b9e-81595b6da2ec">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MAC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="736" y="227" width="17" height="10" uuid="3de58e2f-58b3-43af-9eb2-cfc5a1749838">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[INY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="617" y="204" width="19" height="10" uuid="ba6065b2-70c5-4165-ba87-5ca53ad47289">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[G:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="637" y="238" width="61" height="10" uuid="ea65a267-c924-4f17-83d6-3684346c9bf9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_gestacional_semanas} + " x " + $F{eg_elegida}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="508" y="227" width="32" height="10" uuid="fa736e2f-7401-41c8-b317-9d8db90b73c7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Meses:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="448" y="204" width="82" height="10" uuid="edde9a52-1c4c-46fb-a27e-40b91507fa3e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="748" y="204" width="15" height="10" uuid="8e1449f6-ca1b-40bc-bc9a-c0ff87307674">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abortos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="777" y="238" width="14" height="10" uuid="36ed634e-f3b3-4cc6-907f-52cfd594516a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{pastilla}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="467" y="215" width="20" height="10" uuid="015590b4-f8b4-4c4e-b385-fcd8eac62a04">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_menarquia}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="618" y="238" width="15" height="10" uuid="9caed5dd-c037-4a21-ac19-a87ed370ee37">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="777" y="248" width="14" height="10" uuid="f7a88cb9-6815-4114-b5b0-7bc793ded42c">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{diu}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="724" y="204" width="15" height="10" uuid="f67ac069-028a-466a-9a4f-0adf4facecf6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nacidos_menor_37sem}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="603" y="238" width="15" height="10" uuid="0fbfc79c-204d-4d35-89b6-95042307cd0b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="771" y="204" width="15" height="10" uuid="f43c0fa6-2851-4fb1-ad30-297f770f50f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="151" y="527" width="87" height="10" uuid="fb49c600-b3ca-4bd3-908b-a477eabc884b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Firma y sello:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="522" width="65" height="1" uuid="fdac5d38-aa78-49e0-bcfe-13c7f78a2022"/>
+			</line>
+			<staticText>
+				<reportElement x="39" y="432" width="73" height="10" uuid="ccba6d18-7730-4f7d-ad99-9fef1886ea8b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[B Doderlein]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="445" width="62" height="10" uuid="2374bcdc-882f-430f-9dd8-5995acb98cc7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Leucocitos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="497" width="64" height="10" uuid="59eb6f06-81aa-4cf8-a5c1-4e4e076622a0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Fecha de Resultado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="459" width="56" height="10" uuid="415707fa-3c1a-4d77-a55e-2270f8136f0d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Histiocitos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="6" y="487" width="25" height="10" uuid="e1ca8fa7-d803-4ca1-b1d2-fb2077916840">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<line>
+				<reportElement x="146" y="521" width="101" height="1" uuid="53820bb8-8f33-422e-986f-a55401e985d1"/>
+			</line>
+			<rectangle>
+				<reportElement x="6" y="473" width="25" height="10" uuid="be15531e-a3b6-43ac-965f-18206f989591">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="520" width="64" height="15" uuid="a89196db-0cfa-4ec2-977c-f32a9385bcf4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[DIA     MES      AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="507" width="64" height="15" uuid="534e2679-5917-4638-b67f-44ce51e81da0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[      /        /]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="6" y="459" width="25" height="10" uuid="aa1579b5-e667-4e0d-8055-80e179b7ace5">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="39" y="473" width="52" height="10" uuid="2f134837-b36c-42d0-9943-1f5091de7a54">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hematies]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="487" width="51" height="10" uuid="4067ec5d-b78c-4ab2-80d1-1142a1e97eb2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Citólisis]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="6" y="445" width="25" height="10" uuid="3e89f665-10b2-430e-b5e4-4c029f9f3889">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="6" y="432" width="25" height="10" uuid="2841324b-fb43-4268-9f88-087ea8e1cbca">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="619" y="227" width="14" height="10" uuid="4368f34c-b95b-43b3-8af4-dac23d234663">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="239" width="15" height="10" uuid="0ffb0b3b-a0db-4c4e-ac69-687e865b7b7d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="228" width="15" height="10" uuid="f6b817be-130b-49d5-8296-9d4c3409bd54">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="487" y="228" width="15" height="10" uuid="8eb8c6dc-a5da-40c9-8152-6476b1a8301a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="487" y="239" width="15" height="10" uuid="7bcbe362-5e13-4ca6-b663-9c71aaaa79cd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="559" y="321" width="46" height="15" uuid="63e3d1af-2c33-45b7-82a3-43643b4cdd88">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Detección]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="621" y="323" width="15" height="10" uuid="4256bfdc-7c77-4d2d-84c5-f9b05ab2c614">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="687" y="321" width="40" height="15" uuid="d679f77a-c1c0-4a83-951e-1d4299e7d108">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Control]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="729" y="323" width="15" height="10" uuid="4190c89c-2dd8-421f-9954-eca489489336">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+		</band>
+	</detail>
+</jasperReport>

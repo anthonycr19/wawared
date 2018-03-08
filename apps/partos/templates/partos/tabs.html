@@ -1,0 +1,60 @@
+{% if ingreso %}
+{% url 'partos:ingreso_edit' ingreso.id as ingreso_url %}
+<div class="panel-body">
+    <div class="col-sm-10 col-sm-offset-2">
+        <div class="btn-group">
+            <a href="{% url 'partos:ingreso_edit' ingreso.id %}"
+            {% if ingreso_url == request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default">Editar Ingreso</a>
+            <a href="{% url 'partos:sintomas' ingreso.id %}"
+            {% if 'sintoma' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default">Sintomas</a>
+            <a href="{% url 'partos:examen_fisico' ingreso.id %}"
+            {% if 'fisico' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default">Examen Físico</a>
+            <a href="{% url 'partos:ecografias' ingreso.paciente.id %}"
+            {% if 'ecografia' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default">Ecografias</a>
+            <a href="{% url 'partos:laboratorio' ingreso.id %}"
+            {% if 'laboratorio' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default">Laboratorio</a>
+            <a href="{% url 'partos:partograma' ingreso.id %}"
+            {% if 'partograma' in request.path %}
+                style="background-color: green;color: white;"
+            {% endif %}
+            class="btn btn-default">Partograma</a>
+            <button class="btn btn-default" data-toggle="modal" data-target="#reports-modal">Reportes de parto</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="modal fade" id="reports-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Reportes de parto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                {% if ingreso.partograma %}
+                    {% with ingreso.partograma as partograma %}
+                    <a href="{% url 'partos:reports:partograma_pdf' partograma.id %}" class="list-group-item">Descargar partograma</a>
+                    <a href="{% url 'partos:reports:hoja_monitoreo_materno_fetal' partograma.id %}" class="list-group-item">Hoja de monitoreo materno fetal</a>
+                    {% endwith %}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block container %}
+  <div class="jumbotron">
+    <h1>Error 403</h1>
+    <p> No tiene autorización para acceder a esta página.</p>
+    <p>
+      <a class="btn btn-primary btn-lg" href="/" role="button">Volver al inicio</a>
+      <a class="btn btn-danger btn-lg" href="{% url "minsalogin:logout" %}" role="button">Salir del sistema</a>
+    </p>
+  </div>
+{% endblock %}

@@ -1,0 +1,713 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Examen Laboratorio{% endblock %}
+{% block extra_style %}
+    <link href="{{STATIC_URL}}css/datepicker.css" rel="stylesheet" media="screen">
+    <style>
+        .js-extra-test {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" method="post">
+            {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Examen Laboratorio</h3>
+                    </div>
+                    {% include 'partos/paciente_header.html' with paciente=paciente %}
+                    {% include 'partos/tabs.html' with ingreso=ingreso %}
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Laboratorio
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Reactivo</th>
+                                            <th>No reactivo</th>
+                                            <th>No se hizo</th>
+                                            <th>No aplica</th>
+                                            <th>Fecha</th>
+                                            <th>Observacion</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_sifilis %}
+                                            <td></td>
+                                            <td>{{ form.rapida_sifilis_fecha }}</td>
+                                            <td>{{ form.rapida_sifilis_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_sifilis_2 %}
+                                            <td>{{ form.rapida_sifilis_2_fecha }}</td>
+                                            <td>{{ form.rapida_sifilis_2_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_vih_1 %}
+                                            <td></td>
+                                            <td>{{ form.rapida_vih_1_fecha }}</td>
+                                            <td>{{ form.rapida_vih_1_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_vih_2 %}
+                                            <td>{{ form.rapida_vih_2_fecha }}</td>
+                                            <td>{{ form.rapida_vih_2_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">Grupo y factor sanguineo</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ form.grupo.label }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                    {% for radio in form.grupo %}
+                                                        <li>{{ radio }}</li>
+                                                    {% endfor %}
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.factor.label }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                    {% for radio in form.factor %}
+                                                        <li>{{ radio }}</li>
+                                                        <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                    {% endfor %}
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Hg %</th>
+                                                <th>Se hizo</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ form.rapida_hemoglobina.label }}</td>
+                                                <td>{{ form.rapida_hemoglobina_resultado }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.rapida_hemoglobina.name }}" {% ifequal form.instance.rapida_hemoglobina True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.rapida_hemoglobina.name }}" {% ifequal form.instance.rapida_hemoglobina False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.rapida_hemoglobina.name }}" {% ifequal form.instance.rapida_hemoglobina None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.rapida_hemoglobina_fecha }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.hemoglobina_1.label }}</td>
+                                                <td>{{ form.hemoglobina_1_resultado }}</td>
+                                                <td> <!--TODO CHANGE THIS-->
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_1.name }}" {% ifequal form.instance.hemoglobina_1 True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_1.name }}" {% ifequal form.instance.hemoglobina_1 False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_1.name }}" {% ifequal form.instance.hemoglobina_1 None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.hemoglobina_1_fecha }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.hemoglobina_2.label }}</td>
+                                                <td>{{ form.hemoglobina_2_resultado }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_2.name }}" {% ifequal form.instance.hemoglobina_2 True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_2.name }}" {% ifequal form.instance.hemoglobina_2 False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_2.name }}" {% ifequal form.instance.hemoglobina_2 None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.hemoglobina_2_fecha }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.hemoglobina_3.label }}</td>
+                                                <td>{{ form.hemoglobina_3_resultado }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_3.name }}" {% ifequal form.instance.hemoglobina_3 True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_3.name }}" {% ifequal form.instance.hemoglobina_3 False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_3.name }}" {% ifequal form.instance.hemoglobina_3 None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.hemoglobina_3_fecha }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.hemoglobina_4.label }}</td>
+                                                <td>{{ form.hemoglobina_4_resultado }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_4.name }}" {% ifequal form.instance.hemoglobina_4 True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_4.name }}" {% ifequal form.instance.hemoglobina_4 False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_4.name }}" {% ifequal form.instance.hemoglobina_4 None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.hemoglobina_4_fecha }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.hemoglobina_5.label }}</td>
+                                                <td>{{ form.hemoglobina_5_resultado }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_5.name }}" {% ifequal form.instance.hemoglobina_5 True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_5.name }}" {% ifequal form.instance.hemoglobina_5 False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_5.name }}" {% ifequal form.instance.hemoglobina_5 None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.hemoglobina_5_fecha }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.hemoglobina_alta.label }}</td>
+                                                <td>{{ form.hemoglobina_alta_resultado }}</td>
+                                                <td>
+                                                    <ul class="list-inline">
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_alta.name }}" {% ifequal form.instance.hemoglobina_alta True %}checked{% endifequal %} value="True"/>
+                                                                Si
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_alta.name }}" {% ifequal form.instance.hemoglobina_alta False %}checked{% endifequal %} value="False"/>
+                                                                No
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label>
+                                                                <input type="radio" name="{{ form.hemoglobina_alta.name }}" {% ifequal form.instance.hemoglobina_alta None %}checked{% endifequal %} value="None"/>
+                                                                N/A
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{ form.hemoglobina_alta_fecha }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Normal</th>
+                                            <th>Anormal</th>
+                                            <th>No se hizo</th>
+                                            <th>Fecha</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.glicemia_1 %}
+                                            <td>{{ form.glicemia_1_fecha }}</td>
+                                            <td>{{ form.glicemia_1_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.glicemia_2 %}
+                                            <td>{{ form.glicemia_2_fecha }}</td>
+                                            <td>{{ form.glicemia_2_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                  <table class="table table-bordered table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th></th>
+                                        <th>Reactivo</th>
+                                        <th>No reactivo</th>
+                                        <th>No se hizo</th>
+                                        <th>No aplica</th>
+                                        <th>Fecha</th>
+                                        <th>Observación</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_proteinuria %}
+                                        <td>{{ form.rapida_proteinuria_fecha }}</td>
+                                        <td>{{ form.rapida_proteinuria_observacion }}</td>
+                                      </tr>
+                                      <tr>
+                                        {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_proteinuria_2 %}
+                                        <td>{{ form.rapida_proteinuria_fecha_2 }}</td>
+                                        <td>{{ form.rapida_proteinuria_observacion_2 }}</td>
+                                      </tr>
+                                    <tr>
+                                        {% include 'controles/partials/field_choices_as_tds.html' with field=form.rapida_proteinuria_3 %}
+                                        <td>{{ form.rapida_proteinuria_fecha_3 }}</td>
+                                        <td>{{ form.rapida_proteinuria_observacion_3 }}</td>
+                                    </tr>
+                                    <tr>
+                                        {% include 'controles/partials/field_choices_as_tds.html' with field=form.tamizaje_hepatitis_b %}
+                                        <td>{{ form.tamizaje_hepatitis_b_fecha }}</td>
+                                        <td>{{ form.tamizaje_hepatitis_b_observacion }}</td>
+                                    </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Positivo</th>
+                                            <th>Negativo</th>
+                                            <th>No se hizo</th>
+                                            <th>Fecha</th>
+                                            <th>Observacion</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.examen_completo_orina_1 %}
+                                            <td>{{ form.examen_completo_orina_fecha_1 }}</td>
+                                            <td>{{ form.examen_completo_orina_observacion_1 }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.examen_completo_orina_2 %}
+                                            <td>{{ form.examen_completo_orina_fecha_2 }}</td>
+                                            <td>{{ form.examen_completo_orina_observacion_2 }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.leucocituria %}
+                                            <td>{{ form.leucocituria_fecha }}</td>
+                                            <td>{{ form.leucocituria_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.nitritos %}
+                                            <td>{{ form.nitritos_fecha }}</td>
+                                            <td>{{ form.nitritos_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Reactivo</th>
+                                            <th>No reactivo</th>
+                                            <th>No se hizo</th>
+                                            <th>No aplica</th>
+                                            <th>Fecha</th>
+                                            <th>Observacion</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.vdrl_rp_1 %}
+                                            <td></td>
+                                            <td>{{ form.vdrl_rp_1_fecha }}</td>
+                                            <td>{{ form.vdrl_rp_1_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.vdrl_rp_2 %}
+                                            <td>{{ form.vdrl_rp_2_fecha }}</td>
+                                            <td>{{ form.vdrl_rp_2_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.elisa %}
+                                            <td>{{ form.elisa_fecha }}</td>
+                                            <td>{{ form.elisa_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.torch %}
+                                            <td>{{ form.torch_fecha }}</td>
+                                            <td>{{ form.torch_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.pcr_zika %}
+                                            <td>{{ form.pcr_zika_fecha }}</td>
+                                            <td>{{ form.pcr_zika_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Normal</th>
+                                            <th>Anormal</th>
+                                            <th>No se hizo</th>
+                                            <th>No aplica</th>
+                                            <th>Fecha</th>
+                                            <th>Observacion</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.pap %}
+                                            <td></td>
+                                            <td>{{ form.pap_fecha }}</td>
+                                            <td>{{ form.pap_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.iva %}
+                                            <td>{{ form.iva_fecha }}</td>
+                                            <td>{{ form.iva_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.colposcopia %}
+                                            <td>{{ form.colposcopia_fecha }}</td>
+                                            <td>{{ form.colposcopia_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button id="btn-show-more-tests" type="button" class="btn btn-default" style="margin-bottom: 20px">Mostrar mas pruebas</button>
+                                <div class="panel panel-default js-extra-test" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Positivo</th>
+                                            <th>Negativo</th>
+                                            <th>No se hizo</th>
+                                            <th>No aplica</th>
+                                            <th>Fecha</th>
+                                            <th>Observacion</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.ifi_western_blot %}
+                                            <td>{{ form.ifi_western_blot_fecha }}</td>
+                                            <td>{{ form.ifi_western_blot_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.htlv_1 %}
+                                            <td>{{ form.htlv_1_fecha }}</td>
+                                            <td>{{ form.htlv_1_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.gota_gruesa %}
+                                            <td>{{ form.gota_gruesa_fecha }}</td>
+                                            <td>{{ form.gota_gruesa_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.malaria_prueba_rapida %}
+                                            <td>{{ form.malaria_prueba_rapida_fecha }}</td>
+                                            <td>{{ form.malaria_prueba_rapida_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.fluorencia_malaria %}
+                                            <td>{{ form.fluorencia_malaria_fecha }}</td>
+                                            <td>{{ form.fluorencia_malaria_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.urocultivo %}
+                                            <td>{{ form.urocultivo_fecha }}</td>
+                                            <td>{{ form.urocultivo_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.bk_en_esputo %}
+                                            <td>{{ form.bk_en_esputo_fecha }}</td>
+                                            <td>{{ form.bk_en_esputo_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.listeria %}
+                                            <td>{{ form.listeria_fecha }}</td>
+                                            <td>{{ form.listeria_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default js-extra-test" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Normal</th>
+                                            <th>Anormal</th>
+                                            <th>No se hizo</th>
+                                            <th>No aplica</th>
+                                            <th>Fecha</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tolerancia_glucosa %}
+                                            <td>{{ form.tolerancia_glucosa_fecha }}</td>
+                                            <td>{{ form.tolerancia_glucosa_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel panel-default js-extra-test" id="data-buscar-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Reactivo</th>
+                                            <th>No reactivo</th>
+                                            <th>No se hizo</th>
+                                            <th>No aplica</th>
+                                            <th>Fecha</th>
+                                            <th>Observacion</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.fta_abs %}
+                                            <td>{{ form.fta_abs_fecha }}</td>
+                                            <td>{{ form.fta_abs_observacion }}</td>
+                                        </tr>
+                                        <tr>
+                                            {% include 'controles/partials/field_choices_as_tds.html' with field=form.tpha %}
+                                            <td>{{ form.tpha_fecha }}</td>
+                                            <td>{{ form.tpha_observacion }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="text-right">
+                            <input class="btn btn-green" type="submit" value="Guardar"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+
+            var arrowKeys = [37, 38, 39, 40];
+            $(".table tbody tr").each(function (index, elem)
+            {
+                var option = $(this).find("td").find("input[type=radio]:checked");
+                if($(option).val()=="no se hizo" || $(option).val()=="no aplica"){
+                    $(this).find("td").find('input[type=text]').prop('disabled', true);
+                    $(this).find("td").find('input[type=text]').val("");
+                }else{
+                    $(this).find("td").find('input[type=text]').prop('disabled', false);
+                }
+            });
+
+            $(".table tbody tr").each(function (index, elem){
+                $(this).find("td").find("input[type=radio]").on("click",function(){
+                    if($(this).val()=="no se hizo" || $(this).val()=="no aplica"){
+                        $(this).parent().parent().find("td").find('input[type=text]').prop('disabled', true);
+                        $(this).parent().parent().find("td").find('input[type=text]').val("");
+                    }else{
+                        $(this).parent().parent().find("td").find('input[type=text]').prop('disabled', false);
+                    }
+                });
+            });
+
+            function validate3Digits (event) {
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    this.value = this.value.substring(0, 3);
+                }
+            }
+            $("input[type=number].hemoglobina").on('keyup mouseup',validate3Digits);
+
+
+            var $table = $('table');
+            $table.find('input[type=text]').addClass('form-control');
+            $table.find('input[type=number]').addClass('form-control');
+            var $fechas = $('.input-datepicker');
+            var nowPicker = new Date();
+            $fechas.datepicker({
+                onRender: function (date) {
+                    return date.valueOf() > nowPicker.valueOf() ? 'disabled' : '';
+                }
+            });
+            $fechas.on('keydown', function () {
+                return false;
+            });
+            function validateOnlyNumber (event, instance) {
+                var arrowKeys = [37, 38, 39, 40];
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    instance.value = instance.value.replace(/[^0-9\.]/g, '');
+                }
+            }
+            var $hemoglobinaInput = $('.hemoglobina');
+            $hemoglobinaInput.on('keyup', function (e) {
+                /* validateOnlyNumber(e, this); */
+                if (this.value.length) {
+                    $(this).parents('tr').find('input[type=radio][value="True"]').prop('checked', true);
+                } else {
+                    $(this).parents('tr').find('input[type=radio][value="None"]').prop('checked', true);
+                }
+            });
+            $hemoglobinaInput.focusout(function() {
+                var value = $(this).val();
+                value = Math.round(value * 10) / 10;
+                $(this).prop('value', value);
+            });
+            $hemoglobinaInput.on('change', function () {
+                var $this = $(this), _value = parseFloat(this.value);
+                if (isNaN(_value)) {
+                    return;
+                }
+                var message = '';
+                if (_value >= 11) {
+                    message = 'Normal';
+                } else if (_value >= 10 && _value < 11) {
+                    message = 'Anemia Leve';
+                } else if (_value > 7 && _value < 10) {
+                    message = 'Anemia Moderada';
+                } else if (_value === 0.0) {
+                    return;
+                } else {
+                    message = 'Anemia Grave';
+                }
+                var htmlMessage = '<div class="alert alert-info">' + message + '</div>';
+                $this.parent().find('.alert').remove();
+                if ($this.parent().find('.alert').length) {
+                    $this.parent().find('.alert').first().text(message);
+                } else {
+                    $this.parents('td').append(htmlMessage);
+                }
+            });
+            $hemoglobinaInput.trigger('change');
+            $hemoglobinaInput.parents('tr').find('input[type=radio][value="False"], input[type=radio][value="None"]').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $(this).parents('tr').find('.hemoglobina').val('');
+                }
+            });
+            var $extraTest = $('.js-extra-test');
+            $('#btn-show-more-tests').on('click', function () {
+                if ($extraTest.is(':visible')) {
+                    $extraTest.hide();
+                    $(this).text('Mostrar mas pruebas');
+                } else {
+                    $extraTest.show();
+                    $(this).text('Ocultar pruebas');
+                }
+            });
+        });
+    </script>
+{% endblock %}

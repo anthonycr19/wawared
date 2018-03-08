@@ -1,0 +1,63 @@
+{% load staticfiles %}
+
+<table class="table table-striped table-bordered">
+    <thead class="panel-heading">
+    <tr>
+        <th># HC</th>
+        <th>DNI</th>
+        <th>Nombre</th>
+        <th># de Atenciones</th>
+        <th>Fecha y Hora</th>
+        <!--<th>Historia Clínica</th>-->
+        <th>Opciones</th>
+    </tr>
+    </thead>
+    <tbody class="panel-body">
+    {% for cita in citas %}
+    <tr>
+        <td>{{ cita.paciente.historias_clinicas.all.0.numero }}</td>
+        <td>
+        {% if cita.paciente.numero_documento %}
+            {{ cita.paciente.numero_documento }}
+        {% else %}
+            {% ifequal cita.paciente.tipo_documento 'nodoc'  %}
+                Indocumentada
+            {% endifequal %}
+        {% endif %}
+        </td>
+
+        <td>
+            {% if 'pacientes.change_paciente' in user.get_all_permissions %}
+            <a href="{% url 'paciente:update' cita.paciente.id %}">{{ cita.paciente.nombre_completo }}</a>
+            {% else %}
+            <a href="{% url 'paciente:detail' cita.paciente.id %}">{{ cita.paciente.nombre_completo }}</a>
+            {% endif %}
+        </td>
+        <td>
+        {% if cita.control %}
+            {{ cita.get_numero_controles }}
+        {% else %}
+            --
+        {% endif %}
+        </td>
+        <td>{{ cita.fecha }} {{ cita.hora }}</td>
+        <td>
+            {% if 'pacientes.change_paciente' in user.get_all_permissions %}
+            <a class="btn btn-default" href="{% url 'paciente:update' cita.paciente.id %}">Ver historia</a>
+            {% else %}
+            <a class="btn btn-default" href="{% url 'paciente:detail' cita.paciente.id %}">Ver historia</a>
+            {% endif %}
+
+            {% if 'controles.change_control' in user.get_all_permissions %}
+                {% if cita.paciente.get_embarazo_actual %}
+                    <a class="btn btn-default" href="{% url 'controles:create' cita.paciente.get_embarazo_actual.id %}">Atención</a>
+                {% else %}
+                    <a class="btn btn-default" href="{% url 'embarazos:create' cita.paciente.id %}">Agregar Embarazo</a>  
+                {% endif %}
+            
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

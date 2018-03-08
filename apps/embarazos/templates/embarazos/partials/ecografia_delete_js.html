@@ -1,0 +1,22 @@
+{% load static %}
+
+{% include 'session_security/all.html' %}
+<script type="text/javascript">
+  $('#eliminar-ecografia').click(function() {
+    swal({
+      title: "¿Está seguro de eliminar la ecografía?",
+      text: "Una vez eliminada no será posible deshacer la acción realizada.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, eliminar ecografía",
+      cancelButtonText: "Cancelar",
+      closeOnConfirm: false},
+      function(){
+        window.location = $('.btn-danger').attr('href');
+        swal("Borrado", "La ecografía ha sido eliminada correctamente", "success");
+      }
+  );
+  return false;
+  });
+</script>

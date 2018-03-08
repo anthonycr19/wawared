@@ -1,0 +1,10 @@
+{% extends "gestantes/base.html" %}
+
+{% block container %}
+<h1>Bienvenida {{ paciente.apellido_paterno }} {{ paciente.apellido_materno}}, {{ paciente.nombres }}</h1>
+
+
+<a href="{% url 'gestantes:reporte' %}">Carnet de Atención Prenatal</a>
+
+{# <a href="{% url 'controles:reports:carne_control_prenatal' embarazo.controles.last.id %}">Carnet de Atención Prenatal</a> #}
+{% endblock %}

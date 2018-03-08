@@ -1,0 +1,166 @@
+{% extends 'dashboard/base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}Ecografías{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" method="post">
+            {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">{{ title }}</h3>
+                    </div>
+                    {% include 'partos/paciente_header.html' with paciente=paciente %}
+                    {% include 'partos/tabs.html' with ingreso=ingreso %}
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Agregar ecografía
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        {% include 'dashboard/partials/form_group_date.html' with field=form.fecha %}
+                                        {% include 'dashboard/partials/form_group_select.html' with field=form.eg_semana %}
+                                        {% include 'dashboard/partials/form_group_select.html' with field=form.eg_dia %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.lugar %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.diametro_biparietal %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.longitud_cefalo_caudal %}
+                                    </div>
+                                    <div class="col-md-5">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.tipo_embarazo %}
+                                        {% include 'dashboard/partials/form_group_date.html' with field=form.fecha_probable_parto %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.edad_gestacional_actual %}
+                                        {% include 'dashboard/partials/form_group_textarea.html' with field=form.observacion %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <!--{% include 'dashboard/partials/form_group_input_addon.html' with field=form.biometria_fetal addon='mm' %}-->
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.liquido_amniotico %}
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=form.ila addon='%' %}
+                                        {% include 'dashboard/partials/form_group_radio.html' with field=form.microcefalia_fetal addon='mm' %}
+                                    </div>
+                                </div>
+
+                                <div  id="data-ecografia-detalle-body" data-formset-prefix="{{ eco_formset.prefix }}"  class="col-md-10" style="padding:0px;">
+
+                                    <div class="pull-right">
+                                        <a class="btn btn-green add-row" href="javascript:;" id="#btn_agregar">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        </a>
+                                    </div>
+
+                                        <table class="table table-striped table-bordered" name="table-ecografia-detalle">
+                                            <thead>
+                                            <tr>
+                                                <th><label class="control-label">Biometría Fetal</label></th>
+                                                <th><label class="control-label">Opción</label></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tbody-ecografia-detalle">
+
+                                            {% for eco in eco_formset %}
+                                            <tr id="{{ eco.prefix }}-row" class="dynamic-form">
+                                                {{ eco.id }}
+                                                {% for hidden in eco.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                                <td>{% include 'dashboard/partials/form_group_input_sin_label.html' with field=eco.biometria_fetal %}</td>
+                                                <td>
+                                                    <a id="remove-{{ eco.prefix }}-row" href="javascript:void(0)" class="delete-row">Eliminar</a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {{ eco_formset.management_form }}
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                        {% if request.META.HTTP_REFERER %}
+                            <a class="btn btn-default" href="{{ request.META.HTTP_REFERER }}">Cancelar</a>
+                        {% else %}
+                            <a class="btn btn-default" href="{% url 'partos:ecografias' paciente.id %}">Cancelar</a>
+                        {% endif %}
+                        </div>
+                        <div class="text-right">
+                            <input class="btn btn-green" type="submit" value="Guardar"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/vendor/moment.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            var $fechaProbableParto = $('#id_fecha_probable_parto');
+            var $fecha = $('#id_fecha');
+            var nowTemp = new Date();
+            var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+            var $fechaPicker = $fecha.datepicker({
+                onRender: function (date) {
+                    return date.valueOf() > now.valueOf() ? 'disabled' : '';
+                }
+            });
+            var $egDia = $('#id_eg_dia');
+            var $egSemana = $('#id_eg_semana');
+            var $edadGestacionalActual = $('#id_edad_gestacional_actual');
+
+            $fecha.on('keydown', function () {
+                return false;
+            });
+
+            function calculateFechaProbableParto () {
+                var date = moment($fecha.val(), 'DD/MM/YYYY');
+                var tmp = parseInt($egSemana.val()) * 7 + parseInt($egDia.val());
+                $fechaProbableParto.val(date.subtract('days', tmp).add('days', 280).format('DD/MM/YYYY'));
+            }
+            function calculateEdadGestacionalActual () {
+                var now = moment();
+                var tmp = moment($fecha.val(), 'DD/MM/YYYY').subtract('days', parseInt($egSemana.val() * 7) + parseInt($egDia.val()));
+                var diff = now.diff(tmp, 'days');
+                $edadGestacionalActual.val(Math.floor(diff / 7) + ' ' + (diff % 7) + '/7');
+            }
+
+            $egDia.on('change', function () {
+                calculateFechaProbableParto();
+                calculateEdadGestacionalActual();
+            });
+            $egSemana.on('change', function () {
+                calculateFechaProbableParto();
+                calculateEdadGestacionalActual();
+            });
+
+            $fechaPicker.on('changeDate', function () {
+                calculateFechaProbableParto();
+                calculateEdadGestacionalActual();
+            });
+            $fechaProbableParto.attr('readOnly', true);
+            $edadGestacionalActual.attr('readOnly', true);
+            function validateOnlyNumber (event) {
+                var arrowKeys = [37, 38, 39, 40];
+                if (arrowKeys.indexOf(event.keyCode) === -1) {
+                    this.value = this.value.replace(/[^0-9\.]/g, '');
+                }
+            }
+            $('#id_edad_ecografia').on('keyup', validateOnlyNumber);
+            $('#id_edad_gestacional').on('keyup', validateOnlyNumber);
+            $('#id_diametro_biparietal').on('keyup', validateOnlyNumber);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,1472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tarjeta_seguimiento" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1252fa43-be99-4233-b5d4-0c88b07cc28c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="wawared"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="controles" uuid="8295243a-cce9-424f-bbe7-86f1b6ff9668">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="wawared"/>
+		<parameter name="embarazo_id" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select control.atencion_fecha as atencion_fecha, control.numero,
+control.edad_gestacional_semanas || ' x ' ||
+case
+   when control.eg_elegida = 'fum'
+      then 'FUM'
+   when control.eg_elegida = 'ecografia'
+      then 'ECO'
+   when control.eg_elegida = 'altura uterina'
+      then 'AU'
+   else '' end as eg,
+
+array_to_string(array(
+select observacion from controles_sintoma as sintoma where sintoma.control_id = control.id and observacion != ''
+), ',') as observacion,
+
+
+control.proxima_cita as cita,
+
+array_to_string(array(
+select case when cie.nombre_mostrar != '' then cie.nombre_mostrar else cie.nombre end as nombre from controles_sintoma as sintoma join cie_icd10base as cie on sintoma.cie_id = cie.id where sintoma.control_id = control.id
+), ',') as sintomas
+
+from controles_control as control where control.embarazo_id = $P{embarazo_id}::int order by control.atencion_fecha]]>
+		</queryString>
+		<field name="atencion_fecha" class="java.sql.Date"/>
+		<field name="numero" class="java.lang.Integer"/>
+		<field name="eg" class="java.lang.String"/>
+		<field name="observacion" class="java.lang.String"/>
+		<field name="cita" class="java.sql.Date"/>
+		<field name="sintomas" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="control_id" class="java.lang.String"/>
+	<parameter name="establecimiento_logo" class="java.lang.String"/>
+	<parameter name="logo_minsa" class="java.lang.String">
+		<defaultValueExpression><![CDATA["http://wawared.minsa.gob.pe/static/img/logo_minsa.png"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select upper(paciente.nombres || ' ' || paciente.apellido_paterno || ' ' || paciente.apellido_materno) as nombre_completo, paciente.direccion, upper(paciente.estudio_nombre) as grado_estudio,
+ag.andria, ag.edad_primera_relacion_sexual, ag.edad_menarquia, embarazo.peso, embarazo.talla,
+extract(YEAR from age(now(), paciente.fecha_nacimiento))::int as edad, ag.fecha_ultimo_papanicolaou as fecha_pap, embarazo.fum as fur,
+bebe.fecha as ultimo_embarazo_fecha,
+ag.condon, ag.ovulos, ag.diu, ag.inyectable, ag.pastilla, ag.natural,
+embarazo.id as embarazo_id, paciente.direccion_completa,
+historia_clinica.numero as hc,
+((control.edad_gestacional_semanas::int / 13)::int + 1) as trimestre,
+
+control.ic_medicina_fecha_1, control.ic_medicina_fecha_2,
+control.ic_medicina_fecha_3, control.ic_nutricion, control.ic_nutricion_fecha_1,
+control.ic_nutricion_fecha_2, control.ic_nutricion_fecha_3, control.ic_odontologia,
+control.ic_odontologia_fecha_1, control.ic_odontologia_fecha_2, control.ic_odontologia_fecha_3,
+control.ic_psicologia, control.ic_psicologia_fecha_1, control.ic_psicologia_fecha_2,
+control.ic_psicologia_fecha_3, control.ic_enfermeria, control.ic_enfermeria_fecha_1,
+control.ic_enfermeria_fecha_2, control.ic_enfermeria_fecha_3, control.ic_laboratorio,
+control.ic_laboratorio_fecha_1, control.ic_laboratorio_fecha_2, control.ic_laboratorio_fecha_3,
+control.ic_ecografia, control.ic_ecografia_fecha_1, control.ic_ecografia_fecha_2,
+control.ic_ecografia_fecha_3,
+
+control.psicoprofilaxis_fecha_1,
+control.psicoprofilaxis_fecha_2,
+control.psicoprofilaxis_fecha_3,
+control.psicoprofilaxis_fecha_4,
+control.psicoprofilaxis_fecha_5,
+control.psicoprofilaxis_fecha_6,
+
+lab.factor, lab.grupo,
+lab.hemoglobina_1_resultado,
+lab.hemoglobina_1_fecha as hemoglobina_1_fecha,
+lab.hemoglobina_2_resultado,
+lab.hemoglobina_2_fecha as hemoglobina_2_fecha,
+
+upper(lab.glicemia_1) as glicemia_1,
+lab.glicemia_1_fecha as glicemia_1_fecha,
+upper(lab.glicemia_2) as glicemia_2,
+lab.glicemia_2_fecha as glicemia_2_fecha,
+
+upper(lab.rapida_sifilis) as sifilis,
+lab.rapida_sifilis_fecha as rapida_sifilis_fecha,
+upper(lab.vdrl_rp_1) as vdrl_rp_1,
+lab.vdrl_rp_1_fecha as vdrl_rp_1_fecha,
+
+upper(lab.rapida_vih_1) as vih_1,
+lab.rapida_vih_1_fecha as vih_1_fecha,
+upper(lab.rapida_vih_2) as vih_2,
+lab.rapida_vih_2_fecha as vih_2_fecha,
+
+upper(lab.examen_completo_orina_1) as orina_1,
+lab.examen_completo_orina_fecha_1 as orina_1_fecha,
+upper(lab.examen_completo_orina_2) as orina_2,
+lab.examen_completo_orina_fecha_2 as orina_2_fecha,
+
+case
+when control.eg_elegida = 'fum' then control.fecha_probable_parto_fum
+when control.eg_elegida = 'ecografia' then control.fecha_probable_parto_ecografia
+else control.fecha_probable_parto_altura_uterina
+end as fecha_probable_parto,
+
+ao.partos
+
+
+from controles_control as control
+join embarazos_embarazo as embarazo on control.embarazo_id = embarazo.id
+join pacientes_paciente as paciente on embarazo.paciente_id = paciente.id
+join pacientes_antecedenteginecologico as ag on paciente.id = ag.paciente_id
+join pacientes_antecedenteobstetrico as ao on paciente.id = ao.paciente_id
+left join controles_laboratorio as lab on lab.paciente_id = paciente.id and lab.embarazo_id = embarazo.id
+left join embarazos_ultimoembarazo as ue on paciente.id = ue.paciente_id
+left join embarazos_bebe as bebe on ue.id = bebe.embarazo_id
+left join pacientes_historiaclinica as historia_clinica on historia_clinica.paciente_id = control.paciente_id and historia_clinica.establecimiento_id = control.establecimiento_id
+where control.id = $P{control_id}::int order by bebe.fecha desc limit 1]]>
+	</queryString>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="grado_estudio" class="java.lang.String"/>
+	<field name="andria" class="java.lang.Integer"/>
+	<field name="edad_primera_relacion_sexual" class="java.lang.Integer"/>
+	<field name="edad_menarquia" class="java.lang.Integer"/>
+	<field name="peso" class="java.lang.Double"/>
+	<field name="talla" class="java.lang.Integer"/>
+	<field name="edad" class="java.lang.Integer"/>
+	<field name="fecha_pap" class="java.sql.Date"/>
+	<field name="fur" class="java.sql.Date"/>
+	<field name="ultimo_embarazo_fecha" class="java.sql.Date"/>
+	<field name="condon" class="java.lang.Boolean"/>
+	<field name="ovulos" class="java.lang.Boolean"/>
+	<field name="diu" class="java.lang.Boolean"/>
+	<field name="inyectable" class="java.lang.Boolean"/>
+	<field name="pastilla" class="java.lang.Boolean"/>
+	<field name="natural" class="java.lang.Boolean"/>
+	<field name="embarazo_id" class="java.lang.Integer"/>
+	<field name="direccion_completa" class="java.lang.String"/>
+	<field name="hc" class="java.lang.Long"/>
+	<field name="trimestre" class="java.lang.Integer"/>
+	<field name="factor" class="java.lang.String"/>
+	<field name="grupo" class="java.lang.String"/>
+	<field name="hemoglobina_1_resultado" class="java.lang.Double"/>
+	<field name="hemoglobina_1_fecha" class="java.sql.Date"/>
+	<field name="hemoglobina_2_resultado" class="java.lang.Double"/>
+	<field name="hemoglobina_2_fecha" class="java.sql.Date"/>
+	<field name="glicemia_1" class="java.lang.String"/>
+	<field name="glicemia_1_fecha" class="java.sql.Date"/>
+	<field name="glicemia_2" class="java.lang.String"/>
+	<field name="glicemia_2_fecha" class="java.sql.Date"/>
+	<field name="sifilis" class="java.lang.String"/>
+	<field name="rapida_sifilis_fecha" class="java.sql.Date"/>
+	<field name="vdrl_rp_1" class="java.lang.String"/>
+	<field name="vdrl_rp_1_fecha" class="java.sql.Date"/>
+	<field name="vih_1" class="java.lang.String"/>
+	<field name="vih_1_fecha" class="java.sql.Date"/>
+	<field name="vih_2" class="java.lang.String"/>
+	<field name="vih_2_fecha" class="java.sql.Date"/>
+	<field name="orina_1" class="java.lang.String"/>
+	<field name="orina_1_fecha" class="java.sql.Date"/>
+	<field name="orina_2" class="java.lang.String"/>
+	<field name="orina_2_fecha" class="java.sql.Date"/>
+	<field name="fecha_probable_parto" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_1" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_2" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_3" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_4" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_5" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_6" class="java.sql.Date"/>
+	<field name="ic_medicina_fecha_1" class="java.sql.Date"/>
+	<field name="ic_medicina_fecha_2" class="java.sql.Date"/>
+	<field name="ic_medicina_fecha_3" class="java.sql.Date"/>
+	<field name="ic_nutricion" class="java.lang.Boolean"/>
+	<field name="ic_nutricion_fecha_1" class="java.sql.Date"/>
+	<field name="ic_nutricion_fecha_2" class="java.sql.Date"/>
+	<field name="ic_nutricion_fecha_3" class="java.sql.Date"/>
+	<field name="ic_odontologia" class="java.lang.Boolean"/>
+	<field name="ic_odontologia_fecha_1" class="java.sql.Date"/>
+	<field name="ic_odontologia_fecha_2" class="java.sql.Date"/>
+	<field name="ic_odontologia_fecha_3" class="java.sql.Date"/>
+	<field name="ic_psicologia" class="java.lang.Boolean"/>
+	<field name="ic_psicologia_fecha_1" class="java.sql.Date"/>
+	<field name="ic_psicologia_fecha_2" class="java.sql.Date"/>
+	<field name="ic_psicologia_fecha_3" class="java.sql.Date"/>
+	<field name="ic_enfermeria" class="java.lang.Boolean"/>
+	<field name="ic_enfermeria_fecha_1" class="java.sql.Date"/>
+	<field name="ic_enfermeria_fecha_2" class="java.sql.Date"/>
+	<field name="ic_enfermeria_fecha_3" class="java.sql.Date"/>
+	<field name="ic_laboratorio" class="java.lang.Boolean"/>
+	<field name="ic_laboratorio_fecha_1" class="java.sql.Date"/>
+	<field name="ic_laboratorio_fecha_2" class="java.sql.Date"/>
+	<field name="ic_laboratorio_fecha_3" class="java.sql.Date"/>
+	<field name="ic_ecografia" class="java.lang.Boolean"/>
+	<field name="ic_ecografia_fecha_1" class="java.sql.Date"/>
+	<field name="ic_ecografia_fecha_2" class="java.sql.Date"/>
+	<field name="ic_ecografia_fecha_3" class="java.sql.Date"/>
+	<field name="partos" class="java.lang.Integer"/>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<image onErrorType="Blank">
+				<reportElement x="493" y="0" width="60" height="60" uuid="112d7576-6ad4-4942-b13c-10423b7a1add"/>
+				<imageExpression><![CDATA[$P{establecimiento_logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="95" y="1" width="406" height="31" uuid="fb2034a8-980c-4a0f-9e8a-52b594009230"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25"/>
+				</textElement>
+				<text><![CDATA[SALUD INTEGRAL DE LA MUJER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="32" width="419" height="54" uuid="34dd544c-64d5-4369-b208-6de26b461d7f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[TARJETA DE SEGUIMIENTO PARA LA VIGILANCIA DE LA MORBIMORTALIDAD MATERNA FETAL Y NEONATAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="106" width="111" height="20" uuid="53a7e441-e57c-4fc8-a8d4-cf33891650d2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nombres y Apellidos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="106" width="230" height="20" uuid="b80423b8-9682-4d98-b812-b425f4c609a3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="341" y="106" width="25" height="20" uuid="9f073cf2-827a-4655-b963-78366c5f3603"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[H.C.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="366" y="106" width="189" height="20" uuid="70547414-4ace-4bbb-8b7d-c1e24d109b81"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="126" width="50" height="20" uuid="be200ed4-3cea-45a3-ae97-7a432181be4c"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="126" width="281" height="20" uuid="29a533ed-7cff-4a16-8a5c-57382bdd6620"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion_completa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="341" y="126" width="72" height="20" uuid="5969864b-e882-4fb5-a962-6543337bc2be"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Grado de Inst.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="413" y="126" width="142" height="20" uuid="0cc0b51b-a792-4b4d-90c3-6e45c448fc8f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grado_estudio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="146" width="36" height="20" uuid="e322bbc0-e263-4c38-b181-d000266b0498"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Talla:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="36" y="146" width="100" height="20" uuid="4bd324e9-1727-40a6-934a-9deaf852b99e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{talla} + " cm"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="166" width="36" height="20" uuid="045bbf5d-c711-49f3-8d8d-b6e359126a35"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Edad:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="36" y="166" width="55" height="20" uuid="70040bed-0513-4da9-8855-7a8c4baa8759"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="136" y="146" width="46" height="20" uuid="990fd72d-ec7a-4ee0-947c-e1a91030cea8"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Peso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="182" y="146" width="93" height="20" uuid="cb5ed308-d339-4911-a19e-17b7e39dc252"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{peso} + " Kg"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="275" y="146" width="66" height="20" uuid="a475301f-142e-4786-9bb0-f7ffd0d0f94d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Andria:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="341" y="146" width="100" height="20" uuid="c3dd8108-5b42-4591-bd04-63cecd380a0f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{andria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="196" y="166" width="66" height="20" uuid="3a4142d0-f48f-4a52-abba-1a38d92c2ef4"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Menarquia:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="262" y="166" width="100" height="20" uuid="92a4feee-3d36-4d00-a654-24b6bf1fd563"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{edad_menarquia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="362" y="166" width="79" height="20" uuid="3b7bf8c1-4b9e-426c-83ce-ca82c268b66a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Edad Inicio R.S.:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="166" width="100" height="20" uuid="ed649e83-44c4-4a57-98f2-80cba8bcbeeb"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{edad_primera_relacion_sexual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="362" y="186" width="79" height="20" uuid="1a4da054-a572-444e-896e-479538f82a3a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha PAP:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="186" width="114" height="20" uuid="002b2695-8cdb-4f65-ae5c-6a59e1e9ac10"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_pap}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="91" y="166" width="45" height="20" uuid="206d582f-cf5b-434c-b049-c128a3ad1e5f"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Paridad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="186" width="36" height="20" uuid="da3a78c3-c8e6-4497-b8e5-6afa6bdba5af"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[F.U.R.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="186" width="39" height="20" uuid="152c30cb-1495-47ff-8abc-80747c458623"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[F.P.P.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="186" width="21" height="20" uuid="0d993ea9-dcfc-4c22-a7fb-fc1a3b28d40d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[UP:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="240" y="186" width="90" height="20" uuid="a586d060-59f1-4904-b186-d1b190b6389a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ultimo_embarazo_fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="36" y="186" width="63" height="20" uuid="77d8ff21-8d5f-443b-9404-140de493a1ac"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fur}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="206" width="91" height="20" uuid="815155ec-82a3-436b-bf47-4266ca28d1a2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[M.A.C UTILIZADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="206" width="138" height="20" uuid="fbfeb29e-d635-4f1b-95fe-f99806cd012d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[TRIMESTRE QUE INICIA CPN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="206" width="100" height="20" uuid="ed3ad055-8071-4462-a2ed-97a30319af7a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{trimestre} + " trimestre"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="275" y="256" width="138" height="30" uuid="2fb0e642-3955-4511-ad51-f1471e723e99"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="413" y="256" width="142" height="30" uuid="36ec4ac8-0d1f-4c84-a3b4-4486c110bdae"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="256" width="139" height="30" uuid="d32074cf-4680-40bb-b16b-1eef2b19fd0e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="256" width="136" height="30" uuid="9363fe43-585e-4e89-8595-8c65f2d1fe23"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="413" y="286" width="142" height="148" uuid="8c8632ef-43cf-45ab-927b-eadc32202570"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="286" width="139" height="59" uuid="ff955e2a-b71a-4887-94c7-997e219b77b0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="286" width="136" height="59" uuid="8247ae50-4bd6-4e78-b24a-eac640f69316"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="275" y="286" width="138" height="59" uuid="889bd70f-b603-4f3c-9352-4a0d1b6c2f7d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="275" y="375" width="138" height="59" uuid="cd5bf28c-42a7-45e1-a305-443b078a1cb8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="345" width="139" height="30" uuid="1addc099-40be-4b47-8464-ae9221baf36e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="345" width="136" height="30" uuid="90495b5d-12ac-4510-9885-11d4d7ac4881"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="375" width="139" height="59" uuid="951c24dd-da93-412d-9304-ca74bcc117b5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="275" y="345" width="138" height="30" uuid="b59030c4-ef2f-4e18-8aaa-b192d92ce61e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="375" width="136" height="59" uuid="a64e351c-14ba-459c-ad12-999a1685bc8d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="256" width="136" height="30" uuid="859bc12b-0e47-4946-b1a8-99675e1dd3db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[GRUPO Y FACTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="136" y="256" width="139" height="30" uuid="93077a43-e207-4f9f-b456-47890aae1da1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[HB / FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="256" width="138" height="30" uuid="849d20d7-5634-41e1-bcfd-8d443a85e647"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[GLUCOSA / FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="256" width="142" height="30" uuid="15b5353e-0a8b-4736-829f-3448f906c4a9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[PSICOPROFILAXIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="345" width="136" height="30" uuid="4bf5ca75-39dd-4177-a279-1d0398732fe4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[RPR / FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="136" y="345" width="139" height="30" uuid="9598f407-1a9c-4e8b-9998-1fdc6f32bf7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[VIH / FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="345" width="138" height="30" uuid="4521319b-2294-4959-9d19-00e8145b9cdf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[ORINA / FECHA]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 2" style="table 2" x="0" y="483" width="555" height="237" uuid="8c73cb67-8dc0-4aa6-ae0c-68b04b412fea"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="controles" uuid="bbf48110-b34c-4b0f-ad7a-e4ffa1caaaca">
+						<datasetParameter name="embarazo_id">
+							<datasetParameterExpression><![CDATA[$F{embarazo_id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="65" uuid="012a9061-76fc-47ea-a718-be19e13743bf">
+						<jr:columnHeader style="table 2_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="64" height="30" uuid="37e680bc-50bf-4a85-8766-53ecc1cf3b5a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[FECHA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="64" height="20" uuid="95b31006-cdc7-4957-92b9-16aee3a54ea3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{atencion_fecha}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="36" uuid="e1171fde-bf6a-4cf9-987f-ce20bba86e1b">
+						<jr:columnHeader style="table 2_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="36" height="30" uuid="57d5e57f-f82a-434e-8b9b-752cf926d9cc"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[N CPN]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="36" height="20" uuid="ad20a014-255f-4477-bd6b-5636d01d0f47"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="41" uuid="f633afd9-1f38-4a7a-8ed4-e7943354b39e">
+						<jr:columnHeader style="table 2_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="41" height="30" uuid="58db209a-ba1f-4bb5-ae35-899c18b43a74"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[E - G]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="41" height="20" uuid="31572f86-5189-4b98-8967-df0aab4d1f4b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{eg}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="232" uuid="ca8dd732-604d-4c84-a92c-5e671f88bf52">
+						<jr:columnHeader style="table 2_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="232" height="30" uuid="f0fb82df-cb0a-4846-adeb-c6e98a0ae06b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[SIGNOS DE ALARMA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="232" height="20" uuid="74b6f67f-2efa-4267-9c87-342be89819be"/>
+								<textElement verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sintomas}.toLowerCase()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="a88e52e5-3a86-4128-a805-a5f0b880295b">
+						<jr:columnHeader style="table 2_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="56b11b32-7c79-439c-a2f6-e26ecafe456a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[OBSERVACIONES]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="617c4d72-4310-45a5-bf25-e704a679fb33"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="e0027b2e-e86f-4b7c-b980-2ed57f263503">
+						<jr:columnHeader style="table 2_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="61f23137-2d9f-45f6-b101-08cba8f757bd"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[CITA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="90" height="20" uuid="88df4d17-4ca1-4de8-b3ad-3c90cdc73bc5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{cita}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement x="38" y="286" width="23" height="31" uuid="4b0a3d91-b746-417b-b88a-d33821d4150f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grupo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="286" width="39" height="31" uuid="b0c3efad-8bdc-48d5-a508-7b7b24fd629c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{factor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="139" y="286" width="12" height="28" uuid="26c3ba75-866c-4140-8717-fe74481db56e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[1:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="314" width="12" height="28" uuid="aa3674d0-9b29-4d00-b17d-c8c8f1e5b96a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[2:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="203" y="286" width="72" height="28" uuid="c0abead2-8a25-40e2-9614-6cef651d611d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hemoglobina_1_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="152" y="286" width="39" height="28" uuid="c9d85811-4eaa-471a-8525-229642b66dfa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hemoglobina_1_resultado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="201" y="314" width="74" height="28" uuid="e49681a3-2b36-418a-9e60-917081c5bac6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hemoglobina_2_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="314" width="38" height="28" uuid="e4cd08b3-3123-447b-ac23-cfc9cc184c8d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hemoglobina_2_resultado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="191" y="286" width="12" height="28" uuid="fd8b5844-da31-4ecb-8917-a3c1d4026058"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="314" width="12" height="28" uuid="cfca67e2-ad75-4946-9659-f8c2b883589b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="286" width="12" height="28" uuid="d82e0da3-269e-41d7-bd87-edebfe33731f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[1:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="314" width="12" height="28" uuid="dee19070-486c-45ae-9b6c-a71f515cc183"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[2:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="287" y="286" width="54" height="28" uuid="5fd5f4b5-9f78-44d1-bfd1-898ba4625271">
+					<printWhenExpression><![CDATA[!$F{glicemia_1}.toLowerCase().equals("no aplica") && !$F{glicemia_1}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{glicemia_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="353" y="286" width="60" height="28" uuid="c9cb63aa-1c89-42b2-9d69-3ab1b9db8773"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{glicemia_1_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="314" width="54" height="28" uuid="d464eab4-64c5-4c10-9fe9-6a4da30124f9">
+					<printWhenExpression><![CDATA[!$F{glicemia_2}.toLowerCase().equals("no aplica") && !$F{glicemia_2}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{glicemia_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="353" y="314" width="60" height="28" uuid="b9910285-85e2-4ed1-b65c-c32c58257ee1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{glicemia_2_fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="341" y="314" width="12" height="28" uuid="6a89e330-3329-4669-92ef-2926c2b6a3c0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="341" y="286" width="12" height="28" uuid="c164a5b5-1c95-4b64-abd9-62e41e4eb35a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="375" width="12" height="28" uuid="ee134f9e-f05b-4902-879c-fd1fa64b1e15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[1:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="403" width="12" height="28" uuid="8188c7d6-483b-437e-b9aa-10c17a4cb564"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[2:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="375" width="12" height="28" uuid="3361f197-a7cf-4420-ad4a-032fdcaef1d9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="403" width="12" height="28" uuid="cd020ce7-529d-4d94-a67b-d44221c17791"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="375" width="12" height="28" uuid="db1a4195-6194-48d9-a90d-dbe2547c6d8c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="403" width="12" height="28" uuid="228a0233-6349-4553-8a11-bcfedb583a53"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="341" y="375" width="12" height="28" uuid="9344b909-6bd5-4aeb-bf58-5144e8d0179d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="341" y="403" width="12" height="28" uuid="33b78b17-9f7c-4ced-8c6b-060e82599df8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="375" width="12" height="28" uuid="aa1659d1-a557-4f15-9315-99def2e9a8da"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[1:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="375" width="12" height="28" uuid="a887efe6-c7e0-4678-a120-d19a783fb50b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[1:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="286" width="12" height="22" uuid="fa4c8f0d-9844-46f5-9e18-ee9bdf656846">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[1:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="330" width="12" height="22" uuid="4e3c3c06-73a9-41a9-b773-8e00791cbaf1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[3:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="403" width="12" height="28" uuid="4fba70e2-9911-49f1-a569-4c5b0f32fa1f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[2:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="403" width="12" height="28" uuid="9d10d60c-fc97-4443-b8e3-ca69f77878e2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[2:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="308" width="12" height="22" uuid="3f05baf2-e11b-4245-84b5-e50cfca4d014">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[2:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="352" width="12" height="22" uuid="13bbb315-c696-45fc-ab93-58b8db6ee785">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[4:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="374" width="12" height="22" uuid="488efb75-db8e-453e-bfac-716460483655">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[5:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="14" y="375" width="46" height="28" uuid="54e60b15-f770-470d-b965-631d63982a5c">
+					<printWhenExpression><![CDATA[!$F{sifilis}.toLowerCase().equals("no se hizo") && !$F{sifilis}.toLowerCase().equals("no aplica")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sifilis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="73" y="378" width="63" height="25" uuid="357e22d3-1a36-416f-8ee7-fd7dcac32f48"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapida_sifilis_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="16" y="403" width="45" height="28" uuid="9471ed08-4046-4e40-8fc5-4330a79eb528">
+					<printWhenExpression><![CDATA[!$F{vdrl_rp_1}.toLowerCase().equals("no aplica") && !$F{vdrl_rp_1}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vdrl_rp_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="73" y="403" width="63" height="28" uuid="b56dfc22-2a6f-49dd-b431-8a7bd68a6ce3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vdrl_rp_1_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="150" y="378" width="46" height="25" uuid="628c6282-9800-4197-9b80-15df7162f2bc">
+					<printWhenExpression><![CDATA[!$F{vih_1}.toLowerCase().equals("no aplica") && !$F{vih_1}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vih_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="209" y="378" width="66" height="25" uuid="c632cc75-d8a1-466b-a976-87035d6dc28e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vih_1_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="151" y="406" width="45" height="25" uuid="c2c78547-54be-4077-9f2a-5e47fc58267a">
+					<printWhenExpression><![CDATA[!$F{vih_2}.toLowerCase().equals("no aplica") && !$F{vih_2}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vih_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="209" y="406" width="66" height="25" uuid="31eb1341-b503-4d35-bf20-93b34fc8a1c6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vih_2_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="289" y="378" width="52" height="25" uuid="e2098956-a17d-43d9-a0e4-97bd4a6748f6">
+					<printWhenExpression><![CDATA[!$F{orina_1}.toLowerCase().equals("no aplica") && !$F{orina_1}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orina_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="353" y="378" width="60" height="25" uuid="69d823ac-276d-4a9d-92dc-c38b11234deb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orina_1_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="289" y="403" width="52" height="28" uuid="8523739d-8db3-4ccf-9a8a-1cb99efcef21">
+					<printWhenExpression><![CDATA[!$F{orina_2}.toLowerCase().equals("no aplica") && !$F{orina_2}.toLowerCase().equals("no se hizo")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orina_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="353" y="403" width="60" height="28" uuid="7be0784d-54ca-4e5d-a761-a2e20c648aa8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orina_2_fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="139" y="186" width="64" height="20" uuid="9e6f15d0-2e94-4f21-98c1-3bf82c282ce4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_probable_parto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="206" width="224" height="20" uuid="88ddb6d8-9e0d-4cc6-8be2-786f304904b3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new String($F{condon} ? "Condon, " : "") + new String($F{ovulos} ? "Ovulos, " : "") + new String($F{inyectable} ? "Inyectable, " : "") + new String($F{diu} ? "DIU, " : "") + new String($F{pastilla} ? "Pastilla, " : "") + new String($F{natural} ? "Natural" : "")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="416" y="396" width="12" height="22" uuid="7a7774fd-f41d-430b-931b-64e1b7ab67b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[6:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="286" width="112" height="22" uuid="ade2f308-97c5-4b2a-9690-9f8a3674a99f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{psicoprofilaxis_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="308" width="112" height="22" uuid="d6b229b9-3832-49b3-ac1e-1d353053365a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{psicoprofilaxis_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="396" width="112" height="22" uuid="34f3290a-d933-4e12-adb1-4d16e0fc2c12">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{psicoprofilaxis_fecha_6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="374" width="112" height="22" uuid="e7e009fa-95bd-4336-a90e-1268dda0114f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{psicoprofilaxis_fecha_5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="352" width="112" height="22" uuid="695d6985-2124-4af4-ac03-ca32d9bb2b19">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{psicoprofilaxis_fecha_4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="441" y="330" width="112" height="22" uuid="af1e517f-17c4-4cfa-a15d-8902c5512926">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{psicoprofilaxis_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="166" width="55" height="20" uuid="a443f6d0-a8c3-4819-aa35-267e341e7c8d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{partos}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="-9" y="0" width="115" height="60" uuid="7ae5305e-e5c9-44d4-9ebb-f7802371d56d"/>
+				<imageExpression><![CDATA[$P{logo_minsa}]]></imageExpression>
+			</image>
+		</band>
+		<band height="802">
+			<rectangle>
+				<reportElement mode="Transparent" x="197" y="24" width="119" height="30" uuid="46c11069-9691-43a8-83c5-e0c961122501"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="435" y="24" width="118" height="30" uuid="9dc2ff6a-f992-47ab-ac10-7bcfdab86d19"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="234" width="196" height="30" uuid="6a82611c-81bb-4291-bdc8-e11bd4972615">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="1" y="24" width="196" height="30" uuid="221ad744-d402-4b3b-844c-5bbdaac52d24">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="14" y="24" width="168" height="30" uuid="655a0fe5-5f8e-437a-bf0a-99da9522acc3">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Interconsultas]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="54" width="199" height="30" uuid="bd1f148c-7ee3-48e8-abc7-8f454799d1e3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="54" width="119" height="30" uuid="1c94b744-d7b3-4d8b-9d46-fff4e8a94cb8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="54" width="119" height="30" uuid="c526d5e6-d173-48b5-9f58-170eab80704a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="54" width="118" height="30" uuid="c22bcd8e-1c9c-4c81-a390-316ec2d6265f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="84" width="119" height="30" uuid="65695c76-816e-4b1a-bd56-db074bba11bf"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="84" width="118" height="30" uuid="5977bca2-8d0d-4a24-a4f2-9b413db2d29b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="84" width="119" height="30" uuid="5ab64ca3-ba19-4058-b671-f9153800369f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="84" width="196" height="30" uuid="4791991b-6f37-43ff-bea8-b191b9bb160a">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="144" width="119" height="30" uuid="e478d469-66ab-4539-b83c-2f5b22835a3c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="114" width="119" height="30" uuid="b422be7f-22b8-41aa-a879-1ecce3e35119"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="114" width="118" height="30" uuid="b8d3f73e-95d5-4166-aa54-7b558421ab79">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="114" width="119" height="30" uuid="37919007-f64a-47a8-b4a9-4632a3ac8cbe"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="144" width="196" height="30" uuid="910795fd-9010-4f9d-9d2f-a0808f05f5ed">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="144" width="119" height="30" uuid="d2871789-b00f-41b7-b2f8-7e3bfac40cf2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="144" width="118" height="30" uuid="488d4a55-0d7d-42e6-9df6-3e22c22b86be">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="114" width="196" height="30" uuid="cfdb3e58-13ff-4adf-8e7d-7c0e8154de4b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="174" width="119" height="30" uuid="c7a52644-8c7b-4f61-a6f8-3329c7103651"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="174" width="196" height="30" uuid="e69d32c1-90d8-46b4-b6ab-50d5fcf5477b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="174" width="119" height="30" uuid="5fc36063-8e6c-4274-8e58-082dd076a8ab"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="204" width="196" height="30" uuid="f002876d-74e4-4f76-a88e-1e79004fb779">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="204" width="119" height="30" uuid="f4397d21-0038-436c-b58b-66575e9ac6c8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="204" width="118" height="30" uuid="4cab766d-a295-4a01-8b83-208a1775d552">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="204" width="119" height="30" uuid="77920ea6-6f91-43fe-a9c0-674f09737ff6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="174" width="118" height="30" uuid="50dcb40d-9c5b-46d6-b4ba-068625cc5304">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="14" y="54" width="183" height="30" uuid="c50f8d7c-440b-42e7-af6d-2b8c66c2ef81"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Psicología]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="84" width="183" height="30" uuid="1fdab10b-094f-40de-9e86-e0c260f54e94"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Medicina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="114" width="183" height="30" uuid="b1bae2bc-16d3-4a5c-8851-5763af84a292"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Laboratorio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="144" width="183" height="30" uuid="878fb414-8c15-414a-9c6e-2a008adcbdb6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Ecografía obstétrica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="174" width="183" height="30" uuid="9217c545-1f07-4319-832e-09de915c30ad"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nutrición]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="204" width="183" height="30" uuid="192b978d-0969-4949-93ba-0852e10783f7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Odontología]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="234" width="183" height="30" uuid="d965c474-1420-4d6e-bcd7-dad61d8e9b94"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Enfermería]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Opaque" x="316" y="234" width="119" height="30" uuid="442f3f20-3ac5-43a5-9eca-befd87a33d96"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="435" y="234" width="118" height="30" uuid="e522e71a-340f-400a-86e3-f0ea55332d82">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="197" y="234" width="119" height="30" uuid="16478400-1226-4307-8ceb-e01c6f7275a9"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="435" y="24" width="118" height="30" uuid="2c663ed3-a3ba-4efe-b958-ecec6dd61636">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Fecha 3]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="316" y="24" width="119" height="30" uuid="056efed3-13e4-43ee-af13-cc5ed24e5da2"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="315" y="24" width="120" height="30" uuid="6985f2c8-73df-4f95-a168-8b52925d3646">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Fecha 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="196" y="24" width="120" height="30" uuid="a16b50ad-1015-463d-b438-98c026bc6e1c">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Fecha 1]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="84" width="119" height="30" uuid="2cca21f8-3f8e-44f4-867e-461fda129da7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_medicina_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="84" width="119" height="30" uuid="b90938ac-bc44-4d8e-8aea-6140fbec217a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_medicina_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="84" width="118" height="30" uuid="fbf84a08-5fdc-4e32-be3d-80d5bb487d23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_medicina_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="54" width="119" height="30" uuid="6d6a8781-7378-4e24-af61-b1d76bccccdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_psicologia_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="54" width="119" height="30" uuid="cb0ffc2c-925b-4b0b-a5a0-48922a12af0a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_psicologia_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="54" width="118" height="30" uuid="3d921538-3043-4ca6-97ad-bde382e66e69"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_psicologia_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="114" width="119" height="30" uuid="a18a3613-a0e0-4704-bba7-c12090fc5cce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_laboratorio_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="114" width="119" height="30" uuid="5e9a26c5-9beb-4cd4-866f-d4e6253aeaf9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_laboratorio_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="114" width="118" height="30" uuid="8e4a6d09-ba32-4245-b68c-987b3f40bdc7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_laboratorio_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="144" width="119" height="30" uuid="c6e211d5-393a-4cd8-b653-13d71389966a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_ecografia_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="144" width="119" height="30" uuid="e00a5c7d-bd01-4bf2-a13b-6d43e97e75d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_ecografia_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="144" width="118" height="30" uuid="20f05683-fad2-4c65-b0c2-36774129bc02"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_ecografia_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="174" width="119" height="30" uuid="4f8dbfda-98e3-4bde-81f0-2a55ba410203"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_nutricion_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="174" width="119" height="30" uuid="578e2e9d-68a6-43d8-b277-97271df89489"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_nutricion_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="174" width="118" height="30" uuid="d7dc7ea6-a3d9-4116-9d83-4e1d0d46b2fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_nutricion_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="204" width="119" height="30" uuid="4bcccd03-5a27-40fd-9aa1-909e9eea2cfa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_odontologia_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="204" width="119" height="30" uuid="b50edab4-5b46-42c9-8a6c-12c4c40c99e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_odontologia_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="204" width="118" height="30" uuid="9db38ba9-e696-4c0e-a7e0-4c14cca5b3ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_odontologia_fecha_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="234" width="119" height="30" uuid="d70754fd-df56-49f0-8707-97598570cc03"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_enfermeria_fecha_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="316" y="234" width="119" height="30" uuid="60985076-c646-4335-abfa-4457abdd6f0b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_enfermeria_fecha_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="435" y="234" width="118" height="30" uuid="5f3fa1c7-01b2-44fd-b947-4e92a6d27b09"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic_enfermeria_fecha_3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

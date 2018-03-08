@@ -1,0 +1,85 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+{% block title %}Reportes Estadísticos{% endblock %}
+
+
+
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" method="POST">{% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Reportes Estadísticos</h3>
+                    </div>
+                    <div class="container">
+                        <table id="form_table_id">
+                            {{ form.as_table }}
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="text-right">
+                            <input class="btn btn-green" type="submit" value="Mostrar"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if indicador %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div id="data-head" class="panel-heading">
+                <h3 class="panel-title">Resultado</h3>
+            </div>
+            {% if tipo_indicador %}
+                {% include "indicadores/partials/tabla_mensual.html" %}
+            {% else %}
+                {% include "indicadores/partials/tabla_trimestral.html" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}
+
+
+
+{% block bottom_scripts %}
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" media="screen" title="no title" charset="utf-8">
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" charset="utf-8"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js" charset="utf-8"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.0/jszip.js"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script type="text/javascript">
+$('#form_table_id tr:nth-child(1)').css('display','none');
+$('#form_table_id tr:nth-child(2)').css('display','none');
+$('#form_table_id tr:nth-child(3)').css('display','none');
+$('#form_table_id tr:nth-child(4)').css('display','none');
+$(document).ready(function () {
+    $('#id_fecha_inicio').datepicker();
+    $('#id_fecha_final').datepicker();
+    var table = $('#tabla_mensual').DataTable({
+        paging: false,
+        ordering: false,
+        dom : 'Bt',
+        buttons: [{
+            extend: 'excelHtml5',
+            text: 'Exportar como XLSX',
+            title: '{{ indicador_nombre }} por mes en: {{ alcance }}'
+        }]
+    });
+});
+</script>
+{% endblock %}

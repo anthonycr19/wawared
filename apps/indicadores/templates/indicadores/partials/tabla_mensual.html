@@ -1,0 +1,116 @@
+{% load static %}
+
+{% block extra_style %}
+<link href="{% static 'css/indicadores.css' %}" rel="stylesheet" media="screen"/>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load("visualization", "1", {packages:['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+        ["Intervalo", "Porcentaje", { role: "style" } ],
+        {% for item in json_indicadores %}
+            ["{{ item.intervalo_fecha|date:"M Y" }}", parseInt({% widthratio item.indicador_intervalo item.total_intervalo 100 %}), "#559D3C"],
+        {% endfor %}
+    ]);
+
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,
+        {
+            calc: "stringify",
+            sourceColumn: 1,
+            type: "string",
+            role: "annotation"
+        },
+        2]);
+
+    var options = {
+        title: '{{ indicador_nombre }} por mes en: {{ alcance }}',
+        legend: { position: "none" },
+        vAxis: {
+          title: 'Porcentaje'
+        }
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+    chart.draw(view, options);
+
+    $(window).resize(function(){
+        drawChart();
+    });
+
+    $("ul li a").click(function() {
+        if ($(this).attr('href') === '#columnchart_values') {
+            drawChart();}});
+}
+</script>
+{% endblock %}
+
+
+
+<div class="container">
+    <h3>{{ indicador_nombre }}</h3>
+    <div class="contenedor-tabla">
+        <div class="table-responsive">
+            <table class="table" id="tabla_mensual">
+                <thead>
+                    <tr>
+                        <th id="tipo_alcance" class="headcol" style="margin-top:0px; padding-right:2em; width:50%;">{{ tipo_alcance }}:</th>
+                        {% for item in json_indicadores %}
+                            {% if forloop.first %}
+                                <th>{{ alcance }}</th>
+                            {% else %}
+                                <th></th>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="headcol">Periodo</td>
+                        {% for item in json_indicadores %}
+                            {% if forloop.first %}
+                                <td style="text-align: center;">{{ item.intervalo_fecha|date:"M" }} <br> {{ item.intervalo_fecha|date:"d/m/Y" }}</td>
+                            {% else %}
+                                {% if forloop.last %}
+                                    <td style="text-align: center;">{{ item.intervalo_final|date:"M" }} <br> {{ item.intervalo_final|date:"d/m/Y" }}</td>
+                                {% else %}
+                                    <td style="text-align: center;">{{ item.intervalo_final|date:"M Y" }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    <tr style="height: 155px;">
+                        <td class="headcol">Indicador: <strong>{{ indicador_nombre }}</strong> <br><br> Frecuencia</td>
+                        {% for item in json_indicadores %}
+                            <td style="text-align: center;">{{ item.indicador_intervalo }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="headcol">total de pacientes con atenciones en el mes</td>
+                        {% for item in json_indicadores %}
+                            <td style="text-align: center;">{{ item.total_intervalo }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="headcol">Porcentaje</td>
+                        {% for item in json_indicadores %}
+                            <td style="text-align: center;">{% widthratio item.indicador_intervalo item.total_intervalo 100 %}%</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <br><br><br>
+
+
+
+    <h3>Gráfico de Barras</h3>
+</div>
+
+<div id="columnchart_values" style="height: 700px;"></div>

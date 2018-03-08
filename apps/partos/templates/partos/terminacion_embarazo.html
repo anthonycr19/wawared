@@ -1,0 +1,89 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Terminación de embarazo{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Terminación de embarazo</h3>
+                </div>
+                {% include 'partos/paciente_header.html' with paciente=paciente %}
+                {% include 'partos/tabs.html' with ingreso=ingreso %}
+                <div class="panel-body">
+                    <div id="data-gestante" class="panel panel-default">
+                        <div class="panel-heading">
+                            Terminación de embarazo
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" method="post">
+                                <div class="row">
+                                    {% csrf_token %}
+                                    <div class="col-md-4">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.hora %}
+                                        {% include 'dashboard/partials/form_group_date.html' with field=form.fecha %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.tipo %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.terminacion %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.procedimiento %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.posicion_gestante %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.acompaniante %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.duracion %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.muerte_intrauterina %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.desgarros %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.alumbramiento %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.placenta %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.cordon_umbilical %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=form.ligadura_cordon %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input class="btn btn-green" style="float: right" type="submit" value="Guardar"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){ 
+            $('#id_fecha').on('keydown', function () {
+                return false;
+            }).datepicker();
+            $('#id_hora').timepicker({
+                defaultTime: 'current',
+                showSeconds: false,
+                template: false,
+                showMeridian: false,
+                minuteStep: 1
+            });
+            var $terminacion = $('#id_terminacion'),
+                    $procedimientoWrapper = $('#id_procedimiento').parents('.form-group');
+            function validarTerminacion (value) {
+                if (['cesarea electiva', 'cesarea emergencia'].indexOf(value) !== -1) {
+                    $procedimientoWrapper.show();
+                } else {
+                    $procedimientoWrapper.hide();
+                }
+            }
+            validarTerminacion($terminacion.val());
+            $terminacion.on('change', function () {
+                validarTerminacion($(this).val());
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% load static %}
+
+{% include 'session_security/all.html' %}
+<script type="text/javascript">
+  $('#eliminar-embarazo-previo').click(function() {
+    swal({
+      title: "¿Está seguro de eliminar el embarazo?",
+      text: "Una vez eliminado no será posible deshacer la acción realizada.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, eliminar el embarazo",
+      cancelButtonText: "Cancelar",
+      closeOnConfirm: false},
+      function(){
+        window.location = $('.btn-danger').attr('href');
+        swal("Borrado", "El embarazo ha sido eliminado correctamente", "success");
+      }
+  );
+  return false;
+  });
+</script>

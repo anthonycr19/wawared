@@ -1,0 +1,366 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% include 'session_security/all.html' %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" role="form" method="post">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">{{ title }}</h3>
+                </div>
+                {% include 'embarazos/partials/paciente_resume_header_embarazo_previo.html' with paciente=paciente %}
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Datos del embarazo previos
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/form_group_select.html' with field=form.tipo %}
+                                </div>
+                                <div class="col-md-8">
+                                    <button id="btn-add-baby" class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                                </div>
+                            </div>
+                            <hr/>
+                            {{ bebe_formset.management_form }}
+                            {% for error in bebe_formset.non_form_errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                            <div id="babies-form-container">
+                                {% for bebe_form in bebe_formset %}
+                                <div class="row">
+                                    {% if not forloop.first %}
+                                    <div class="col-md-12"><hr/></div>
+                                    {% endif %}
+                                    {{ bebe_form.id }}
+                                    <div class="col-md-4">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.terminacion without_class=True %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.aborto without_class=True %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.edad_gestacional without_class=True %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.lugar without_class=True %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Fecha</label>
+                                            <div class="col-sm-9">
+                                                <div class="col-sm-12">
+                                                    {{ bebe_form.day }} {{ bebe_form.month }} {{ bebe_form.year }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.vive without_class=True left=3 right=9 %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.muerte without_class=True left=3 right=9 %}
+                                        {% include 'dashboard/partials/form_group_input_addon.html' with field=bebe_form.peso without_class=True addon='g' left=3 right=9 %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.sexo without_class=True %}
+                                        {% include 'dashboard/partials/form_group_input.html' with field=bebe_form.lactancia without_class=True %}
+                                        {% include 'dashboard/partials/form_group_textarea.html' with field=bebe_form.observacion without_class=True %}
+                                        {% include 'dashboard/partials/checkbox.html' with field=bebe_form.DELETE %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row hidden" id="empty-form">
+                                <div class="col-md-12"><hr/></div>
+                                {{ bebe_formset.empty_form.id }}
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.terminacion without_class=True %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.aborto without_class=True %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.edad_gestacional without_class=True %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.lugar without_class=True %}
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Fecha</label>
+                                        <div class="col-sm-9">
+                                            <div class="col-sm-12">
+                                                    {{ bebe_formset.empty_form.day }} {{ bebe_formset.empty_form.month }} {{ bebe_formset.empty_form.year }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.vive without_class=True left=3 right=9 %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.muerte without_class=True left=3 right=9 %}
+                                    {% include 'dashboard/partials/form_group_input_addon.html' with field=bebe_formset.empty_form.peso without_class=True addon='g' left=3 right=9 %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.sexo without_class=True %}
+                                    {% include 'dashboard/partials/form_group_input.html' with field=bebe_formset.empty_form.lactancia without_class=True %}
+                                    {% include 'dashboard/partials/form_group_textarea.html' with field=bebe_formset.empty_form.observacion without_class=True %}
+                                    {% include 'dashboard/partials/checkbox.html' with field=bebe_formset.empty_form.DELETE %}
+                                    {# {{ bebe_formset.empty_form.DELETE }} #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="pull-left">
+                    {% if form.instance.id %}
+                        <a class="btn btn-danger" href="{% url 'embarazos:ultimo_embarazo_delete' paciente.id form.instance.id %}" onclick="return confirm('¿Seguro que desea eliminar este embarazo?');">Eliminar</a>
+                    {% endif %}
+                    {% if request.META.HTTP_REFERER %}
+                        <a class="btn btn-default" href="{{ request.META.HTTP_REFERER }}">Cancelar</a>
+                    {% else %}
+                        <a class="btn btn-default" href="{% url 'embarazos:ultimos_embarazos' paciente.id %}">Cancelar</a>
+                    {% endif %}
+                    </div>
+
+                    <input type="hidden" id="id_action" name="txt_action" value="guardar">
+
+                    <div class="text-right">
+                        <input class="btn btn-green" id="btn_guardar" type="button" value="Guardar"/>
+                        <input class="btn btn-green" id="btn_guardar_agregar" type="button" value="Guardar y Agregar Embarazo Previo"/>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script>
+        $(document).ready(function(){
+            var $tipo = $('#id_tipo');
+            var $btnAddBaby = $('#btn-add-baby');
+
+            $('form').on('submit', function () {
+                $(this).find('select, input').prop('disabled', false);
+                return true;
+            });
+
+
+            $( "#btn_guardar" ).click(function() {
+                $( "#id_action" ).val("guardar");
+                $('form').submit();
+            });
+
+            $( "#btn_guardar_agregar" ).click(function() {
+                $( "#id_action" ).val("guardar_agregar");
+                $('form').submit();
+            });
+
+            var ABORTO = 'aborto';
+            var ABORTO_MOLAR = 'aborto molar';
+            var OBITO = 'obito';
+            var ECTOPICO = 'ectopico';
+            var MUERTE_NACIO_MUERTO = 'nacio muerto';
+            var MUERTE_NO_APLICA = 'no aplica';
+            var MUERTE_MENOR_1_SEMANA = 'menor primera semana';
+            var MUERTE_MAYOR_1_SEMANA = 'mayor primera semana';
+
+            var terminacionMuerteOptions = [ABORTO, ABORTO_MOLAR, OBITO, ECTOPICO];
+            var terminacionAbortoOptions = [ABORTO, ABORTO_MOLAR];
+
+            if ($tipo.val() === 'unico') {
+                $btnAddBaby.attr('disabled', true);
+            }
+
+            $tipo.on('change', function () {
+                if (this.value === 'multiple') { // multiple
+                    $btnAddBaby.attr('disabled', false);
+                } else {
+                    $btnAddBaby.attr('disabled', true);
+                }
+            });
+
+            var arrowKeys = [37, 38, 39, 40];
+
+            function generateDays(quantity) {
+                var i;
+                var html = '';
+                for (i=1; i<=quantity; i++) {
+                    html += '<option value=' + i + '>' + i + '</option>';
+                }
+                return html;
+            }
+
+            var mes30 = [4, 6, 9, 11];
+            var dias28 = generateDays(28);
+            var dias29 = generateDays(29);
+            var dias30 = generateDays(30);
+            var dias31 = generateDays(31);
+
+            function isBisiesto (year) {
+                return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+            }
+
+            function validateDates ($day, $month, $year) {
+                var option = parseInt($month.find('option:selected').val());
+                var prevDay = parseInt($day.find('option:selected').val());
+                var topLimit = 0;
+                if (option === 2) {
+                    var anio = parseInt($year.find('option:selected').val());
+                    if (isBisiesto(anio)) { // bisisesto
+                        $day.html(dias29);
+                        topLimit = 29;
+                    } else {
+                        $day.html(dias28);
+                        topLimit = 28;
+                    }
+                } else if (mes30.indexOf(option) !== -1) { // 30 dias
+                    $day.html(dias30);
+                    topLimit = 30;
+                } else { // 31 dias
+                    $day.html(dias31);
+                    topLimit = 31;
+                }
+                if (prevDay >= 1 && prevDay <= topLimit) {
+                    $day.find('[value=' + prevDay + ']').prop('selected', true);
+                }
+            }
+
+            function setBehaviour ($formRow) {
+                var $edadGestacional = $formRow.find('.edad_gestacional');
+                var $terminacion = $formRow.find('.terminacion');
+                var $aborto = $formRow.find('.aborto');
+                var $peso = $formRow.find('.peso');
+                var $vive = $formRow.find('.vive');
+                var $muerte = $formRow.find('.muerte');
+                var $day = $formRow.find('.day');
+                var $month = $formRow.find('.month');
+                var $year = $formRow.find('.year');
+                var $lactancia = $formRow.find('.lactancia');
+                var $sexo = $formRow.find('.sexo');
+
+                $vive.on('change', function () {
+                    if (this.value === 'True') {
+                        $muerte.val('no aplica').prop('disabled', true);
+                    } else {
+                        var value = $terminacion.val();
+                        if (value === ABORTO || value === ABORTO_MOLAR) {
+                            $muerte.prop('disabled', true);
+                            $peso.prop('disabled', true);
+                            $sexo.prop('disabled', true);
+                        } else {
+                            if (value === OBITO) {
+                                // $peso.prop('disabled', true);
+                                console.log('oli');
+                            }
+                            $muerte.prop('disabled', false);
+                        }
+                    }
+                });
+                $muerte.on('change', function () {
+                    if (this.value !== MUERTE_NO_APLICA) {
+                        $vive.val('False');
+                    } else {
+                        $vive.val('True');
+                    }
+                });
+                $month.on('change', function () {
+                    validateDates($day, $month, $year);
+                });
+                $year.on('change', function () {
+                    validateDates($day, $month, $year);
+                });
+
+                function validateTerminacion (currentValue) {
+
+                    if(currentValue === ABORTO || currentValue === ABORTO_MOLAR || currentValue === OBITO || currentValue === ECTOPICO)
+                    {
+                        $day.val('1');
+                        $day.hide();
+
+                    }else
+                    {
+                        $day.show();
+                    }
+
+                    if (terminacionAbortoOptions.indexOf(currentValue) !== -1) {
+
+                        $aborto.attr('disabled', false);
+                        $aborto.val('completo');
+
+                        if (currentValue === ABORTO_MOLAR) {
+                            $aborto.val('no aplica');
+                        } else {
+                            $lactancia.prop('disabled', true);
+                        }
+
+                    } else {
+                        $aborto.val('no aplica');
+                        $aborto.attr('disabled', true);
+                    }
+                    $lactancia.prop('disabled', false);
+                    $peso.prop('disabled', false);
+                    $sexo.prop('disabled', false);
+
+                    if (terminacionMuerteOptions.indexOf(currentValue) !== -1) {
+                        $vive.val('False').prop('disabled', true).trigger('change');
+                        $peso.prop('disabled', true);
+                        if (currentValue === ABORTO || currentValue === ABORTO_MOLAR) {
+                            $lactancia.val('no aplica').prop('disabled', true);
+                            $muerte.val(MUERTE_NO_APLICA).prop('disabled', true);
+                        } else if (currentValue === OBITO) {
+                            $lactancia.val('no aplica').prop('disabled', true);
+                            $muerte.val(MUERTE_NACIO_MUERTO).prop('disabled', true);
+                            $peso.prop('disabled', false);
+                        } else if (currentValue === ECTOPICO) {
+                            $muerte.val(MUERTE_NO_APLICA).prop('disabled', true);
+                            $lactancia.val('no aplica').prop('disabled', true);
+                            $peso.prop('disabled', true);
+                            $sexo.prop('disabled', true);
+                        }
+                    } else {
+                        $vive.val('True').prop('disabled', false).trigger('change');
+                    }
+                }
+
+                $terminacion.on('change', function () {
+                    validateTerminacion(this.value);
+                });
+
+                $edadGestacional.on('keyup', function (event) {
+                    if (arrowKeys.indexOf(event.keyCode) === -1) {
+                        this.value = this.value.replace(/[^0-9\.]/g, '');
+                        this.value = this.value.substring(0, 2);
+                        this.value = parseInt(this.value) >= 1 && parseInt(this.value) <= 44 ? this.value : '';
+                    }
+                });
+
+                $peso.on('change', function (event) {
+                     if (arrowKeys.indexOf(event.keyCode) === -1) {
+                         this.value = this.value.replace('.','')
+                         this.value = (this.value + '').replace(/[^0-9]/g, '');
+                         this.value = parseInt(this.value.substring(0,4));
+                     }
+                 });
+
+                $terminacion.trigger('change');  // for validate input when page is loaded
+            }
+
+            var $totalForms = $('#id_bebes-TOTAL_FORMS');
+            var $babiesForms = $('#babies-form-container');
+
+            $babiesForms.children().each(function () {
+                setBehaviour($(this));
+            });
+
+            $btnAddBaby.on('click', function () {
+                var count = $babiesForms.children().length;
+                if ($tipo.val() === 'unico') {
+                    alert('Debe elegir embarzo multiple para poder agregar');
+                } else {
+                    var template = $('#empty-form').html();
+                    var compiled = template.replace(/__prefix__/g, count);
+                    $babiesForms.append('<div class="row">' + compiled + '</div>');
+                    $totalForms.val(count + 1);
+                    $babiesForms.children().each(function () {
+                        setBehaviour($(this));
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

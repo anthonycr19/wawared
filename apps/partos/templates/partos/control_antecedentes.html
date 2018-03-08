@@ -1,0 +1,458 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load form_filter %}
+{% block title %}Antecedentes{% endblock %}
+{% block extra_style %}
+  <link href="{% static 'css/datepicker.css' %}" rel="stylesheet" media="screen">
+  <style>
+    table input[type=radio] {
+      margin: 10px 40px;
+      padding: 0;
+    }
+  </style>
+{% endblock %}
+{% block container %}
+  <div class="row">
+    <div class="col-md-12">
+      <div id="data-antecedente">
+        <form class="form-horizontal" id="form-antecedentes" name="form-antecedentes" role="form" method='post'>
+          {% csrf_token %}
+          <div class="panel panel-default">
+            <div id="data-head" class="panel-heading">
+              <h3 class="panel-title">Antecedentes</h3>
+            </div>
+            {% include 'partos/partials/paciente_control_resume_header.html' with paciente=paciente %}
+            <div class="panel-body">
+              <div class="panel panel-default" id="data-buscar-body">
+                <div class="panel-heading">
+                  Antecedentes familiares
+                  {% if 'pacientes.change_antecedentefamiliar' in user.get_all_permissions %}
+                    <div class="pull-right">
+                      <a class="btn btn-green" href="{% url 'partos:paciente_antecedentes_familiares_edit' paciente.id %}">Modificar antecedentes familiares</a>
+                    </div>
+                  {% endif %}
+                </div>
+                {% include 'pacientes/partials/antecedentes_familiares_resume_table.html' with paciente=paciente %}
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="panel panel-default" id="data-buscar-body">
+                <div class="panel-heading">
+                  Antecedentes médicos - personales
+                  {% if 'pacientes.change_antecedentemedico' in user.get_all_permissions %}
+                    <div class="pull-right">
+                      <a class="btn btn-green" href="{% url 'partos:paciente_antecedentes_medicos_edit' paciente.id %}">Modificar antecedentes médicos - personales</a>
+                    </div>
+                  {% endif %}
+                </div>
+                {% include 'pacientes/partials/antecedentes_medicos_resume_table.html' with paciente=paciente %}
+              </div>
+            </div>
+            {% include 'partos/partials/ultimos_embarazos_table.html' with embarazos=ultimos_embarazos paciente=paciente %}
+            <div class="panel-body">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  Resumen
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12" id="resume-div"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="data-buscar-body" class="panel panel-default">
+                <div class="panel-heading">
+                  Datos ginecológicos
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      {% include 'dashboard/partials/form_group_input_addon.html' with field=form.edad_menarquia addon='años' %}
+                    </div>
+                    <div class="col-md-4">
+                      {% include 'dashboard/partials/form_group_input.html' with field=form.andria %}
+                    </div>
+                    <div class="col-md-4">
+                      {% include 'dashboard/partials/form_group_input_addon.html' with field=form.edad_primera_relacion_sexual addon='años' %}
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class="container-fluid">
+                        Régimen catameneal
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="checkbox">
+                              {{ form.regimen_regular }} {{ form.regimen_regular.label_tag }}
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.duracion_menstruacion addon='dias' %}
+                          </div>
+                          <div class="col-md-4">
+                            {% include 'dashboard/partials/form_group_input_addon.html' with field=form.ciclo_menstruacion addon='dias' %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      Ultimo PAP
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="{{ form.tiene_papanicolaou.auto_id }}" class="col-sm-5 control-label">{{ form.tiene_papanicolaou.label }}</label>
+                            <div class="col-sm-7">
+                              <ul class="list-inline">
+                                <li>
+                                  <label>
+                                    <input type="radio" name="{{ form.tiene_papanicolaou.name }}" {% ifequal form.instance.tiene_papanicolaou True %}checked{% endifequal %} value="True" />
+                                    Sí
+                                  </label>
+                                </li>
+                                <li>
+                                  <label>
+                                    <input type="radio" name="{{ form.tiene_papanicolaou.name }}" {% ifequal form.instance.tiene_papanicolaou False %}checked{% endifequal %} value="False" />
+                                    No
+                                  </label>
+                                </li>
+                                <li>
+                                  <label>
+                                    <input type="radio" name="{{ form.tiene_papanicolaou.name }}" {% ifequal form.instance.tiene_papanicolaou None %}checked{% endifequal %} value="None" />
+                                    N/A
+                                  </label>
+                                </li>
+                              </ul>
+                              {% for error in form.tiene_papanicolaou.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          {% include 'dashboard/partials/form_group_date.html' with field=form.fecha_ultimo_papanicolaou %}
+                        </div>
+
+                        <div class="col-md-4">
+                          {% include 'dashboard/partials/form_group_select.html' with field=form.resultado_papanicolaou %}
+                        </div>
+
+                        <div class="col-md-8">
+                          {% include 'dashboard/partials/form_group_input.html' with field=form.lugar_papanicolaou %}
+                        </div>
+                        <div class="col-md-4">
+                          {% include 'dashboard/partials/form_group_input.html' with field=form.pap_observacion %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th></th>
+                      <th>Ninguno</th>
+                      <th>Condón</th>
+                      <th>Ovulos</th>
+                      <th>DIU</th>
+                      <th>Inyectable 1 mes</th>
+                      <th>Inyectable 3 meses</th>
+                      <th>Pastilla</th>
+                      <th>Implanon</th>
+                      <th>Natural</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>Último metodo anticonceptivo utilizado</td>
+                      <td>
+                        <div class="checkbox">
+                          <input type="checkbox" id="ningun-metodo-anticonceptivo" />
+                        </div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.condon }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.ovulos }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.diu }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.inyectable }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.inyectable_2 }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.pastilla }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.implanon }}</div>
+                      </td>
+                      <td>
+                        <div class="checkbox mac">{{ form.natural }}</div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div class="row">
+                    <div class="col-md-4 col-md-offset-8">
+                      <div class="form-group">
+                        <label for="{{ form.embarazo_mac.auto_id }}" class="col-sm-5 control-label">{{ form.embarazo_mac.label }}</label>
+                        <div class="col-sm-7">
+                          <ul class="list-inline">
+                            <li>
+                              <label>
+                                <input type="radio" name="{{ form.embarazo_mac.name }}" {% ifequal form.instance.embarazo_mac True %}checked{% endifequal %} value="True" />
+                                Sí
+                              </label>
+                            </li>
+                            <li>
+                              <label>
+                                <input type="radio" name="{{ form.embarazo_mac.name }}" {% ifequal form.instance.embarazo_mac False %}checked{% endifequal %} value="False" />
+                                No
+                              </label>
+                            </li>
+                            <li>
+                              <label>
+                                <input type="radio" name="{{ form.embarazo_mac.name }}" {% ifequal form.instance.embarazo_mac None %}checked{% endifequal %} value="None" />
+                                N/A
+                              </label>
+                            </li>
+                          </ul>
+                          {% for error in form.embarazo_mac.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  Vacunas
+                </div>
+                <div class="panel-body">
+                  <div id="data-buscar-body">
+                    <table class="table table-bordered table-striped" style="width: 70%">
+                      <thead>
+                      <tr>
+                        <th>Vacunas previas</th>
+                        <th>Sí</th>
+                        <th>No</th>
+                        <th>N/A</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>{{ vacuna_form.rubeola.label }}</td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.rubeola.name }}" {% ifequal vacuna_form.instance.rubeola True %}checked{% endifequal %} value="True" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.rubeola.name }}" {% ifequal vacuna_form.instance.rubeola False %}checked{% endifequal %} value="False" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.rubeola.name }}" {% ifequal vacuna_form.instance.rubeola None %}checked{% endifequal %} value="None" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{{ vacuna_form.hepatitis_b.label }}</td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.hepatitis_b.name }}" {% ifequal vacuna_form.instance.hepatitis_b True %}checked{% endifequal %} value="True" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.hepatitis_b.name }}" {% ifequal vacuna_form.instance.hepatitis_b False %}checked{% endifequal %} value="False" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.hepatitis_b.name }}" {% ifequal vacuna_form.instance.hepatitis_b None %}checked{% endifequal %} value="None" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{{ vacuna_form.papiloma.label }}</td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.papiloma.name }}" {% ifequal vacuna_form.instance.papiloma True %}checked{% endifequal %} value="True" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.papiloma.name }}" {% ifequal vacuna_form.instance.papiloma False %}checked{% endifequal %} value="False" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.papiloma.name }}" {% ifequal vacuna_form.instance.papiloma None %}checked{% endifequal %} value="None" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{{ vacuna_form.fiebre_amarilla.label }}</td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.fiebre_amarilla.name }}" {% ifequal vacuna_form.instance.fiebre_amarilla True %}checked{% endifequal %} value="True" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.fiebre_amarilla.name }}" {% ifequal vacuna_form.instance.fiebre_amarilla False %}checked{% endifequal %} value="False" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.fiebre_amarilla.name }}" {% ifequal vacuna_form.instance.fiebre_amarilla None %}checked{% endifequal %} value="None" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{{ vacuna_form.h1n1.label }}</td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.h1n1.name }}" {% ifequal vacuna_form.instance.h1n1 True %}checked{% endifequal %} value="True" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.h1n1.name }}" {% ifequal vacuna_form.instance.h1n1 False %}checked{% endifequal %} value="False" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.h1n1.name }}" {% ifequal vacuna_form.instance.h1n1 None %}checked{% endifequal %} value="None" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{{ vacuna_form.influenza.label }}</td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.influenza.name }}" {% ifequal vacuna_form.instance.influenza True %}checked{% endifequal %} value="True" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.influenza.name }}" {% ifequal vacuna_form.instance.influenza False %}checked{% endifequal %} value="False" />
+                        </td>
+                        <td>
+                          <input type="radio" name="{{ vacuna_form.influenza.name }}" {% ifequal vacuna_form.instance.influenza None %}checked{% endifequal %} value="None" />
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        Antitetánica
+                        <div class="row">
+                          <div class="col-md-3">
+                            {% include 'dashboard/partials/form_group_input.html' with field=vacuna_form.antitetanica_numero_dosis_previas %}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="panel-body">
+                            <div id="data-buscar-body">
+                              <table class="table table-bordered table-striped" style="width: 70%">
+                                <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>Mes de gestación</th>
+                                  <th>No</th>
+                                  <th>N/A</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                  <td class="col-md-5">
+                                    <label for="{{ vacuna_form.antitetanica_primera_dosis.auto_id }}" class="col-sm-12 control-label">{{ vacuna_form.antitetanica_primera_dosis.label }}</label>
+                                  </td>
+                                  <td class="col-md-3 antitetanica-valor">
+                                    <div class="input-group">
+                                      {{ vacuna_form.antitetanica_primera_dosis_valor|add_class:'form-control input-sm' }}
+                                      <span class="input-group-addon">Meses</span>
+                                    </div>
+                                    <input type="radio" class="hidden" name="{{ vacuna_form.antitetanica_primera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_primera_dosis True %}checked{% endifequal %} value="True" />
+                                  </td>
+                                  <td class="col-md-2">
+                                    <label>
+                                      <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_primera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_primera_dosis False %}checked{% endifequal %} value="False" />
+                                    </label>
+                                  </td>
+                                  <td class="col-md-2">
+                                    <label>
+                                      <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_primera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_primera_dosis None %}checked{% endifequal %} value="None" />
+                                    </label>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="col-md-5">
+                                    <label for="{{ vacuna_form.antitetanica_segunda_dosis.auto_id }}" class="col-sm-12 control-label">{{ vacuna_form.antitetanica_segunda_dosis.label }}</label>
+                                  </td>
+                                  <td class="col-md-3 antitetanica-valor">
+                                    <div class="input-group">
+                                      {{ vacuna_form.antitetanica_segunda_dosis_valor|add_class:'form-control input-sm' }}
+                                      <span class="input-group-addon">Meses</span>
+                                    </div>
+                                    <input type="radio" class="hidden" name="{{ vacuna_form.antitetanica_segunda_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_segunda_dosis True %}checked{% endifequal %} value="True" />
+                                  </td>
+                                  <td class="col-md-2">
+                                    <label>
+                                      <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_segunda_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_segunda_dosis False %}checked{% endifequal %} value="False" />
+                                    </label>
+                                  </td>
+                                  <td class="col-md-2">
+                                    <label>
+                                      <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_segunda_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_segunda_dosis None %}checked{% endifequal %} value="None" />
+                                    </label>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="col-md-5">
+                                    <label for="{{ vacuna_form.antitetanica_tercera_dosis.auto_id }}" class="col-sm-12 control-label">{{ vacuna_form.antitetanica_tercera_dosis.label }}</label>
+                                  </td>
+                                  <td class="col-md-3 antitetanica-valor">
+                                    <div class="input-group">
+                                      {{ vacuna_form.antitetanica_tercera_dosis_valor|add_class:'form-control input-sm' }}
+                                      <span class="input-group-addon">Meses</span>
+                                    </div>
+                                    <input type="radio" class="hidden" name="{{ vacuna_form.antitetanica_tercera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_tercera_dosis True %}checked{% endifequal %} value="True" />
+                                  </td>
+                                  <td class="col-md-2">
+                                    <label>
+                                      <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_tercera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_tercera_dosis False %}checked{% endifequal %} value="False" />
+                                    </label>
+                                  </td>
+                                  <td class="col-md-2">
+                                    <label>
+                                      <input class="false-none-radio" type="radio" name="{{ vacuna_form.antitetanica_tercera_dosis.name }}" {% ifequal vacuna_form.instance.antitetanica_tercera_dosis None %}checked{% endifequal %} value="None" />
+                                    </label>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% if 'pacientes.change_antecedenteginecologico' in user.get_all_permissions %}
+              <div class="panel-footer">
+                <div class="pull-left">
+                  <a href="{% url 'paciente:update' paciente.id %}" class="btn btn-default" role="button">Cancelar</a>
+                </div>
+                <div class="text-right">
+                  <button type="submit" class="btn btn-green">Guardar</button>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block bottom_scripts %}
+  <script src="{% static 'js/vendor/raphael.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/antecedentes_obstetricos_graphic.js' %}"></script>
+  <script src="{% static 'js/vendor/jquery.validate.js' %}"></script>
+  <script src="{% static 'js/vendor/additional-methods.js' %}"></script>
+  <script src="{% static 'js/antecedentes.js' %}"></script>
+
+  {% if 'pacientes.change_antecedenteginecologico' not in user.get_all_permissions %}
+    <script>
+      $(document).on('ready', function () {
+        $('input, select, textarea').prop('disabled', true);
+      });
+    </script>
+  {% endif %}
+{% endblock %}

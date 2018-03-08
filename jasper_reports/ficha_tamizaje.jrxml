@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nueva_ficha_tamizaje" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3cfe751-fa1b-40e5-a181-5bfcd8e7e3cb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="wawared"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="embarazo_id" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="logo_minsa" class="java.lang.String">
+		<defaultValueExpression><![CDATA["http://wawared.minsa.gob.pe/static/img/logo_minsa.png"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select upper(paciente.apellido_paterno || ' ' || paciente.apellido_materno || ' ' || paciente.nombres) as nombre_completo,paciente.numero_documento,
+ficha_violencia.*
+
+from embarazos_embarazo as embarazo
+left join pacientes_paciente as paciente on embarazo.paciente_id = paciente.id
+left join embarazos_fichaviolenciafamiliar as ficha_violencia on ficha_violencia.embarazo_id = embarazo.id
+where embarazo.id = $P{embarazo_id}::int]]>
+	</queryString>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="numero_documento" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="hematomas" class="java.lang.Boolean"/>
+	<field name="cicatrices" class="java.lang.Boolean"/>
+	<field name="fracturas" class="java.lang.Boolean"/>
+	<field name="mordeduras" class="java.lang.Boolean"/>
+	<field name="lesiones" class="java.lang.Boolean"/>
+	<field name="laceraciones" class="java.lang.Boolean"/>
+	<field name="quejas_cronicas" class="java.lang.Boolean"/>
+	<field name="problemas_apetito" class="java.lang.Boolean"/>
+	<field name="enuresis" class="java.lang.Boolean"/>
+	<field name="falta_de_confianza" class="java.lang.Boolean"/>
+	<field name="tristeza" class="java.lang.Boolean"/>
+	<field name="retraimiento" class="java.lang.Boolean"/>
+	<field name="llanto_frecuente" class="java.lang.Boolean"/>
+	<field name="necesidad_de_ganar" class="java.lang.Boolean"/>
+	<field name="demanda_de_atencion" class="java.lang.Boolean"/>
+	<field name="agresividad_pasividad" class="java.lang.Boolean"/>
+	<field name="tartamudeo" class="java.lang.Boolean"/>
+	<field name="temor_padres_hogar" class="java.lang.Boolean"/>
+	<field name="robo_mentira" class="java.lang.Boolean"/>
+	<field name="ausentismo_escolar" class="java.lang.Boolean"/>
+	<field name="llegar_temprano_salir_tarde_escuela" class="java.lang.Boolean"/>
+	<field name="bajo_rendimiento_academico" class="java.lang.Boolean"/>
+	<field name="aislamiento_de_personas" class="java.lang.Boolean"/>
+	<field name="intento_suicidio" class="java.lang.Boolean"/>
+	<field name="usa_drogas_alcohol" class="java.lang.Boolean"/>
+	<field name="conducta_sexual_inapropiada" class="java.lang.Boolean"/>
+	<field name="irritacion_dolor" class="java.lang.Boolean"/>
+	<field name="embarazo_precoz" class="java.lang.Boolean"/>
+	<field name="aborto_amenaza_ets" class="java.lang.Boolean"/>
+	<field name="desnutricion" class="java.lang.Boolean"/>
+	<field name="no_vacunas" class="java.lang.Boolean"/>
+	<field name="accidentes_enfermedades_frecuentes" class="java.lang.Boolean"/>
+	<field name="descuido_higiene" class="java.lang.Boolean"/>
+	<field name="falta_estimulacion_desarrollo" class="java.lang.Boolean"/>
+	<field name="fatiga" class="java.lang.Boolean"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="modified" class="java.sql.Timestamp"/>
+	<field name="created_by_id" class="java.lang.Integer"/>
+	<field name="embarazo_id" class="java.lang.Integer"/>
+	<field name="paciente_id" class="java.lang.Integer"/>
+	<field name="violencia_fisica" class="java.lang.Boolean"/>
+	<field name="violencia_fisica_agresores" class="java.lang.String"/>
+	<field name="violencia_psicologica" class="java.lang.Boolean"/>
+	<field name="violencia_psicologica_agresores" class="java.lang.String"/>
+	<field name="violencia_sexual" class="java.lang.Boolean"/>
+	<field name="violencia_sexual_agresores" class="java.lang.String"/>
+	<field name="cefalea" class="java.lang.Boolean"/>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="54" width="555" height="28" uuid="73444657-d5cf-4214-846b-59c651e00456">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="82" width="555" height="232" uuid="cf545f06-c813-4290-a74e-2ccc8c320f4a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="54" width="140" height="30" uuid="1bd8c2bc-8a97-4a33-a079-e2c120d83036"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Ficha de Violencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="54" width="80" height="30" uuid="118277c3-5326-4cdd-937a-7cc06c34c438"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="470" y="54" width="84" height="30" uuid="b0779d18-f086-4584-9ed0-6058c64fda5c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="84" width="380" height="30" uuid="fdb8a539-6868-4e7d-9072-54e881b6d7d2"/>
+				<text><![CDATA[1. ¿Se ha sentido alguna vez maltratado(a) psicológicamente por un miembro de su familia o ajena a esta?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="114" width="380" height="30" uuid="6c8baff1-5b1c-40fe-a248-c82a0f68c0cf"/>
+				<text><![CDATA[2. ¿A sido agredido(a) físicamente por un miembro de su familia o ajena a esta? ¿Quien?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="144" width="380" height="30" uuid="5d471028-f4d3-4435-b98c-51faf67e155b"/>
+				<text><![CDATA[3. ¿Se ha sentido o a sido forzado(a) alguna vez a tener relaciones sexuales? ¿Quien?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="84" width="32" height="22" uuid="bd49e8e2-78e9-4ab0-b3ed-9be760bb9639"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Si]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="84" width="32" height="22" uuid="87cefa17-29d6-417c-b160-93afb579e6c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="430" y="84" width="20" height="20" uuid="cbd9d512-646f-4358-bc79-29d5102e6180">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="500" y="84" width="20" height="20" uuid="1fcbcd08-9c44-4c7e-a779-7426b0d2b40c">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="470" y="114" width="32" height="22" uuid="54d57dc7-0d05-491c-ba7d-75b9309a4d35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="500" y="114" width="20" height="20" uuid="7d9d1b2b-0ab5-4c5d-bdf9-af6f027c7a98">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="430" y="114" width="20" height="20" uuid="c63af1ad-59bd-4cd1-bbb8-61533af41749">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="400" y="114" width="32" height="22" uuid="74f516b7-b61e-4e82-8e2d-15faabb540d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Si]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="500" y="149" width="20" height="20" uuid="20aea35c-6b98-4243-b054-e59bef384d65">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="430" y="149" width="20" height="20" uuid="ae34ccee-f8dc-40dd-8b32-5dc75202652b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="470" y="149" width="32" height="22" uuid="e267070c-a949-4617-aec1-7556fdb65711"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="149" width="32" height="22" uuid="5d7ecb46-a98d-47df-b849-267e874753d7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Si]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="184" width="160" height="19" uuid="cf88ef7b-d9d6-4db5-9216-ac31ba625ec1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Indicadores de maltrato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="204" width="190" height="14" uuid="3653815d-5b8f-4b43-8a95-fedb797543c0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hematomas, contusiones inexplicables]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="218" width="190" height="14" uuid="a1d713bd-8903-4067-8b6a-b447875f9cff">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cicatrices quemaduras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="233" width="190" height="14" uuid="8d2dbb69-6909-4845-b389-1195be9ba673">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Laceraciones en boca, mejillas, ojos, etc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="247" width="190" height="14" uuid="d81f7b14-7078-4675-bf4d-d15e69d00160">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Quejas crónicas sin causa física]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="261" width="190" height="14" uuid="a99ac3e0-a261-4e67-b840-c549bbbc676e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cefalea, problemas de sueño]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="275" width="190" height="14" uuid="80760941-1d50-49b5-a178-3e69621a3bc3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Problemas de apetito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="289" width="190" height="14" uuid="6f2f6ee4-141b-4625-9896-ce70411a5083">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Extrema falta de confianza en si mismo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="204" width="150" height="14" uuid="ac720293-dd4a-4e3d-b6d4-fde685babe8c">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Tristeza depresión angustia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="219" width="150" height="14" uuid="fbfb3035-cde6-4852-b006-41251ef1ef45">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Retraimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="233" width="150" height="14" uuid="affcdc95-e2c5-4557-ad87-365c3b532b69">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Llanto fuerte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="184" width="20" height="19" uuid="33847088-d61e-45f8-8628-988bd9d393fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Si]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="184" width="20" height="19" uuid="fab1fca9-e27f-42af-b25e-e03c4248f9d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="184" width="20" height="19" uuid="fc9a41ea-5ecb-4165-96e1-ac1740c43ae6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="184" width="20" height="19" uuid="df8e11f4-085e-4597-82b2-94c36fdd66d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Si]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="204" y="205" width="12" height="12" uuid="40d78f9b-33d7-4edf-9c08-813d37459d10">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="205" width="12" height="12" uuid="ad820231-90d9-4243-9d57-e06cc3cbd9fe">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="204" y="219" width="12" height="12" uuid="562c3f9d-a7c3-46fc-b8df-23127673cee1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="204" y="248" width="12" height="12" uuid="dbdac7b6-fd68-4f6d-b02c-0169b3673849">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="291" width="12" height="12" uuid="7b5643cc-f562-42dc-8df6-2ab8c568bfb0">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="277" width="12" height="12" uuid="4c5b145a-d531-429b-bc9f-ff7b7a923dd4">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="263" width="12" height="12" uuid="b8cfdf8f-0953-45dc-b6c6-12ba34952cc8">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="248" width="12" height="12" uuid="49a4f264-cc4c-48a7-bba2-d7ee51f2f2fe">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="234" width="12" height="12" uuid="9535111d-085c-49ec-be9a-ae19dcaa7e28">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="244" y="219" width="12" height="12" uuid="a15e4052-75d1-49dc-88cd-b2f49771ba9f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="204" y="262" width="12" height="12" uuid="8aa7d0b7-8ed8-468b-9e43-e4858ff12c39">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="204" y="276" width="12" height="12" uuid="a4794313-77cf-4d82-bfbf-619ff80d7bb7">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="204" y="291" width="12" height="12" uuid="5fc8f18e-2d8d-41b3-baf4-7f4dbff123d5">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="204" y="234" width="12" height="12" uuid="e95cc671-64ea-45e3-ae7e-7d53689f2adf">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="474" y="205" width="12" height="12" uuid="36dd5b5f-2ffb-402c-87e3-4fc3e86ab528">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="514" y="205" width="12" height="12" uuid="76774681-11cd-4b55-94a8-4e161f0ed889">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="474" y="220" width="12" height="12" uuid="bf1f4a65-9534-47fd-afff-362aaa6f4975">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="514" y="220" width="12" height="12" uuid="a2d5ba99-2460-408c-b1d3-d6a891fe3d5b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="474" y="234" width="12" height="12" uuid="8874e5b2-951f-4640-b71d-1cd040dc396d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="514" y="234" width="12" height="12" uuid="1a59a64d-bb0c-4441-9ba4-db1cea321ceb">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="314" width="555" height="20" uuid="25258055-bf15-49a9-b22a-9b1e46810f0b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="315" width="204" height="19" uuid="6d199b89-0144-4459-8b9b-e294468b7cfa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[APELLIDOS Y NOMBRES DEL PACIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="84" width="20" height="20" uuid="656f2d14-3da1-43c7-b6e7-13d3bb396149">
+					<printWhenExpression><![CDATA[$F{violencia_psicologica}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="85" width="20" height="20" uuid="6ab76208-aa7e-4e76-892a-27989d033f86">
+					<printWhenExpression><![CDATA[!$F{violencia_psicologica}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="149" width="20" height="20" uuid="c5f6921e-d101-4c1d-ab60-12d396cc08d5">
+					<printWhenExpression><![CDATA[!$F{violencia_sexual}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="114" width="20" height="20" uuid="f1ab08be-009a-48d4-b802-8052672265b1">
+					<printWhenExpression><![CDATA[!$F{violencia_fisica}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="115" width="20" height="20" uuid="2e187202-e27b-4f0f-afd9-fe27fdb40cf3">
+					<printWhenExpression><![CDATA[$F{violencia_fisica}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="150" width="20" height="20" uuid="d62a9761-ba7c-40dd-bbba-083f0f7435b9">
+					<printWhenExpression><![CDATA[$F{violencia_sexual}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="205" width="12" height="12" uuid="a433d0e7-ea89-46f1-8db0-ee0abfac2281">
+					<printWhenExpression><![CDATA[$F{hematomas}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="204" y="314" width="216" height="20" uuid="026bff42-7f8c-49a1-99e1-3a6758b704b2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="204" y="234" width="12" height="12" uuid="b38a44fe-6b14-4349-8f6e-24cb7d301e42">
+					<printWhenExpression><![CDATA[$F{laceraciones}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="248" width="12" height="12" uuid="a13cf6f3-27ca-4395-ac67-a9177575527a">
+					<printWhenExpression><![CDATA[!$F{quejas_cronicas}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="248" width="12" height="12" uuid="44935abc-4313-4042-907d-0001e014f05d">
+					<printWhenExpression><![CDATA[$F{quejas_cronicas}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="263" width="12" height="12" uuid="4f52cb1d-f281-4aec-8f50-8fe986845143">
+					<printWhenExpression><![CDATA[!$F{cefalea}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="263" width="12" height="12" uuid="bb487539-a576-4486-93e6-9f125facc734">
+					<printWhenExpression><![CDATA[$F{cefalea}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="277" width="12" height="12" uuid="89b8d227-6a7e-417b-815c-e8cf5b675d3d">
+					<printWhenExpression><![CDATA[!$F{problemas_apetito}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="277" width="12" height="12" uuid="4f0688e7-811c-4e92-8e4e-6d9dd16082db">
+					<printWhenExpression><![CDATA[$F{problemas_apetito}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="291" width="12" height="12" uuid="a2a088eb-baa5-4968-86c5-8f535beb4584">
+					<printWhenExpression><![CDATA[!$F{falta_de_confianza}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="291" width="12" height="12" uuid="e5dbc3b4-db5d-4e09-9c5c-aa6aa5f41d23">
+					<printWhenExpression><![CDATA[$F{falta_de_confianza}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="234" width="12" height="12" uuid="76646bc2-5332-4cbf-af14-9b5a9ba14d5b">
+					<printWhenExpression><![CDATA[$F{llanto_frecuente}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="220" width="12" height="12" uuid="b3795026-7363-4ce5-8498-0e5175e3f696">
+					<printWhenExpression><![CDATA[$F{retraimiento}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="514" y="205" width="12" height="12" uuid="d8679be4-d257-49f9-93de-415208bf2e4f">
+					<printWhenExpression><![CDATA[!$F{tristeza}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="205" width="12" height="12" uuid="9845bcb7-56a4-4313-892c-53dc7797ef12">
+					<printWhenExpression><![CDATA[$F{tristeza}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="219" width="12" height="12" uuid="ee1acf12-6462-4920-a822-575a2acf757a">
+					<printWhenExpression><![CDATA[$F{cicatrices}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="219" width="12" height="12" uuid="0c07f311-b2e2-48d7-867f-8fc6784adff2">
+					<printWhenExpression><![CDATA[!$F{cicatrices}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="205" width="12" height="12" uuid="bcfba506-a499-4036-8c71-0bab64264625">
+					<printWhenExpression><![CDATA[!$F{hematomas}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="514" y="220" width="12" height="12" uuid="4ba3e285-34b9-4ede-9730-cb9e32fd5a1a">
+					<printWhenExpression><![CDATA[!$F{retraimiento}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="514" y="234" width="12" height="12" uuid="63f61d4e-0791-4682-ab40-661f851ffb6a">
+					<printWhenExpression><![CDATA[!$F{llanto_frecuente}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="234" width="12" height="12" uuid="6ecf446b-58ad-4a58-9eb0-973ac5f13f41">
+					<printWhenExpression><![CDATA[!$F{laceraciones}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="183" height="54" uuid="76e742d8-0865-4da6-b2c5-90d92d43c199"/>
+				<imageExpression><![CDATA[$P{logo_minsa}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="420" y="315" width="50" height="19" uuid="3844ecc4-8456-4093-abf1-55de5e194e23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[H.C.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="314" width="82" height="21" uuid="8c0e8fd2-a222-4912-84d7-41b19bbdf22e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numero_documento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

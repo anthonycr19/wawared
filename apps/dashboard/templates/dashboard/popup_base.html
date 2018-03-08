@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset='utf-8'/>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    {% include 'session_security/all.html' %}
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen"/>
+    <link href="{% static 'css/wawared.css' %}" rel="stylesheet" media="screen"/>
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    {% block extra_style %}{% endblock %}
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        {% if messages %}
+        <div class="row">
+            <br/>
+            <div class="col-md-12">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</div>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    {% if request.GET.success %}
+        <script>
+            setTimeout(function () {
+                window.close();
+            }, 1500);
+        </script>
+    {% endif %}
+    <script>
+        $(document).ready(function(){ 
+            $.ajaxSetup({
+                cache: false
+            });
+        });
+    </script>
+{% block bottom_scripts %}{% endblock %}
+</body>
+</html>

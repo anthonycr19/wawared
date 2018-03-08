@@ -1,0 +1,103 @@
+{% load static %}
+
+{% block extra_style %}
+<link href="{% static 'css/indicadores.css' %}" rel="stylesheet" media="screen"/>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Periodo', 'Primer Trimestre', 'Segundo Trimestre', 'Tercer Trimestre'],
+            {% for item in json_indicadores_trimestrales %}
+                ["{{ item.intervalo_fecha|date:"M Y" }}", parseInt("{{ item.primer_trimestre }}"), parseInt("{{ item.segundo_trimestre }}"), parseInt("{{ item.tercer_trimestre }}")],
+            {% endfor %}
+        ]);
+
+        var options = {
+            chart: {
+                title: '{{ indicador_nombre }}',
+            },
+            legend: { position: "none" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+        chart.draw(data, options);
+    }
+</script>
+{% endblock %}
+
+
+<div class="container">
+    <h3>Tabla</h3>
+    <div class="contenedor-tabla">
+        <div class="table-responsive">
+            <table class="table" id="tabla_mensual">
+                <thead>
+                    <tr>
+                        <th id="tipo_alcance" class="headcol" style="margin-top:0px; padding-right:2em; width:50%;">{{ tipo_alcance }}:</th>
+                        {% for item in json_indicadores_trimestrales %}
+                            {% if forloop.first %}
+                                <th>{{ alcance }}</th>
+                            {% else %}
+                                <th></th>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="height: 155px;">
+                        <td class="headcol">Indicador: <strong>{{ indicador_nombre }}</strong></td>
+                        {% for item in json_indicadores_trimestrales %}
+                            {% if forloop.first %}
+                                <td style="text-align: center;">{{ item.intervalo_fecha|date:"M" }} <br> {{ item.intervalo_fecha|date:"d/m/Y" }}</td>
+                            {% else %}
+                                {% if forloop.last %}
+                                    <td style="text-align: center;">{{ item.intervalo_final|date:"M" }} <br> {{ item.intervalo_final|date:"d/m/Y" }}</td>
+                                {% else %}
+                                    <td style="text-align: center;">{{ item.intervalo_final|date:"M Y" }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="headcol">Primer trimestre</td>
+                        {% for item in json_indicadores_trimestrales %}
+                            <td style="text-align: center;">{{ item.primer_trimestre }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="headcol">Segundo trimestre</td>
+                        {% for item in json_indicadores_trimestrales %}
+                            <td style="text-align: center;">{{ item.segundo_trimestre }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="headcol">Tercer trimestre</td>
+                        {% for item in json_indicadores_trimestrales %}
+                            <td style="text-align: center;">{{ item.tercer_trimestre }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="headcol">Total de atendidas</td>
+                        {% for item in json_indicadores_trimestrales %}
+                            <td style="text-align: center;">{{ item.total_intervalo }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <br><br><br>
+
+
+
+    <h3>Gráfico de Barras</h3>
+
+    <div id="columnchart_material" style="width:95%; height: 500px;"></div>
+    <!-- <div id="dual_y_div" style="width:900px; height: 800px;"></div> -->
+</div>

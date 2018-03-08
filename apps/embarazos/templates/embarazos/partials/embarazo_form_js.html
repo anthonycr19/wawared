@@ -1,0 +1,513 @@
+{% load static %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/vendor/moment.js' %}"></script>
+<script src="{% static 'js/vendor/jquery.validate.js' %}"></script>
+<script src="{% static 'js/vendor/additional-methods.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        var arrowKeys = [37, 38, 39, 40];
+        $('#id_padre_apellido_paterno').addClass("padre_apellido_paterno");
+        $('#id_padre_apellido_materno').addClass("padre_apellido_materno");
+        $('#id_padre_nombres').addClass("padre_nombres");
+        $('#id_numero_cigarros_diarios').addClass("numero_cigarros_diarios");
+
+        $('#id_talla').addClass("talla");
+        $('#id_peso').addClass("peso");
+
+        $('#id_violencia_fisica_agresores').addClass("violencia_fisica_agresores");
+        $('#id_violencia_psicologica_agresores').addClass("violencia_psicologica_agresores");
+        $('#id_violencia_sexual_agresores').addClass("violencia_sexual_agresores");
+        $('#id_fum').addClass("fum");
+
+        var validator = $('#form-embarazo').validate({
+            errorClass: "alert alert-danger",
+            errorElement: "div",
+            messages: {
+                talla: {
+                    required: 'Este campo es requerido'
+                },
+                peso: {
+                    required: 'Este campo es requerido'
+                },
+                numero_cigarros_diarios: {
+                    required: 'Este campo es requerido'
+                },
+            }
+        });
+
+        $.validator.addMethod('charnegative', function (value) {
+            return (value==='') || /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/.test(value);
+        }, 'Por favor ingrese un valor valido para el campo');
+
+        $.validator.addMethod('fechavalida', function (value) {
+            if(value == "") return true;
+            var fum = moment(value, 'DD/MM/YYYY');
+            var diff = moment().diff(fum, 'week');
+            return (diff<=43)?true:false;
+        }, 'Por favor ingrese una fecha que no supere las 43 semanas de edad gestional');
+
+        $.validator.addMethod('enterospositivos', function (value) {
+            return /^\d*$/.test(value);
+        }, 'Por favor ingrese valores positivos');
+
+        // agrego una regla de validacion
+        $.validator.addClassRules({
+            talla: {
+                required: true,
+            },
+            peso: {
+                required: true,
+            },
+            numero_cigarros_diarios:{
+                enterospositivos:true,
+                required: true,
+            },
+            padre_nombres: {
+                charnegative: true,
+            },
+            padre_apellido_paterno: {
+                charnegative: true,
+            },
+            padre_apellido_materno: {
+                charnegative: true,
+            },
+            fum:{
+                fechavalida:true,
+            },
+            violencia_fisica_agresores:{
+                charnegative: true,
+            },
+            violencia_psicologica_agresores:{
+                charnegative: true,
+            },
+            id_violencia_sexual_agresores:{
+                charnegative: true,
+            }
+        });
+
+        $('#id_padre_nombres').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_padre_nombres');
+            }
+        });
+
+        $('#id_padre_nombres').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_padre_nombres');
+            }
+        });
+
+        $('#id_padre_apellido_paterno').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_padre_apellido_paterno');
+            }
+        });
+
+        $('#id_padre_apellido_materno').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_padre_apellido_materno');
+            }
+        });
+
+        $('#id_numero_cigarros_diarios').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_numero_cigarros_diarios');
+            }
+        });
+
+        $('#id_violencia_fisica_agresores').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_violencia_fisica_agresores');
+            }
+        });
+
+        $('#id_violencia_psicologica_agresores').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_violencia_psicologica_agresores');
+            }
+        });
+
+        $('#id_violencia_sexual_agresores').on('keyup',function(event){
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                validator.element('#id_violencia_sexual_agresores');
+            }
+        });
+
+        var $fechaProbablePartoUltimaMenstruacion = $('#id_fecha_probable_parto_ultima_menstruacion');
+        var $fechaFum = $('#id_fum');
+        var nowPicker = new Date();
+        $('#id_fecha_tamizaje').datepicker();
+        var $fumDatePicker = $fechaFum.datepicker({
+            onRender: function (date) {
+                return date.valueOf() > nowPicker.valueOf() ? 'disabled' : '';
+            }
+        });
+        $('#id_hospitalizacion_fecha').on('keydown', function () {
+            return false;
+        }).datepicker({
+            onRender: function (date) {
+                return date.valueOf() > nowPicker.valueOf() ? 'disabled' : '';
+            }
+        });
+        $('#id_emergencia_fecha').on('keydown', function () {
+            return false;
+        }).datepicker({
+            onRender: function (date) {
+                return date.valueOf() > nowPicker.valueOf() ? 'disabled' : '';
+            }
+        });
+        var $violenciaFamiliarForm = $('#violencia-familiar-form');
+        var $fichaProblemasForm = $('#ficha-problema-form');
+        var $edadGestacionalActualFum = $('#id_edad_gestacional_actual_fum');
+
+        $fumDatePicker.on('changeDate', function () {
+            if (typeof this.value !== 'undefined' && this.value !== null && this.value !== '') {
+                var date = moment(this.value, 'DD/MM/YYYY');
+                $fechaProbablePartoUltimaMenstruacion.val(date.add('days', 280).format('DD/MM/YYYY'));
+                calculateEdadGestacionalActual();
+                validator.element('#id_fum');
+            }
+        }).trigger('changeDate');
+
+        function calculateEdadGestacionalActual () {
+            var fum = moment($fechaFum.val(), 'DD/MM/YYYY');
+            var diff2 = moment().diff(fum, 'days');
+            $edadGestacionalActualFum.val(Math.floor(diff2 / 7) + ' ' + (diff2 % 7) + '/7');
+        }
+
+        $fechaFum.on('keydown', function () {
+            return false;
+        });
+
+        var $imc = $('#id_imc');
+        var $talla = $('#id_talla');
+        var $peso = $('#id_peso');
+
+        function calculateImc() {
+            var w = parseFloat($peso.val());
+            var h = parseFloat($talla.val()) / 100;
+            var imc = w / (Math.pow(h, 2));
+            if (isNaN(imc)) {
+                imc = 0.0;
+            }
+            $imc.val(imc.toFixed(2));
+            var clasificacion = '';
+            if (imc < 19.8) {
+                clasificacion = 'Bajo peso';
+            } else if (imc >= 19.8 && imc <= 26) {
+                clasificacion = 'Normal';
+            } else if (imc > 26 && imc <= 29) {
+                clasificacion = 'Sobrepeso';
+            } else {
+                clasificacion = 'Obesidad';
+            }
+            $imc.parent().find('.input-group-addon').html(clasificacion);
+        }
+
+        function validate3Digits (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                if (!(/^([0-9]{0,3})(\.[0-9]{1,2})?$/.test(this.value))){
+                    this.value = $(this).data("valid");
+                }else{
+                    $(this).data("valid",this.value);
+                }
+            }
+        }
+
+        function validateDigits (event) {
+            if (arrowKeys.indexOf(event.keyCode) === -1) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            }
+        }
+
+        $talla.on('keyup',calculateImc);
+        $peso.on('keyup',calculateImc);
+
+        $talla.on('keyup mouseup',validate3Digits);
+        $peso.on('keyup mouseup',validate3Digits);
+        $("#id_numero_cigarros_diarios").on('keyup mouseup',validateDigits);
+
+        var $mainForm = $('form');
+
+        $mainForm.find('input[name=triste_deprimida_sin_esperanza]').on('change', function () {
+            validateVisibilityFichaProblemas();
+        });
+
+        $mainForm.find('input[name=perdida_interes_placer]').on('change', function () {
+            validateVisibilityFichaProblemas();
+        });
+
+        var fields = ['poco_interes_o_placer', 'desanimada_deprimida', 'problemas_dormir', 'cansancio', 'alimenticio', 'falta_autoestima', 'dificultad_concentracion', 'mueve_lento_o_hiperactivo', 'pensamientos_autodestructivos'];
+
+        $('#ficha-problema-table').find('input[type=radio]').on('change', function () {
+            calculateScoreFichaProblema();
+        });
+
+        var $phq2AlertsWrapper = $('.phq2-alerts');
+        var $phq9AlertsWrapper = $('.phq9-alerts');
+
+        var MESSAGE_1 = 'Sospecha de depresión, realizar las preguntas del PHQ9';
+        var MESSAGE_2 = 'Síntomas depresivos mínimos o leves, referir a Psicología';
+        var MESSAGE_3 = 'Depresión moderada, REFERIR INMEDIATAMENTE A PSICOLOGÍA';
+        var MESSAGE_4 = 'Depresión severa, REFERIR INMEDIATAMENTE A PSICOLOGÍA';
+        var MESSAGE_5 = 'Riesgo suicida, REFERIR INMEDIATAMENTE A PSICOLOGÍA';
+
+        var phq9Messages = {
+            init: function () {
+                this.messages = [];
+                this.render();
+            },
+            add: function (message) {
+                if (this.messages.indexOf(message) === -1) {
+                    this.messages.push(message);
+                    this.render();
+                }
+            },
+            drop: function (message) {
+                var index = this.messages.indexOf(message);
+                if (index !== -1) {
+                    this.messages.splice(index, 1);
+                }
+                this.render();
+            },
+            render: function () {
+                if (this.messages.length) {
+                    var html = '<p>' + this.messages.join('</p></p>') + '</p>';
+                    $phq9AlertsWrapper.show();
+                    $phq9AlertsWrapper.find('td').html(html);
+                } else {
+                    $phq9AlertsWrapper.hide();
+                }
+            }
+        };
+
+        phq9Messages.init();
+
+        function calculateScoreFichaProblema () {
+            var sum = 0;
+            for (var i = 0; i < fields.length; i++) {
+                sum += parseInt($('input[type=radio][name="#name"]:checked'.replace('#name', fields[i])).val()) || 0;
+            }
+            $('#ficha-problema-puntaje').html(sum);
+            $('#id_puntaje').val(sum);
+            /* PHQ9 */
+            if (sum >= 5 && sum <= 9) {
+                phq9Messages.add(MESSAGE_2);
+            } else {
+                phq9Messages.drop(MESSAGE_2);
+            }
+            if (sum >= 10 && sum <= 19) {
+                phq9Messages.add(MESSAGE_3);
+            } else {
+                phq9Messages.drop(MESSAGE_3);
+            }
+            if (sum >= 20) {
+                phq9Messages.add(MESSAGE_4);
+            } else {
+                phq9Messages.drop(MESSAGE_4);
+            }
+            if (sum < 5) {
+                phq9Messages.drop(MESSAGE_2);
+                phq9Messages.drop(MESSAGE_3);
+            }
+            checkOpcionSuicidio();
+        }
+
+        function validateVisibilityFichaProblemas () {
+            var value1 = $('input[name=triste_deprimida_sin_esperanza]:checked').val();
+            var value2 = $('input[name=perdida_interes_placer]:checked').val();
+            var computedValue = (parseInt(value1) || 0) + (parseInt(value2) || 0);
+            $('#depresion-table-puntaje').html(computedValue);
+            $('#id_depresion_puntaje').val(computedValue);
+            /* PHQ2 */
+            if (computedValue >= 3) {
+                $phq2AlertsWrapper.find('td').html('<p>' + MESSAGE_1 + '</p>');
+                $phq2AlertsWrapper.show();
+                $fichaProblemasForm.show();
+            } else {
+                $fichaProblemasForm.hide();
+                $phq2AlertsWrapper.find('td').html('');
+                $phq2AlertsWrapper.hide();
+                phq9Messages.init();
+            }
+        }
+
+        function checkOpcionSuicidio() {
+            var value = $('input[name="pensamientos_autodestructivos"]:checked').val();
+            if (value >= 1) {
+                phq9Messages.add(MESSAGE_5);
+            } else {
+                phq9Messages.drop(MESSAGE_5);
+            }
+        }
+
+        function validateFichaViolenciaFields () {
+            var val1 = $('input[name=violencia_fisica]:checked').val();
+            var val2 = $('input[name=violencia_psicologica]:checked').val();
+            var val3 = $('input[name=violencia_sexual]:checked').val();
+            if (val1 === 'True' || val2 === 'True' || val3 === 'True') {
+                $violenciaFamiliarForm.show();
+            } else {
+                $violenciaFamiliarForm.hide();
+            }
+        }
+
+        $('input[name="violencia_fisica"]').on('change', function () {
+            validateFichaViolenciaFields();
+            if (this.value === 'True') {
+                $('#id_violencia_fisica_agresores').parents('.form-group').show();
+            } else {
+                $('#id_violencia_fisica_agresores').parents('.form-group').hide();
+            }
+        }).trigger('change');
+
+        $('input[name="violencia_psicologica"]').on('change', function () {
+            validateFichaViolenciaFields();
+            if (this.value === 'True') {
+                $('#id_violencia_psicologica_agresores').parents('.form-group').show();
+            } else {
+                $('#id_violencia_psicologica_agresores').parents('.form-group').hide();
+            }
+        }).trigger('change');
+
+        $('input[name="violencia_sexual"]').on('change', function () {
+            validateFichaViolenciaFields();
+            if (this.value === 'True') {
+                $('#id_violencia_sexual_agresores').parents('.form-group').show();
+            } else {
+                $('#id_violencia_sexual_agresores').parents('.form-group').hide();
+            }
+        }).trigger('change');
+
+        validateFichaViolenciaFields();
+
+        var $hospitalizacionDiagnosticos = $('#id_hospitalizacion_diagnosticos');
+
+        var $hospitalizacionDiagnosticosUl = $('#hospitalizacion_diagnosticos_ul');
+        $('#diagnostico-cie-search').select2({
+            placeholder: 'Ingrese el nombre o codigo del cie',
+            minimumInputLength: 3,
+            ajax: {
+                url: "{% url 'cie:api_search' %}",
+                dataType: 'json',
+                type: 'get',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            formatSelection: function (cie) {
+                var html = '<li>' + cie.nombre + '<button type="button" class="btn btn-danger btn-sm btn-delete-hospitalizacion-diagnostico" data-id="' + cie.id + '">x</button></li>';
+                if ($hospitalizacionDiagnosticos.html().indexOf(cie.id) === -1) {
+                    $hospitalizacionDiagnosticosUl.append(html);
+                    $hospitalizacionDiagnosticos.append('<option value="#id" selected>#nombre</option>'.replace('#id', cie.id).replace('#nombre', cie.nombre));
+                    setBehaviourDeleteButtonHospitalizacion();
+                }
+                return this.placeholder;
+            },
+            formatResult: function (cie) {
+                return '<p>' + cie.nombre + '</p>';
+            },
+            formatNoMatches: function (term) {
+                return 'No se encontraron resultados';
+            }
+        });
+
+
+        function setBehaviourDeleteButtonHospitalizacion () {
+            $('.btn-delete-hospitalizacion-diagnostico').on('click', function (event) {
+                event.preventDefault();
+                var value = $(this).data('id');
+                $hospitalizacionDiagnosticos.find('option[value=' + value + ']').remove();
+                $(this).parent().remove();
+            });
+        }
+        setBehaviourDeleteButtonHospitalizacion();
+
+        /* Emergencia */
+
+        var $emergenciaDiagnosticos = $('#id_emergencia_diagnosticos');
+
+        var $emergenciaDiagnosticosUl = $('#emergencia_diagnosticos_ul');
+        $('#emergencia-cie-search').select2({
+            placeholder: 'Ingrese el nombre o codigo del cie',
+            minimumInputLength: 3,
+            ajax: {
+                url: "{% url 'cie:api_search' %}",
+                dataType: 'json',
+                type: 'get',
+                data: function (term, page) {
+                    return {
+                        q: term
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            formatSelection: function (cie) {
+                var html = '<li>' + cie.nombre + '<button type="button" class="btn btn-danger btn-sm btn-delete-emergencia-diagnostico" data-id="' + cie.id + '">x</button></li>';
+                if ($emergenciaDiagnosticos.html().indexOf(cie.id) === -1) {
+                    $emergenciaDiagnosticosUl.append(html);
+                    $emergenciaDiagnosticos.append('<option value="#id" selected>#nombre</option>'.replace('#id', cie.id).replace('#nombre', cie.nombre));
+                    setBehaviourDeleteButtonEmergencia();
+                }
+                return this.placeholder;
+            },
+            formatResult: function (cie) {
+                return '<p>' + cie.nombre + '</p>';
+            },
+            formatNoMatches: function (term) {
+                return 'No se encontraron resultados';
+            }
+        });
+        function setBehaviourDeleteButtonEmergencia () {
+            $('.btn-delete-emergencia-diagnostico').on('click', function (event) {
+                event.preventDefault();
+                var value = $(this).data('id');
+                $emergenciaDiagnosticos.find('option[value=' + value + ']').remove();
+                $(this).parent().remove();
+            });
+        }
+
+        if($('input[name=hospitalizacion]:checked').val()!="True"){
+            $('#id_hospitalizacion_fecha').attr('disabled',true);
+            $('#diagnostico-cie-search').select2('disable');
+        }
+
+        if($('input[name=emergencia]:checked').val()!="True"){
+            $('#id_emergencia_fecha').attr('disabled',true);
+            $('#emergencia-cie-search').select2('disable');
+        }
+
+        $('input[name=hospitalizacion]').on('change', function() {
+          if($('input[name=hospitalizacion]:checked').val()=="True"){
+            $('#id_hospitalizacion_fecha').attr('disabled',false);
+            $('#diagnostico-cie-search').select2('enable');
+          }else{
+            $('#id_hospitalizacion_fecha').attr('disabled',true);
+            $('#diagnostico-cie-search').select2('disable');
+          }
+        });
+
+        $('input[name=emergencia]').on('change', function() {
+          if($('input[name=emergencia]:checked').val()=="True"){
+            $('#id_emergencia_fecha').attr('disabled',false);
+            $('#emergencia-cie-search').select2('enable');
+          }else{
+            $('#id_emergencia_fecha').attr('disabled',true);
+            $('#emergencia-cie-search').select2('disable');
+          }
+        });
+        setBehaviourDeleteButtonEmergencia();
+    });
+</script>

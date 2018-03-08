@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carne_control_prenatal_controles_subreport" language="groovy" columnCount="9" printOrder="Horizontal" pageWidth="489" pageHeight="802" columnWidth="54" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="58218763-d34d-4b67-9c0c-051351d1aed2">
+	<property name="ireport.zoom" value="2.6573415000000047"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="embarazo_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select control.*, establecimiento.nombre as establecimiento_nombre,
+usuario.last_name as responsable,
+(case when exists (select true from controles_examenfisicofetal where control_id=control.id)
+    then (select array_to_string(array_agg(coalesce(fcf::varchar(3), ' ')), '/') from controles_examenfisicofetal as cef where control_id=control.id )
+    else (control.fcf::varchar(3))
+  end) as fcf_1,
+  (case when exists (select true from controles_examenfisicofetal where control_id=control.id)
+    then (select array_to_string(array_agg(coalesce(movimientos_fetales, ' ')), '/') from controles_examenfisicofetal where control_id=control.id )
+    else (control.movimientos_fetales)
+  end) as movimientos_fetales_1,
+    (case when exists (select true from controles_examenfisicofetal where control_id=control.id)
+    then (select array_to_string(array_agg(coalesce(situacion, ' ')), '/') from controles_examenfisicofetal where control_id=control.id )
+    else (control.situacion)
+  end) as situacion_1,
+  (case when exists (select true from controles_examenfisicofetal where control_id=control.id)
+    then (select array_to_string(array_agg(coalesce(presentacion, ' ')), '/') from controles_examenfisicofetal where control_id=control.id )
+    else (control.presentacion)
+  end) as presentacion_1,
+  (case when exists (select true from controles_examenfisicofetal where control_id=control.id)
+    then (select array_to_string(array_agg(coalesce(posicion, ' ')), '/') from controles_examenfisicofetal where control_id=control.id)
+    else (control.posicion)
+  end) as posicion_1, case when control.numero=1 then (case when plan.e2_fecha is not null then  plan.e2_fecha else plan.e1_fecha end) else null end as planparto_fecha
+from controles_control as control
+left join embarazos_planparto as plan on plan.embarazo_id=control.embarazo_id
+left join establecimientos_establecimiento as establecimiento on control.establecimiento_id = establecimiento.id
+left join perfiles_user as usuario on control.created_by_id = usuario.id
+where control.embarazo_id = $P{embarazo_id}::int
+order by control.numero limit 9]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="numero" class="java.lang.Integer"/>
+	<field name="atencion_fecha" class="java.sql.Date"/>
+	<field name="atencion_hora" class="java.sql.Time"/>
+	<field name="eg_fum" class="java.lang.String"/>
+	<field name="eg_ecografia" class="java.lang.String"/>
+	<field name="eg_altura_uterina" class="java.lang.String"/>
+	<field name="eg_elegida" class="java.lang.String"/>
+	<field name="edad_gestacional_semanas" class="java.lang.String"/>
+	<field name="fecha_probable_parto_fum" class="java.sql.Date"/>
+	<field name="fecha_probable_parto_ecografia" class="java.sql.Date"/>
+	<field name="fecha_probable_parto_altura_uterina" class="java.sql.Date"/>
+	<field name="peso" class="java.lang.Double"/>
+	<field name="imc" class="java.lang.Double"/>
+	<field name="imc_clasificacion" class="java.lang.String"/>
+	<field name="temperatura" class="java.lang.Double"/>
+	<field name="presion_sistolica" class="java.lang.Integer"/>
+	<field name="presion_diastolica" class="java.lang.Integer"/>
+	<field name="frecuencia_respiratoria" class="java.lang.Integer"/>
+	<field name="altura_uterina" class="java.lang.Integer"/>
+	<field name="situacion" class="java.lang.String"/>
+	<field name="presentacion" class="java.lang.String"/>
+	<field name="posicion" class="java.lang.String"/>
+	<field name="leopold" class="java.lang.String"/>
+	<field name="fcf" class="java.lang.Integer"/>
+	<field name="movimientos_fetales" class="java.lang.String"/>
+	<field name="dinamica_uterina" class="java.lang.String"/>
+	<field name="proteinuria_cualitativa" class="java.lang.String"/>
+	<field name="edemas" class="java.lang.String"/>
+	<field name="reflejos" class="java.lang.String"/>
+	<field name="examen_pezon" class="java.lang.String"/>
+	<field name="indicacion_hierro" class="java.lang.Integer"/>
+	<field name="indicacion_calcio" class="java.lang.Integer"/>
+	<field name="indicacion_acido_folico" class="java.lang.Integer"/>
+	<field name="indicacion_hierro_acido_folico" class="java.lang.Integer"/>
+	<field name="pulso" class="java.lang.Integer"/>
+	<field name="oc_planificacion_familiar" class="java.lang.Boolean"/>
+	<field name="oc_its" class="java.lang.Boolean"/>
+	<field name="oc_nutricion" class="java.lang.Boolean"/>
+	<field name="oc_inmunizaciones" class="java.lang.Boolean"/>
+	<field name="oc_vih" class="java.lang.Boolean"/>
+	<field name="oc_tbc" class="java.lang.Boolean"/>
+	<field name="oc_no_se_hizo" class="java.lang.Boolean"/>
+	<field name="oc_no_aplica" class="java.lang.Boolean"/>
+	<field name="perfil_biofisico" class="java.lang.String"/>
+	<field name="proxima_cita" class="java.sql.Date"/>
+	<field name="numero_formato_sis" class="java.lang.String"/>
+	<field name="asintomatica" class="java.lang.Boolean"/>
+	<field name="visito_sintomas" class="java.lang.Boolean"/>
+	<field name="visito_diagnosticos" class="java.lang.Boolean"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="modified" class="java.sql.Timestamp"/>
+	<field name="created_by_id" class="java.lang.Integer"/>
+	<field name="embarazo_id" class="java.lang.Integer"/>
+	<field name="establecimiento_id" class="java.lang.Integer"/>
+	<field name="paciente_id" class="java.lang.Integer"/>
+	<field name="ic_medicina" class="java.lang.Boolean"/>
+	<field name="ic_nutricion" class="java.lang.Boolean"/>
+	<field name="ic_odontologia" class="java.lang.Boolean"/>
+	<field name="ic_psicologia" class="java.lang.Boolean"/>
+	<field name="ic_enfermeria" class="java.lang.Boolean"/>
+	<field name="ic_ecografia" class="java.lang.Boolean"/>
+	<field name="ic_ecografia_fecha_1" class="java.sql.Date"/>
+	<field name="ic_ecografia_fecha_2" class="java.sql.Date"/>
+	<field name="ic_ecografia_fecha_3" class="java.sql.Date"/>
+	<field name="ic_enfermeria_fecha_1" class="java.sql.Date"/>
+	<field name="ic_enfermeria_fecha_2" class="java.sql.Date"/>
+	<field name="ic_enfermeria_fecha_3" class="java.sql.Date"/>
+	<field name="ic_laboratorio" class="java.lang.Boolean"/>
+	<field name="ic_laboratorio_fecha_1" class="java.sql.Date"/>
+	<field name="ic_laboratorio_fecha_2" class="java.sql.Date"/>
+	<field name="ic_laboratorio_fecha_3" class="java.sql.Date"/>
+	<field name="ic_medicina_fecha_1" class="java.sql.Date"/>
+	<field name="ic_medicina_fecha_2" class="java.sql.Date"/>
+	<field name="ic_medicina_fecha_3" class="java.sql.Date"/>
+	<field name="ic_nutricion_fecha_1" class="java.sql.Date"/>
+	<field name="ic_nutricion_fecha_2" class="java.sql.Date"/>
+	<field name="ic_nutricion_fecha_3" class="java.sql.Date"/>
+	<field name="ic_odontologia_fecha_1" class="java.sql.Date"/>
+	<field name="ic_odontologia_fecha_2" class="java.sql.Date"/>
+	<field name="ic_odontologia_fecha_3" class="java.sql.Date"/>
+	<field name="ic_psicologia_fecha_1" class="java.sql.Date"/>
+	<field name="ic_psicologia_fecha_2" class="java.sql.Date"/>
+	<field name="ic_psicologia_fecha_3" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_1" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_2" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_3" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_4" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_5" class="java.sql.Date"/>
+	<field name="psicoprofilaxis_fecha_6" class="java.sql.Date"/>
+	<field name="zika_departamento_id" class="java.lang.Integer"/>
+	<field name="zika_pais_id" class="java.lang.Integer"/>
+	<field name="zika_provincia_id" class="java.lang.Integer"/>
+	<field name="zika_sintoma_conjuntivitis" class="java.lang.Boolean"/>
+	<field name="zika_sintoma_dolorcabeza" class="java.lang.Boolean"/>
+	<field name="zika_sintoma_fiebre" class="java.lang.Boolean"/>
+	<field name="zika_sintoma_malestar" class="java.lang.Boolean"/>
+	<field name="zika_sintoma_sarpullido" class="java.lang.Boolean"/>
+	<field name="zika_viajo" class="java.lang.String"/>
+	<field name="synchronize" class="java.lang.Boolean"/>
+	<field name="his_id_registro" class="java.lang.Integer"/>
+	<field name="his_synchronize" class="java.lang.Boolean"/>
+	<field name="visita_domiciliaria_actividad_1" class="java.lang.String"/>
+	<field name="visita_domiciliaria_actividad_2" class="java.lang.String"/>
+	<field name="visita_domiciliaria_actividad_3" class="java.lang.String"/>
+	<field name="visita_domiciliaria_actividad_4" class="java.lang.String"/>
+	<field name="visita_domiciliaria_actividad_5" class="java.lang.String"/>
+	<field name="visita_domiciliaria_actividad_6" class="java.lang.String"/>
+	<field name="visita_domiciliaria_fecha_1" class="java.sql.Date"/>
+	<field name="visita_domiciliaria_fecha_2" class="java.sql.Date"/>
+	<field name="visita_domiciliaria_fecha_3" class="java.sql.Date"/>
+	<field name="visita_domiciliaria_fecha_4" class="java.sql.Date"/>
+	<field name="visita_domiciliaria_fecha_5" class="java.sql.Date"/>
+	<field name="visita_domiciliaria_fecha_6" class="java.sql.Date"/>
+	<field name="establecimiento_nombre" class="java.lang.String"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="fcf_1" class="java.lang.String"/>
+	<field name="movimientos_fetales_1" class="java.lang.String"/>
+	<field name="situacion_1" class="java.lang.String"/>
+	<field name="presentacion_1" class="java.lang.String"/>
+	<field name="posicion_1" class="java.lang.String"/>
+	<field name="planparto_fecha" class="java.sql.Date"/>
+	<detail>
+		<band height="295" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="54" height="10" uuid="0cae8667-9147-4d8f-a70d-939ca7b84b90"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{atencion_fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="10" width="54" height="10" uuid="5367524f-2801-4834-beae-b0ef0d5a1770"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad_gestacional_semanas}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="54" height="10" uuid="fe530889-8cac-4e46-b510-31a7a49708e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="30" width="54" height="10" uuid="23a32cbc-3220-4926-b35e-a2a1b0444771"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{temperatura}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="40" width="54" height="10" uuid="e5f49c62-60c4-40e4-8cc0-3063dc246b7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{presion_sistolica} + "/" + $F{presion_diastolica}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="50" width="54" height="10" uuid="6325094d-1a75-4c9a-a19c-2c5a397b1de1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pulso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="60" width="54" height="10" uuid="14ffc2ae-c5ea-4c6e-a4e2-d27c7d0b25fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{altura_uterina} == null ? "NA" : $F{altura_uterina})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="70" width="54" height="10" uuid="4c2c8d4a-d978-4170-a528-3dc71d153e4d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Integer.parseInt($F{edad_gestacional_semanas}) < 12 ? "NA" : $F{situacion_1}.toUpperCase())]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="80" width="54" height="10" uuid="0ce8e4b7-deab-4386-aa55-7fa67a3d4cd3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{presentacion_1}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="90" width="54" height="10" uuid="e6b9997c-bc2c-44fd-97c7-502a2cbf4769"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{posicion_1}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="100" width="54" height="10" uuid="71c537a0-9c59-42b6-b4d9-8fb908ea3a75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Integer.parseInt($F{edad_gestacional_semanas}) < 12 ? "NA" : $F{fcf_1})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="110" width="54" height="10" uuid="12aa6ac1-591d-486b-aa15-182873044ca6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movimientos_fetales_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="120" width="54" height="10" uuid="ba6fe75d-f2c3-4fe4-a041-c44f4578f099"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{proteinuria_cualitativa}.equals("-") ? "NSH" : $F{proteinuria_cualitativa})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="130" width="54" height="10" uuid="51bbcdb0-753c-4b29-82e8-f8b25ce4dc03"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edemas}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="140" width="54" height="10" uuid="3cb7f653-7296-4f38-8160-55d78d44494c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reflejos}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="150" width="54" height="10" uuid="8f405672-bcdc-4dc8-9cd6-06410e3f5aff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_pezon}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="160" width="54" height="10" uuid="b4090686-08aa-4456-afad-064ab787503b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{indicacion_hierro} == null) ? $F{indicacion_hierro_acido_folico} : $F{indicacion_hierro}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="170" width="54" height="10" uuid="09eba819-1fc0-462f-8f3c-c14c5e07dcb0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indicacion_calcio}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="180" width="54" height="10" uuid="df94d14d-2245-4ad8-abbf-04a84ceeaf8c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indicacion_acido_folico}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="200" width="54" height="10" uuid="9057f987-8da7-4682-92ba-d361c26ea5ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eg_ecografia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="210" width="54" height="10" uuid="e9138331-a1c2-489b-97e0-ec9b38553861"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{perfil_biofisico}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="d/M/yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="220" width="54" height="10" uuid="6582030f-a9ea-4faa-bb57-06e30fb48ad1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proxima_cita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="250" width="54" height="10" uuid="2dea617b-181d-4f86-a492-eb97e6b026e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{establecimiento_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="260" width="54" height="10" uuid="8be92537-0ae9-410c-bd4d-80d580d92700"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="270" width="54" height="10" uuid="597a4333-0266-4c6d-b2ce-4182c708f2b3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_formato_sis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="240" width="54" height="10" uuid="e492d958-89a1-4109-b781-05a60dece236"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{planparto_fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

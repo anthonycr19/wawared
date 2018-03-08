@@ -1,0 +1,23 @@
+{% load static %}
+
+{% include 'session_security/all.html' %}
+<div class="modal fade" id="popup-message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Aviso</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <p>{{ popup_message }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){ 
+        $('#popup-message-modal').modal('show');
+    });
+</script>

@@ -1,0 +1,185 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Registrar cita{% endblock %}
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data-buscar">
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Buscar Gestante</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-5 col-md-offset-7">
+                            <form role="search" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="q" class="form-control" placeholder="Buscar por Apellidos, Nombres, DNI o N° de HC" autofocus>
+                                    <span class="input-group-addon">
+                                        <button>
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if pacientes %}
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="panel panel-default">
+                <div id="data-head" class="panel-heading">
+                    <h3 class="panel-title">Pacientes</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="data-buscar-body" class="panel panel-default">
+                        <table class="table table-striped table-bordered">
+                            <thead class="panel-heading">
+                            <tr>
+                                <th># HC</th>
+                                <th>DNI</th>
+                                <th>Nombre</th>
+                                <th>Seleccionar</th>
+                            </tr>
+                            </thead>
+                            <tbody class="panel-body">
+                            {% for paciente in pacientes %}
+                            <tr>
+                                <td>{{ paciente.hc }}</td>
+                                <td>{{ paciente.numero_documento }}</td>
+                                <td>{{ paciente.nombre_completo }}</td>
+                                <td>
+                                    <a class="btn btn-default btn-seleccionar-paciente" href="?selected={{ paciente.id }}">
+                                        <span class="glyphicon glyphicon-check"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" method="post">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Crear cita {% if paciente %} para {{ paciente.nombre_completo }}{% endif %} en {{ establecimiento.nombre }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ form.paciente }}
+                        <input type="hidden" name="establecimiento" value="{{ establecimiento.id }}"/>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label">Fecha</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <input id="{{ form.cita_fecha.auto_id }}" class="datepicker form-control input-sm" type="text" name="{{ form.cita_fecha.name }}" {% if not selected %}disabled{% endif %}/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                {% for error in form.cita_fecha.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.cita_hora.auto_id }}" class="col-sm-5 control-label">Hora</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    {{ form.horas }} {{ form.minutos }} {{ form.meridiano }}
+                                    <input id="{{ form.cita_hora.auto_id }}" class="bootstrap-timepicker form-control input-sm" type="text" name="{{ form.cita_hora.name }}" {% if not selected %}disabled{% endif %}/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                                {% for error in form.hora.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.comentario.auto_id }}" class="col-sm-5 control-label">Comentario</label>
+                            <div class="col-sm-7">
+                                <textarea name="{{ form.comentario.name }}" class="form-control" id="{{ form.comentario.auto_id }}" rows="3" {% if not selected %}disabled{% endif %}></textarea>
+                                {% for error in form.comentario.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                            <a class="btn btn-default" type=button onClick="javascript:history.go(-1);">Cancelar</a>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-green" {% if not selected %}disabled{% endif %}>Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+    <script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){ 
+            var today = new Date();
+            var now = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+            $('#id_cita_fecha').on('keydown', function () {
+                return false;
+            }).datepicker({
+                onRender: function (date) {
+                    return date.valueOf() < now.valueOf() ? 'disabled' : '';
+                }
+            });
+            $('#id_cita_hora').timepicker({
+                defaultTime: 'current',
+                showSeconds: false,
+                template: false,
+                showMeridian: false
+            });
+            var $establecimientos = $('#establecimientos');
+            $establecimientos.hide();
+            var $elegirEstablecimiento = $('input:radio[name=establecimiento_actual]');
+            var eValue = 'actual';
+            $elegirEstablecimiento.on('change', function () {
+                eValue = this.value;
+                if (this.value === 'elegir') {
+                    $establecimientos.show();
+                } else {
+                    $establecimientos.hide();
+                }
+            });
+            $('.btn-seleccionar-paciente').on('click', function (event) {
+                event.preventDefault();
+                var url = $(this).attr('href');
+                if (eValue !== 'actual') {
+                    url += '&establecimiento=' + $establecimientos.val();
+                }
+                document.location.href = url;
+            });
+        });
+    </script>
+{% endblock %}

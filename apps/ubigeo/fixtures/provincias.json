@@ -1,0 +1,1982 @@
+[
+{
+    "pk": 1, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Amazonas", 
+        "codigo": "010000", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chachapoyas", 
+        "codigo": "010100", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Bagua", 
+        "codigo": "010200", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Bongara", 
+        "codigo": "010300", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Condorcanqui", 
+        "codigo": "010400", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 6, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Luya", 
+        "codigo": "010500", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 7, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Rodriguez De Mendoza", 
+        "codigo": "010600", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 8, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Utcubamba", 
+        "codigo": "010700", 
+        "departamento": 1
+    }
+},
+{
+    "pk": 9, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ancash", 
+        "codigo": "020000", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 10, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huaraz", 
+        "codigo": "020100", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 11, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Aija", 
+        "codigo": "020200", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 12, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Antonio Raymondi", 
+        "codigo": "020300", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 13, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Asuncion", 
+        "codigo": "020400", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 14, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Bolognesi", 
+        "codigo": "020500", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 15, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Carhuaz", 
+        "codigo": "020600", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 16, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Carlos Fermin Fitzcarrald", 
+        "codigo": "020700", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 17, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Casma", 
+        "codigo": "020800", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 18, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Corongo", 
+        "codigo": "020900", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 19, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huari", 
+        "codigo": "021000", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 20, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huarmey", 
+        "codigo": "021100", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 21, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huaylas", 
+        "codigo": "021200", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 22, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Mariscal Luzuriaga", 
+        "codigo": "021300", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 23, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ocros", 
+        "codigo": "021400", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 24, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pallasca", 
+        "codigo": "021500", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 25, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pomabamba", 
+        "codigo": "021600", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 26, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Recuay", 
+        "codigo": "021700", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 27, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Santa", 
+        "codigo": "021800", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 28, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Sihuas", 
+        "codigo": "021900", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 29, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Yungay", 
+        "codigo": "022000", 
+        "departamento": 2
+    }
+},
+{
+    "pk": 30, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Apurimac", 
+        "codigo": "030000", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 31, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Abancay", 
+        "codigo": "030100", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 32, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Andahuaylas", 
+        "codigo": "030200", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 33, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Antabamba", 
+        "codigo": "030300", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 34, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Aymaraes", 
+        "codigo": "030400", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 35, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cotabambas", 
+        "codigo": "030500", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 36, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chincheros", 
+        "codigo": "030600", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 37, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Grau", 
+        "codigo": "030700", 
+        "departamento": 3
+    }
+},
+{
+    "pk": 38, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Arequipa", 
+        "codigo": "040000", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 39, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Arequipa", 
+        "codigo": "040100", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 40, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Camana", 
+        "codigo": "040200", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 41, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Caraveli", 
+        "codigo": "040300", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 42, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Castilla", 
+        "codigo": "040400", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 43, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Caylloma", 
+        "codigo": "040500", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 44, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Condesuyos", 
+        "codigo": "040600", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 45, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Islay", 
+        "codigo": "040700", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 46, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "La Union", 
+        "codigo": "040800", 
+        "departamento": 4
+    }
+},
+{
+    "pk": 47, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ayacucho", 
+        "codigo": "050000", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 48, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huamanga", 
+        "codigo": "050100", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 49, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cangallo", 
+        "codigo": "050200", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 50, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huanca Sancos", 
+        "codigo": "050300", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 51, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huanta", 
+        "codigo": "050400", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 52, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "La Mar", 
+        "codigo": "050500", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 53, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lucanas", 
+        "codigo": "050600", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 54, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Parinacochas", 
+        "codigo": "050700", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 55, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Paucar Del Sara Sara", 
+        "codigo": "050800", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 56, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Sucre", 
+        "codigo": "050900", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 57, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Victor Fajardo", 
+        "codigo": "051000", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 58, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Vilcas Huaman", 
+        "codigo": "051100", 
+        "departamento": 5
+    }
+},
+{
+    "pk": 59, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cajamarca", 
+        "codigo": "060000", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 60, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cajamarca", 
+        "codigo": "060100", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 61, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cajabamba", 
+        "codigo": "060200", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 62, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Celendin", 
+        "codigo": "060300", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 63, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chota", 
+        "codigo": "060400", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 64, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Contumaza", 
+        "codigo": "060500", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 65, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cutervo", 
+        "codigo": "060600", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 66, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Hualgayoc", 
+        "codigo": "060700", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 67, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Jaen", 
+        "codigo": "060800", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 68, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Ignacio", 
+        "codigo": "060900", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 69, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Marcos", 
+        "codigo": "061000", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 70, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Miguel", 
+        "codigo": "061100", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 71, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Pablo", 
+        "codigo": "061200", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 72, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Santa Cruz", 
+        "codigo": "061300", 
+        "departamento": 6
+    }
+},
+{
+    "pk": 73, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Callao", 
+        "codigo": "070000", 
+        "departamento": 7
+    }
+},
+{
+    "pk": 74, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Callao", 
+        "codigo": "070100", 
+        "departamento": 7
+    }
+},
+{
+    "pk": 75, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cusco", 
+        "codigo": "080000", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 76, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cusco", 
+        "codigo": "080100", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 77, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Acomayo", 
+        "codigo": "080200", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 78, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Anta", 
+        "codigo": "080300", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 79, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Calca", 
+        "codigo": "080400", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 80, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Canas", 
+        "codigo": "080500", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 81, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Canchis", 
+        "codigo": "080600", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 82, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chumbivilcas", 
+        "codigo": "080700", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 83, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Espinar", 
+        "codigo": "080800", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 84, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "La Convencion", 
+        "codigo": "080900", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 85, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Paruro", 
+        "codigo": "081000", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 86, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Paucartambo", 
+        "codigo": "081100", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 87, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Quispicanchi", 
+        "codigo": "081200", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 88, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Urubamba", 
+        "codigo": "081300", 
+        "departamento": 8
+    }
+},
+{
+    "pk": 89, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huancavelica", 
+        "codigo": "090000", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 90, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huancavelica", 
+        "codigo": "090100", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 91, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Acobamba", 
+        "codigo": "090200", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 92, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Angaraes", 
+        "codigo": "090300", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 93, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Castrovirreyna", 
+        "codigo": "090400", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 94, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Churcampa", 
+        "codigo": "090500", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 95, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huaytara", 
+        "codigo": "090600", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 96, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tayacaja", 
+        "codigo": "090700", 
+        "departamento": 9
+    }
+},
+{
+    "pk": 97, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huanuco", 
+        "codigo": "100000", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 98, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huanuco", 
+        "codigo": "100100", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 99, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ambo", 
+        "codigo": "100200", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 100, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Dos De Mayo", 
+        "codigo": "100300", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 101, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huacaybamba", 
+        "codigo": "100400", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 102, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huamalies", 
+        "codigo": "100500", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 103, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Leoncio Prado", 
+        "codigo": "100600", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 104, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Mara\u00f1on", 
+        "codigo": "100700", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 105, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pachitea", 
+        "codigo": "100800", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 106, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Puerto Inca", 
+        "codigo": "100900", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 107, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lauricocha", 
+        "codigo": "101000", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 108, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Yarowilca", 
+        "codigo": "101100", 
+        "departamento": 10
+    }
+},
+{
+    "pk": 109, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ica", 
+        "codigo": "110000", 
+        "departamento": 11
+    }
+},
+{
+    "pk": 110, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ica", 
+        "codigo": "110100", 
+        "departamento": 11
+    }
+},
+{
+    "pk": 111, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chincha", 
+        "codigo": "110200", 
+        "departamento": 11
+    }
+},
+{
+    "pk": 112, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Nazca", 
+        "codigo": "110300", 
+        "departamento": 11
+    }
+},
+{
+    "pk": 113, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Palpa", 
+        "codigo": "110400", 
+        "departamento": 11
+    }
+},
+{
+    "pk": 114, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pisco", 
+        "codigo": "110500", 
+        "departamento": 11
+    }
+},
+{
+    "pk": 115, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Junin", 
+        "codigo": "120000", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 116, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huancayo", 
+        "codigo": "120100", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 117, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Concepcion", 
+        "codigo": "120200", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 118, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chanchamayo", 
+        "codigo": "120300", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 119, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Jauja", 
+        "codigo": "120400", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 120, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Junin", 
+        "codigo": "120500", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 121, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Satipo", 
+        "codigo": "120600", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 122, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tarma", 
+        "codigo": "120700", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 123, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Yauli", 
+        "codigo": "120800", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 124, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chupaca", 
+        "codigo": "120900", 
+        "departamento": 12
+    }
+},
+{
+    "pk": 125, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "La Libertad", 
+        "codigo": "130000", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 126, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Trujillo", 
+        "codigo": "130100", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 127, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ascope", 
+        "codigo": "130200", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 128, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Bolivar", 
+        "codigo": "130300", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 129, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chepen", 
+        "codigo": "130400", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 130, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Julcan", 
+        "codigo": "130500", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 131, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Otuzco", 
+        "codigo": "130600", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 132, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pacasmayo", 
+        "codigo": "130700", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 133, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pataz", 
+        "codigo": "130800", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 134, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Sanchez Carrion", 
+        "codigo": "130900", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 135, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Santiago De Chuco", 
+        "codigo": "131000", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 136, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Gran Chimu", 
+        "codigo": "131100", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 137, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Viru", 
+        "codigo": "131200", 
+        "departamento": 13
+    }
+},
+{
+    "pk": 138, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lambayeque", 
+        "codigo": "140000", 
+        "departamento": 14
+    }
+},
+{
+    "pk": 139, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chiclayo", 
+        "codigo": "140100", 
+        "departamento": 14
+    }
+},
+{
+    "pk": 140, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ferre\u00f1afe", 
+        "codigo": "140200", 
+        "departamento": 14
+    }
+},
+{
+    "pk": 141, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lambayeque", 
+        "codigo": "140300", 
+        "departamento": 14
+    }
+},
+{
+    "pk": 142, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lima", 
+        "codigo": "150000", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 143, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lima", 
+        "codigo": "150100", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 144, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Barranca", 
+        "codigo": "150200", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 145, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Cajatambo", 
+        "codigo": "150300", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 146, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Canta", 
+        "codigo": "150400", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 147, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ca\u00f1ete", 
+        "codigo": "150500", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 148, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huaral", 
+        "codigo": "150600", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 149, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huarochiri", 
+        "codigo": "150700", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 150, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huaura", 
+        "codigo": "150800", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 151, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Oyon", 
+        "codigo": "150900", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 152, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Yauyos", 
+        "codigo": "151000", 
+        "departamento": 15
+    }
+},
+{
+    "pk": 153, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Loreto", 
+        "codigo": "160000", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 154, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Maynas", 
+        "codigo": "160100", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 155, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Alto Amazonas", 
+        "codigo": "160200", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 156, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Loreto", 
+        "codigo": "160300", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 157, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Mariscal Ramon Castilla", 
+        "codigo": "160400", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 158, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Requena", 
+        "codigo": "160500", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 159, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ucayali", 
+        "codigo": "160600", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 160, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Datem Del Mara\u00f1on", 
+        "codigo": "160700", 
+        "departamento": 16
+    }
+},
+{
+    "pk": 161, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Madre De Dios", 
+        "codigo": "170000", 
+        "departamento": 17
+    }
+},
+{
+    "pk": 162, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tambopata", 
+        "codigo": "170100", 
+        "departamento": 17
+    }
+},
+{
+    "pk": 163, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Manu", 
+        "codigo": "170200", 
+        "departamento": 17
+    }
+},
+{
+    "pk": 164, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tahuamanu", 
+        "codigo": "170300", 
+        "departamento": 17
+    }
+},
+{
+    "pk": 165, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Moquegua", 
+        "codigo": "180000", 
+        "departamento": 18
+    }
+},
+{
+    "pk": 166, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Mariscal Nieto", 
+        "codigo": "180100", 
+        "departamento": 18
+    }
+},
+{
+    "pk": 167, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "General Sanchez Cerro", 
+        "codigo": "180200", 
+        "departamento": 18
+    }
+},
+{
+    "pk": 168, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ilo", 
+        "codigo": "180300", 
+        "departamento": 18
+    }
+},
+{
+    "pk": 169, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pasco", 
+        "codigo": "190000", 
+        "departamento": 19
+    }
+},
+{
+    "pk": 170, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Pasco", 
+        "codigo": "190100", 
+        "departamento": 19
+    }
+},
+{
+    "pk": 171, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Daniel Alcides Carrion", 
+        "codigo": "190200", 
+        "departamento": 19
+    }
+},
+{
+    "pk": 172, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Oxapampa", 
+        "codigo": "190300", 
+        "departamento": 19
+    }
+},
+{
+    "pk": 173, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Piura", 
+        "codigo": "200000", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 174, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Piura", 
+        "codigo": "200100", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 175, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ayabaca", 
+        "codigo": "200200", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 176, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huancabamba", 
+        "codigo": "200300", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 177, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Morropon", 
+        "codigo": "200400", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 178, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Paita", 
+        "codigo": "200500", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 179, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Sullana", 
+        "codigo": "200600", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 180, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Talara", 
+        "codigo": "200700", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 181, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Sechura", 
+        "codigo": "200800", 
+        "departamento": 20
+    }
+},
+{
+    "pk": 182, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Puno", 
+        "codigo": "210000", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 183, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Puno", 
+        "codigo": "210100", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 184, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Azangaro", 
+        "codigo": "210200", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 185, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Carabaya", 
+        "codigo": "210300", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 186, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Chucuito", 
+        "codigo": "210400", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 187, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "El Collao", 
+        "codigo": "210500", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 188, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huancane", 
+        "codigo": "210600", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 189, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lampa", 
+        "codigo": "210700", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 190, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Melgar", 
+        "codigo": "210800", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 191, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Moho", 
+        "codigo": "210900", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 192, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Antonio De Putina", 
+        "codigo": "211000", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 193, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Roman", 
+        "codigo": "211100", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 194, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Sandia", 
+        "codigo": "211200", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 195, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Yunguyo", 
+        "codigo": "211300", 
+        "departamento": 21
+    }
+},
+{
+    "pk": 196, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Martin", 
+        "codigo": "220000", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 197, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Moyobamba", 
+        "codigo": "220100", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 198, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Bellavista", 
+        "codigo": "220200", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 199, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "El Dorado", 
+        "codigo": "220300", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 200, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Huallaga", 
+        "codigo": "220400", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 201, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Lamas", 
+        "codigo": "220500", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 202, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Mariscal Caceres", 
+        "codigo": "220600", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 203, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Picota", 
+        "codigo": "220700", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 204, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Rioja", 
+        "codigo": "220800", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 205, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "San Martin", 
+        "codigo": "220900", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 206, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tocache", 
+        "codigo": "221000", 
+        "departamento": 22
+    }
+},
+{
+    "pk": 207, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tacna", 
+        "codigo": "230000", 
+        "departamento": 23
+    }
+},
+{
+    "pk": 208, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tacna", 
+        "codigo": "230100", 
+        "departamento": 23
+    }
+},
+{
+    "pk": 209, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Candarave", 
+        "codigo": "230200", 
+        "departamento": 23
+    }
+},
+{
+    "pk": 210, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Jorge Basadre", 
+        "codigo": "230300", 
+        "departamento": 23
+    }
+},
+{
+    "pk": 211, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tarata", 
+        "codigo": "230400", 
+        "departamento": 23
+    }
+},
+{
+    "pk": 212, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tumbes", 
+        "codigo": "240000", 
+        "departamento": 24
+    }
+},
+{
+    "pk": 213, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Tumbes", 
+        "codigo": "240100", 
+        "departamento": 24
+    }
+},
+{
+    "pk": 214, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Contralmirante Villar", 
+        "codigo": "240200", 
+        "departamento": 24
+    }
+},
+{
+    "pk": 215, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Zarumilla", 
+        "codigo": "240300", 
+        "departamento": 24
+    }
+},
+{
+    "pk": 216, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Ucayali", 
+        "codigo": "250000", 
+        "departamento": 25
+    }
+},
+{
+    "pk": 217, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Coronel Portillo", 
+        "codigo": "250100", 
+        "departamento": 25
+    }
+},
+{
+    "pk": 218, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Atalaya", 
+        "codigo": "250200", 
+        "departamento": 25
+    }
+},
+{
+    "pk": 219, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Padre Abad", 
+        "codigo": "250300", 
+        "departamento": 25
+    }
+},
+{
+    "pk": 220, 
+    "model": "ubigeo.provincia", 
+    "fields": {
+        "nombre": "Purus", 
+        "codigo": "250400", 
+        "departamento": 25
+    }
+}
+]

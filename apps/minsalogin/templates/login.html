@@ -1,0 +1,22 @@
+{% extends 'login_base.html' %}
+{% block container %}
+  <form class="form-signin" action="{% url "minsalogin:login" %}" method="post">
+    {% csrf_token %}
+    <h2 class="form-signin-heading">Inicie sesión</h2>
+    <label for="id_username" class="sr-only">Usuario</label>
+    <input type="text" id="id_username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+    <label for="id_password" class="sr-only">Contraseña</label>
+    <input type="password" id="id_password" name="password" class="form-control" placeholder="Contraseña" required>
+    {% if login_error %}
+      <div class="bg-danger text-center">
+        <h4>
+          <p class="text-danger">
+            Las credenciales ingresadas no son válidas.
+          </p>
+        </h4>
+      </div>
+    {% endif %}
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+  </form>
+
+{% endblock %}

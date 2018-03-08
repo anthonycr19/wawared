@@ -1,0 +1,18 @@
+{% load static %}
+{% load form_filter %}
+
+<div class="form-group">
+    <div class="col-sm-12">
+        {% if addon %}
+        <div class="input-group" style="width: 150px">
+            {{ field|add_class:'form-control input-sm' }}
+            <span class="input-group-addon">{{ addon }}</span>
+        </div>
+        {% else %}
+        {{ field|add_class:'form-control input-sm' }}
+        {% endif %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div>

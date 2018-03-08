@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Wawared - {% block title %}Gestantes{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    {% include 'session_security/all.html' %}
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen"/>
+    <link href="{% static 'css/wawared.css' %}" rel="stylesheet" media="screen"/>
+    <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+    {% block extra_style %}{% endblock %}
+</head>
+<body>
+<div id="header" class="navbar navbar-default">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle='collapse' data-target='.navbar-ex1-collapse'>
+            <span class='sr-only'>Menu</span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+        </button>
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'img/logo-dash.png' %}" alt="">
+            <img src="{{STATIC_URL}}img/logo_minsa.png" alt="ministerio" width="auto" height="10%">
+            {% if capacitacion %}CAPACITACIÓN{% endif %}
+        </a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="{% static 'img/wawared-logo.png' %}" width="30px" alt=""/>
+                    {{ user.get_full_name }} - {{ establecimiento }}
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'change_password' %}">Cambiar contraseña</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url 'gestantes:hce_logout' %}">Salir</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- /header-->
+
+<div class="row">
+  <div class="col-md-10">
+    {% if messages %}
+    <div class="row">
+      <br/>
+      <div class="col-md-12">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</div>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script>
+$(document).ready(function(){ 
+  $.ajaxSetup({
+    cache: false
+  });
+});
+</script>
+{% block bottom_scripts %}{% endblock %}
+</body>
+</html>

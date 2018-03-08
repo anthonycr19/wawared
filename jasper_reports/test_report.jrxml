@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-09-20T17:34:23 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="737d7d00-64ce-4240-8e29-65b8c06e5fb7">
+  <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+  <property name="com.jaspersoft.studio.data.defaultdataadapter" value="wawared"/>
+  <parameter name="embarazo_id" class="java.lang.String">
+      <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+  </parameter>
+  <queryString language="SQL">
+    <![CDATA[select * from embarazos_embarazo where id = $P{embarazo_id}::int]]>
+  </queryString>
+  <background>
+    <band splitType="Stretch"/>
+  </background>
+  <detail>
+    <band height="802" splitType="Stretch">
+      <subreport>
+        <reportElement x="67" y="27" width="488" height="280" uuid="7a51efe7-ac2b-418c-972d-69db52793c59"/>
+        <subreportParameter name="embarazo_id">
+        <subreportParameterExpression><![CDATA[$P{embarazo_id}]]></subreportParameterExpression>
+        </subreportParameter>
+        <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+        <subreportExpression><![CDATA["repo:carne_control_prenatal_controles_subreport"]]></subreportExpression>
+      </subreport>
+    </band>
+  </detail>
+</jasperReport>

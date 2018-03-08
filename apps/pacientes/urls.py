@@ -1,0 +1,67 @@
+from django.conf.urls import patterns, url
+
+import views
+
+urlpatterns = patterns(
+    '',
+    url(
+        r'^(?P<id>\d+)/$',
+        views.PacienteDetailView.as_view(),
+        name='detail'),
+    url(
+        r'^(?P<id>\d+)/editar/$',
+        views.PacienteUpdateView.as_view(),
+        name='update'),
+    url(
+        r'^(?P<id>\d+)/editar-control/$',
+        views.PacienteControlUpdateView.as_view(),
+        name='update_control'),
+    url(
+        r'^(?P<id>\d+)/antecedentes/$',
+        views.PacienteAntecedentesDetailView.as_view(),
+        name='antecedentes'),
+    url(
+        r'^(?P<id>\d+)/control-antecedentes/$',
+        views.PacienteControlAntecedentesDetailView.as_view(),
+        name='control_antecedentes'),
+    url(
+        r'^(?P<id>\d+)/antecedentes/editar/$',
+        views.PacienteAntecedentesUpdateView.as_view(),
+        name='antecedentes_edit'),
+    url(
+        r'^(?P<id>\d+)/control-antecedentes/editar/$',
+        views.PacienteControlAntecedentesUpdateView.as_view(),
+        name='control_antecedentes_edit'),
+    url(
+        r'^(?P<id>\d+)/antecedentes-familiares/$',
+        views.AntecedentesFamiliaresView.as_view(),
+        name='antecedentes_familiares_edit'),
+    url(
+        r'^(?P<id>\d+)/antecedentes-medicos/$',
+        views.AntecedentesMedicosView.as_view(),
+        name='antecedentes_medicos_edit'),
+    url(
+        r'^(?P<id>\d+)/antecedentes-resume-json',
+        views.AntecedentesResumeJsonView.as_view(),
+        name='antecedentes_resume_json'),
+    url(
+        r'^(?P<paciente_id>\d+)/crear-historia-clinica/$',
+        views.HistoriaClinicaCreateView.as_view(),
+        name='historia_clinica_create'),
+    url(
+        r'^registro/$',
+        views.PacienteCreateView.as_view(),
+        name='create'),
+    url(
+        r'^buscar/$',
+        views.PacienteSearchView.as_view(),
+        name='search'),
+    url(
+        r'^crear/(?P<id>\d+)$',
+        views.PacienteCreateForce.as_view(),
+        name='create_force'),
+url(
+        r'^crear-paciente-control/(?P<id>\d+)$',
+        views.PacienteCreateForceUpdate.as_view(),
+        name='create_force_update'),
+)

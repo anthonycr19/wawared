@@ -1,0 +1,72 @@
+{% load static %}
+
+<div class="panel-body">
+    <div class="panel panel-default" id="data-buscar-body">
+        <div id="data-head" class="panel-heading">
+            Embarazos previos
+            {% url 'paciente:antecedentes_edit' paciente.id as antecedentes_url %}
+            {% if 'embarazos.add_ultimoembarazo' in user.get_all_permissions %}
+            <div class="pull-right">
+                <a class="btn btn-green" href="{% url 'partos:embarazos_ultimo_embarazo_create' paciente.id %}">
+                    <span class="glyphicon glyphicon-plus"></span> Agregar datos de embarazo previos
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Gestación</th>
+                <th>Fecha</th>
+                <th>Tipo gestación</th>
+                <th>Terminacion</th>
+                <th>Aborto</th>
+                <th>Vive</th>
+                <th>Muerte</th>
+                <th>Peso</th>
+                <th>Sexo</th>
+                <th>EG</th>
+                <th>Lugar</th>
+                <th>Lactancia</th>
+                <th>Observación</th>
+                {% if 'embarazos.change_ultimoembarazo' in user.get_all_permissions %}
+                <th>Opciones</th>
+                <th>Eliminar</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for embarazo in embarazos %}
+                {% for bebe in embarazo.bebes_ordered %}
+                <tr>
+                    <td>{{ embarazo.numero }}</td>
+                    <td>{{ bebe.fecha|date:'d/m/Y' }}</td>
+                    <td>{{ embarazo.print_tipo }}</td>
+                    <td>{{ bebe.print_terminacion }}</td>
+                    <td>{{ bebe.print_aborto }}</td>
+                    <td>{% if bebe.vive %}Si{% else %}No{% endif %}</td>
+                    <td>{{ bebe.print_muerte }}</td>
+                    <td>{% if bebe.peso %}{{ bebe.peso }} g{% endif %}</td>
+                    <td>{{ bebe.print_sexo|slice:':1' }}</td>
+                    <td>{{ bebe.edad_gestacional }}</td>
+                    <td>{{ bebe.print_lugar }}</td>
+                    <td>{{ bebe.print_lactancia }}</td>
+                    <td>{{ bebe.observacion }}</td>
+                    {% if 'embarazos.change_ultimoembarazo' in user.get_all_permissions %}
+                    <td>
+                        <a class="btn btn-default" href="{% url 'partos:embarazos_ultimo_embarazo_edit' paciente.id embarazo.id %}">Editar</a>
+                    </td>
+                    <td>
+                        <div id="eliminar-embarazo-previo">
+                          <a class="btn btn-danger" href="{% url 'partos:embarazos_ultimo_embarazo_delete' paciente.id embarazo.id %}">Eliminar</a>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% include 'embarazos/partials/embarazo_delete_js.html' %}

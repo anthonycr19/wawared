@@ -1,0 +1,280 @@
+{% load static %}
+{% load form_filter %}
+{% include 'session_security/all.html' %}
+<div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Datos generales del Padre y del Embarazo Actual
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.padre_apellido_paterno %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.padre_apellido_materno %}
+                    {% include 'dashboard/partials/form_group_input.html' with field=form.padre_nombres %}
+                    {% include 'dashboard/partials/form_group_date.html' with field=form.fum %}
+                    <div class="form-group">
+                        <label for="{{ form.fum_confiable.auto_id }}" class="col-sm-5 control-label">{{ form.fum_confiable.label }}</label>
+                        <div class="col-sm-7">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.fum_confiable.name }}" {% ifequal form.instance.fum_confiable True %}checked{% endifequal %} value="True"/> Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.fum_confiable.name }}" {% ifequal form.instance.fum_confiable False %}checked{% endifequal %} value="False"/> No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.fum_confiable.name }}" {% ifequal form.instance.fum_confiable None %}checked{% endifequal %} value="None"/> N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.fum_confiable.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.captada.auto_id }}" class="col-sm-5 control-label">{{ form.captada.label }}</label>
+                        <div class="col-sm-7">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.captada.name }}" {% ifequal form.instance.captada True %}checked{% endifequal %} value="True"/> Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.captada.name }}" {% ifequal form.instance.captada False %}checked{% endifequal %} value="False"/> No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.captada.name }}" {% ifequal form.instance.captada None %}checked{% endifequal %} value="None"/> N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.captada.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.referida.auto_id }}" class="col-sm-5 control-label">{{ form.referida.label }}</label>
+                        <div class="col-sm-7">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.referida.name }}" {% ifequal form.instance.referida True %}checked{% endifequal %} value="True"/> Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.referida.name }}" {% ifequal form.instance.referida False %}checked{% endifequal %} value="False"/> No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.referida.name }}" {% ifequal form.instance.referida None %}checked{% endifequal %} value="None"/> N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.referida.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.talla addon='cm' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.peso addon='kg' %}
+                    {% include 'dashboard/partials/form_group_input_addon.html' with field=form.imc addon=form.instance.imc_clasificacion|capfirst %}
+                    <div class="form-group">
+                        <label for="id_edad_gestacional_actual_fum" class="col-sm-5 control-label">Edad gestacional actual FUM</label>
+                        <div class="col-sm-7">
+                            <input id="id_edad_gestacional_actual_fum" type="text" class="input-sm form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_fecha_probable_parto_ultima_menstruacion" class="col-sm-5 control-label">Fecha probable de parto FUM</label>
+                        <div class="col-sm-7">
+                            {{ form.fecha_probable_parto_ultima_menstruacion|add_class:'form-control input-sm' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Hospitalización
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.hospitalizacion.auto_id }}" class="col-sm-6 control-label">{{ form.hospitalizacion.label }}</label>
+                        <div class="col-sm-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.hospitalizacion.name }}" {% ifequal form.instance.hospitalizacion True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.hospitalizacion.name }}" {% ifequal form.instance.hospitalizacion False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.hospitalizacion.name }}" {% ifequal form.instance.hospitalizacion None %}checked{% endifequal %} value="None"/>
+                                        N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.hospitalizacion.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    {% include 'dashboard/partials/form_group_date.html' with field=form.hospitalizacion_fecha %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="id_hospitalizacion_diagnosticos" class="col-sm-5 control-label">Hospitalización diagnosticos</label>
+                        <div class="col-sm-7 hidden">
+                            <select name="hospitalizacion_diagnosticos" id="id_hospitalizacion_diagnosticos" multiple>
+                            {% if hospitalizacion_diagnosticos_from_post_data %}
+                                {% for hospitalizacion_diagnostico in hospitalizacion_diagnosticos_from_post_data %}
+                                    <option value="{{ hospitalizacion_diagnostico.id }}" selected>{{ hospitalizacion_diagnostico.nombre_display }}</option>
+                                {% endfor %}
+                            {% else %}
+                                {% for hospitalizacion_diagnostico in form.instance.hospitalizacion_diagnosticos.all %}
+                                    <option value="{{ hospitalizacion_diagnostico.id }}" selected>{{ hospitalizacion_diagnostico.nombre_display }}</option>
+                                {% endfor %}
+                            {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" id="diagnostico-cie-search"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <ul class="list-unstyled" id="hospitalizacion_diagnosticos_ul">
+                    {% if hospitalizacion_diagnosticos_from_post_data %}
+                        {% for hospitalizacion_diagnostico in hospitalizacion_diagnosticos_from_post_data %}
+                            <li>
+                                {{ hospitalizacion_diagnostico.nombre_display }} <button type="button" class="btn btn-danger btn-sm btn-delete-hospitalizacion-diagnostico" data-id="{{ hospitalizacion_diagnostico.id }}">x</button>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for hospitalizacion_diagnostico in form.instance.hospitalizacion_diagnosticos.all %}
+                            <li>
+                                {{ hospitalizacion_diagnostico.nombre_display }} <button type="button" class="btn btn-danger btn-sm btn-delete-hospitalizacion-diagnostico" data-id="{{ hospitalizacion_diagnostico.id }}">x</button>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Emergencia
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.emergencia.auto_id }}" class="col-sm-6 control-label">{{ form.emergencia.label }}</label>
+                        <div class="col-sm-6">
+                            <ul class="list-inline">
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.emergencia.name }}" {% ifequal form.instance.emergencia True %}checked{% endifequal %} value="True"/>
+                                        Si
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.emergencia.name }}" {% ifequal form.instance.emergencia False %}checked{% endifequal %} value="False"/>
+                                        No
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ form.emergencia.name }}" {% ifequal form.instance.emergencia None %}checked{% endifequal %} value="None"/>
+                                        N/A
+                                    </label>
+                                </li>
+                            </ul>
+                            {% for error in form.emergencia.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    {% include 'dashboard/partials/form_group_date.html' with field=form.emergencia_fecha %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="id_emergencia_diagnosticos" class="col-sm-5 control-label">Emergencia diagnosticos</label>
+                        <div class="col-sm-7 hidden">
+                            <select name="emergencia_diagnosticos" id="id_emergencia_diagnosticos" multiple>
+                            {% if emergencia_diagnosticos_from_post_data %}
+                                {% for emergencia_diagnostico in emergencia_diagnosticos_from_post_data %}
+                                    <option value="{{ emergencia_diagnostico.id }}" selected>{{ emergencia_diagnostico.nombre_display }}</option>
+                                {% endfor %}
+                            {% else %}
+                                {% for emergencia_diagnostico in form.instance.emergencia_diagnosticos.all %}
+                                    <option value="{{ emergencia_diagnostico.id }}" selected>{{ emergencia_diagnostico.nombre_display }}</option>
+                                {% endfor %}
+                            {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" id="emergencia-cie-search"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <ul class="list-unstyled" id="emergencia_diagnosticos_ul">
+                    {% if emergencia_diagnosticos_from_post_data %}
+                        {% for emergencia_diagnostico in emergencia_diagnosticos_from_post_data %}
+                            <li>
+                                {{ emergencia_diagnostico.nombre_display }} <button type="button" class="btn btn-danger btn-sm btn-delete-emergencia-diagnostico" data-id="{{ emergencia_diagnostico.id }}">x</button>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for emergencia_diagnostico in form.instance.emergencia_diagnosticos.all %}
+                            <li>
+                                {{ emergencia_diagnostico.nombre_display }} <button type="button" class="btn btn-danger btn-sm btn-delete-emergencia-diagnostico" data-id="{{ emergencia_diagnostico.id }}">x</button>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

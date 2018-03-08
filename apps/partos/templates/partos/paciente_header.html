@@ -1,0 +1,32 @@
+{% load thumbnail %}
+{% load static %}
+{% load paciente_tags %}
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-2">
+            {% if paciente.foto.name %}
+            <img src="{% thumbnail paciente.foto 112x122 %}" width="112" height="112" alt="{{ paciente.nombre_completo }}"/>
+            {% else %}
+            <img src="{% static 'img/avatar2.png' %}" width="112" height="112" alt="default foto"/>
+            {% endif %}
+        </div>
+        <div class="col-md-10">
+            <h2>
+                <a style="color: gray" href="{% url 'partos:paciente_update' paciente.id %}">{{ paciente.nombre_completo }}</a>
+            </h2>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p>N° HC: {{ paciente|hc:request }}</p>
+                    {% ifequal paciente.tipo_documento paciente.DOCUMENTO_DNI_RESPONSABLE %}
+                    <p>DNI Responsable {{ paciente.numero_documento }}</p>
+                    {% else %}
+                        <p>{{ paciente.nombre_documento }}: {{ paciente.numero_documento }}</p>
+                    {% endifequal %}
+                </div>
+                <div class="col-sm-2">
+                    <p>Edad: {{ paciente.edad }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

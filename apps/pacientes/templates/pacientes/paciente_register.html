@@ -1,0 +1,38 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Registrar gestante{% endblock %}
+{% block extra_style %}
+    <link href="{{STATIC_URL}}css/datepicker.css" rel="stylesheet" media="screen">
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div id="data">
+            <form class="form-horizontal" name="form-paciente" id="form-paciente" role="form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="panel panel-default">
+
+                    <div id="data-head" class="panel-heading">
+                        <h3 class="panel-title">Registrar Gestante</h3>
+                    </div>
+
+                    {% include 'pacientes/partials/paciente_form.html' %}
+
+                    <div class="panel-footer">
+                        <div class="pull-left">
+                            <a class="btn btn-default" type=button onClick="javascript:history.go(-1);">Cancelar</a>
+                        </div>
+
+                        <div class="text-right">
+                            <input class="btn btn-green" type="submit" value="Guardar"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bottom_scripts %}
+{% include 'pacientes/partials/paciente_form_js.html' %}
+{% endblock %}
